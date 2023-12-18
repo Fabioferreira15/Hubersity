@@ -1,0 +1,53 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/BaiJamjuree-Bold.ttf",
+      "sha1": "50088f5f00a63964bc0d98d82924dc5ff4a5645c"
+    },
+    {
+      "path": "assets/fonts/BaiJamjuree-BoldItalic.ttf",
+      "sha1": "bed6e844a28d671925b710d6d9a8ec33ea7e19a9"
+    },
+    {
+      "path": "assets/fonts/BaiJamjuree-ExtraLight.ttf",
+      "sha1": "2e143fb040de393eb2ca7ef8de2016b0bca54a36"
+    },
+    {
+      "path": "assets/fonts/BaiJamjuree-ExtraLightItalic.ttf",
+      "sha1": "72d5516ea0ce0273eab6ad96ce02fb1124598308"
+    },
+    {
+      "path": "assets/fonts/BaiJamjuree-Italic.ttf",
+      "sha1": "db7a1597d6016de0681be08abb62da1b22a2e341"
+    },
+    {
+      "path": "assets/fonts/BaiJamjuree-Light.ttf",
+      "sha1": "b977777badfed5300267d0a7dff5efe235f04a59"
+    },
+    {
+      "path": "assets/fonts/BaiJamjuree-LightItalic.ttf",
+      "sha1": "64008042325b6887198077e0e6227025abf95738"
+    },
+    {
+      "path": "assets/fonts/BaiJamjuree-Medium.ttf",
+      "sha1": "068f3ac74c49f211f6a77181e184773ebb5678b6"
+    },
+    {
+      "path": "assets/fonts/BaiJamjuree-MediumItalic.ttf",
+      "sha1": "f193037d18cddf281670b2cd3b4170ab32ccca80"
+    },
+    {
+      "path": "assets/fonts/BaiJamjuree-Regular.ttf",
+      "sha1": "6665982520c8dafe80ea867de83e1e1cfe93374b"
+    },
+    {
+      "path": "assets/fonts/BaiJamjuree-SemiBold.ttf",
+      "sha1": "78d293f56f47bd1b0ea44d790931e7712e71dc43"
+    },
+    {
+      "path": "assets/fonts/BaiJamjuree-SemiBoldItalic.ttf",
+      "sha1": "2acda6c57058816dc43688cfbd6bafa74116fd48"
+    }
+  ]
+}
