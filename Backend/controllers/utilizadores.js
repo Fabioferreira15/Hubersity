@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const utilities = require("../utilities/utilities");
 
+
 exports.register = function (req, res) {
   const { nome, email, password, confirmarPassword, nomeCurso } = req.body;
 
