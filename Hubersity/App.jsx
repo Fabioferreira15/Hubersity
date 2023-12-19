@@ -110,7 +110,7 @@ const App = () => {
                 source={
                   focused
                     ? require('./assets/icons/perfil_active.png')
-                    : require('./assets/icons/perfil.pn')
+                    : require('./assets/icons/perfil.png')
                 }
                 style={{width: 48, height: 48}}
               />
