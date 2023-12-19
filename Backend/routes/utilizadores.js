@@ -53,4 +53,9 @@ router.post(
   }
 );
 
+//rota para ver utilizador especifico
+router.get("api/utilizadores/:id", function (req, res) {
+  utilizadores.getOne(req, res);
+});
+
 module.exports = router;

@@ -110,3 +110,26 @@ exports.login = function (req, res) {
       });
     });
 };
+
+//rota para ver o proprio perfil 
+exports.verPerfil = function (req, res) {
+  const { id } = req.params;
+
+  Utilizadores.findByPk(id, { include: ["carrinho"] })
+    .then((user) => {
+      if (!user) {
+        res.status(404).send({
+          message: "Utilizador não encontrado.",
+        });
+        return;
+      }
+
+      res.send(user);
+    })
+    .catch((error) => {
+      res.status(500).send({
+        message: error.message || "Ocorreu um erro ao buscar o utilizador.",
+      });
+    });
+};
+
