@@ -4,6 +4,14 @@ const Cursos = require("../models/cursos.model").Cursos;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const utilities = require("../utilities/utilities");
+const cloudinary = require("cloudinary").v2;
+
+
+cloudinary.config({
+  cloud_name: process.env.C_CLOUD_NAME,
+  api_key: process.env.C_API_KEY,
+  api_secret: process.env.C_API_SECRET,
+});
 
 
 exports.register = function (req, res) {
