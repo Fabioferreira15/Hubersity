@@ -124,9 +124,9 @@ exports.login = function (req, res) {
 
 //rota para ver o proprio perfil 
 exports.verPerfil = function (req, res) {
-  const { id } = req.params;
+  const { id } = req.params.id;
 
-  Utilizadores.findByPk(id, { include: ["carrinho"] })
+  Utilizadores.findById(id, { include: ["carrinho"] })
     .then((user) => {
       if (!user) {
         res.status(404).send({
@@ -140,6 +140,36 @@ exports.verPerfil = function (req, res) {
     .catch((error) => {
       res.status(500).send({
         message: error.message || "Ocorreu um erro ao buscar o utilizador.",
+      });
+    });
+};
+
+//obter dados do parque de estacionamento
+exports.obterDadosPagamento = function (req, res) {
+  const { UserId } = req.params;
+
+  // Substitua 'id_parque' pelo campo correto que identifica o parque de estacionamento no seu modelo
+  Utilizadores.findOne({ where: { UserId} })
+    .then((pagamentoEstacionamento) => {
+      if (!pagamentoEstacionamento) {
+        res.status(404).send({
+          message: "Dados de pagamento não encontrados para o parque de estacionamento.",
+        });
+        return;
+      }
+
+      // Construa a resposta com os dados de pagamento
+      const newDadosPagamento = {
+        idDoPagamento: pagamentoEstacionamento.idPagamento,
+        PróximoPagamento: pagamentoEstacionamento.PróximoPagamento,
+        qrCode: pagamentoEstacionamento.QRCode
+      };
+
+      res.status(200).send(newDadosPagamento);
+    })
+    .catch((error) => {
+      res.status(500).send({
+        message: error.message || "Ocorreu um erro ao buscar os dados de pagamento.",
       });
     });
 };
