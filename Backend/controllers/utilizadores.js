@@ -50,6 +50,8 @@ exports.register = function (req, res) {
             email: email,
             password: hash,
             idCurso: curso.idCurso,
+            imgPerfil: "https://res.cloudinary.com/djoiers7m/image/upload/v1703071856/ProfilePictures/pruiusl1vghf9v6jgtiw.png",
+            imgCapa: "https://res.cloudinary.com/djoiers7m/image/upload/v1703072776/ImagemCapa/v4aykqwcewhws56un86g.png"
           })
             .then((user) => {
               Carrinho.create({

@@ -26,6 +26,14 @@ Utilizadores.init(
       type: DataTypes.INTEGER,
       defaultValue: 0,
     },
+    imgPerfil: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+    },
+    imgCapa: { 
+      type: DataTypes.STRING(255),
+      allowNull: false,
+    },
     tipo_utilizador: {
       type: DataTypes.ENUM("admin", "professor", "aluno"),
       defaultValue: "aluno",
@@ -38,6 +46,7 @@ Utilizadores.init(
         key: "idCurso",
       },
     },
+
   },
   {
     sequelize: mysqlDB,
