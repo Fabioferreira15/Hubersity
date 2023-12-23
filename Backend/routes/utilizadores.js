@@ -54,12 +54,12 @@ router.post(
 );
 
 //rota para ver utilizador especifico
-router.get("api/utilizadores/:id", function (req, res) {
-  utilizadores.getOne(req, res);
+router.get("/:id", function (req, res) {
+  utilizadores.verPerfil(req, res);
 });
 
 //rota obter pagamento do estacionamento
-router.get("Api/pagamentos/parque-estacionamento/:UserId", function (req, res) {
+router.get("/parque-estacionamento/:id", function (req, res) {
   utilizadores.obterDadosPagamento(req, res);
 });
 

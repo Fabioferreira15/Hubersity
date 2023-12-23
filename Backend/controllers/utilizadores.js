@@ -4,15 +4,14 @@ const Cursos = require("../models/cursos.model").Cursos;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const utilities = require("../utilities/utilities");
+const { where } = require("sequelize");
 const cloudinary = require("cloudinary").v2;
-
 
 cloudinary.config({
   cloud_name: process.env.C_CLOUD_NAME,
   api_key: process.env.C_API_KEY,
   api_secret: process.env.C_API_SECRET,
 });
-
 
 exports.register = function (req, res) {
   const { nome, email, password, confirmarPassword, nomeCurso } = req.body;
@@ -50,8 +49,10 @@ exports.register = function (req, res) {
             email: email,
             password: hash,
             idCurso: curso.idCurso,
-            imgPerfil: "https://res.cloudinary.com/djoiers7m/image/upload/v1703071856/ProfilePictures/pruiusl1vghf9v6jgtiw.png",
-            imgCapa: "https://res.cloudinary.com/djoiers7m/image/upload/v1703072776/ImagemCapa/v4aykqwcewhws56un86g.png"
+            imgPerfil:
+              "https://res.cloudinary.com/djoiers7m/image/upload/v1703071856/ProfilePictures/pruiusl1vghf9v6jgtiw.png",
+            imgCapa:
+              "https://res.cloudinary.com/djoiers7m/image/upload/v1703072776/ImagemCapa/v4aykqwcewhws56un86g.png",
           })
             .then((user) => {
               Carrinho.create({
@@ -122,55 +123,90 @@ exports.login = function (req, res) {
     });
 };
 
-//rota para ver o proprio perfil 
 exports.verPerfil = function (req, res) {
-  const { id } = req.params.id;
+  //verificar se o token é válido
+  let auth = utilities.verifyToken(req.headers.authorization);
 
-  Utilizadores.findById(id, { include: ["carrinho"] })
-    .then((user) => {
-      if (!user) {
-        res.status(404).send({
-          message: "Utilizador não encontrado.",
-        });
-        return;
-      }
+  if (auth) {
+    const { id } = req.params;
 
-      res.send(user);
-    })
-    .catch((error) => {
-      res.status(500).send({
-        message: error.message || "Ocorreu um erro ao buscar o utilizador.",
+    //verificar se o id do token é igual ao id do utilizador
+    if (auth.id != id) {
+      res.status(401).send({
+        message: "Não autorizado.",
       });
+      return;
+    }
+
+    const userId = parseInt(id);
+
+    
+
+    Utilizadores.findByPk(userId)
+      .then((user) => {
+        if (!user) {
+          res.status(404).send({
+            message: "Utilizador não encontrado.",
+          });
+          return;
+        }
+
+        res.send(user);
+      })
+      .catch((error) => {
+        res.status(500).send({
+          message: error.message || "Ocorreu um erro ao buscar o utilizador.",
+        });
+      });
+  } else {
+    res.status(401).send({
+      message: "Não autorizado.",
     });
+  }
 };
 
-//obter dados do parque de estacionamento
+/* //obter dados do parque de estacionamento
 exports.obterDadosPagamento = function (req, res) {
-  const { UserId } = req.params;
+  let auth = utilities.verifyToken(req.headers.authorization);
+  const UserId = req.params.id;
+  if (auth) {
+    if (auth.data.id == UserId) {
+      // Substitua 'id_parque' pelo campo correto que identifica o parque de estacionamento no seu modelo
+      Utilizadores.findOne({ where: { UserId } })
+        .then((pagamentoEstacionamento) => {
+          if (!pagamentoEstacionamento) {
+            res.status(404).send({
+              message:
+                "Dados de pagamento não encontrados para o parque de estacionamento.",
+            });
+            return;
+          }
 
-  // Substitua 'id_parque' pelo campo correto que identifica o parque de estacionamento no seu modelo
-  Utilizadores.findOne({ where: { UserId} })
-    .then((pagamentoEstacionamento) => {
-      if (!pagamentoEstacionamento) {
-        res.status(404).send({
-          message: "Dados de pagamento não encontrados para o parque de estacionamento.",
+          // Construa a resposta com os dados de pagamento
+          const newDadosPagamento = {
+            idDoPagamento: pagamentoEstacionamento.idPagamento,
+            PróximoPagamento: pagamentoEstacionamento.PróximoPagamento,
+            qrCode: pagamentoEstacionamento.QRCode,
+          };
+
+          res.status(200).send(newDadosPagamento);
+        })
+        .catch((error) => {
+          res.status(500).send({
+            message:
+              error.message ||
+              "Ocorreu um erro ao buscar os dados de pagamento.",
+          });
         });
-        return;
-      }
-
-      // Construa a resposta com os dados de pagamento
-      const newDadosPagamento = {
-        idDoPagamento: pagamentoEstacionamento.idPagamento,
-        PróximoPagamento: pagamentoEstacionamento.PróximoPagamento,
-        qrCode: pagamentoEstacionamento.QRCode
-      };
-
-      res.status(200).send(newDadosPagamento);
-    })
-    .catch((error) => {
-      res.status(500).send({
-        message: error.message || "Ocorreu um erro ao buscar os dados de pagamento.",
+    } else {
+      res.status(401).send({
+        message: "Não autorizado.",
       });
+    }
+  } else {
+    res.status(401).send({
+      message: "Não autorizado.",
     });
+  }
 };
-
+ */
