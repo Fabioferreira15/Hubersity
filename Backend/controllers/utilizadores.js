@@ -4,7 +4,6 @@ const Cursos = require("../models/cursos.model").Cursos;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const utilities = require("../utilities/utilities");
-const { where } = require("sequelize");
 const cloudinary = require("cloudinary").v2;
 
 cloudinary.config({
