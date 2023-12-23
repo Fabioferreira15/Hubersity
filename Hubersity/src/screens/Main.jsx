@@ -1,4 +1,4 @@
-import React from 'react';
+import {React} from 'react';
 import {Text, View, StatusBar, StyleSheet, Image} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import PerfilSvg from '../assets/icons/perfil.svg';
