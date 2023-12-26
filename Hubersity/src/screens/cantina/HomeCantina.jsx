@@ -1,47 +1,60 @@
-import {React, useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Image, TouchableWithoutFeedback, TouchableOpacity} from 'react-native';
+import React from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import Background from '../../assets/Home/backgorund.svg';
 import BtnSvg from '../../assets/Home/btn.svg';
 import BtnInvertedSvg from '../../assets/Home/btnInverted.svg';
 
 const HomeCantina = ({navigation}) => {
-
   return (
-    <View style={styles.container}>
-      <View>
-        <View style={styles.Background}>
-          <Background />
-        </View>
-        <View style={styles.title}>
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <View style={styles.container}>
+        <View>
+          <View style={styles.Background}>
+            <Background />
+          </View>
+          <View style={styles.title}>
             <Text style={styles.txt}>Cantina</Text>
+          </View>
+        </View>
+        <View style={styles.main}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Ementas')}
+            style={styles.btn}>
+            <Text style={[styles.btnTxt, styles.ementasTxt]}>Ementas</Text>
+            <BtnSvg width={300} height={131} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Marcacoes')}
+            style={styles.btn}>
+            <Text style={[styles.btnTxt, styles.marcacoesTxt]}>
+              Marcar{'\n'}refeições
+            </Text>
+            <BtnInvertedSvg width={300} height={131} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('MarcacoesPendentes')}
+            style={styles.btn}>
+            <Text style={[styles.btnTxt, styles.pendentesTxt]}>
+              Marcações{'\n'}por consumir
+            </Text>
+            <BtnSvg width={300} height={131} />
+          </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.main}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Ementas')}
-          style={styles.btn}>
-          <Text style={styles.btnTxt}>Cantina</Text>
-          <BtnSvg width={300} height={131} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Bar')}
-          style={styles.btn}>
-          <Text style={styles.btnTxt}>Bar</Text>
-          <BtnInvertedSvg width={300} height={131} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Roleta')}
-          style={styles.btn}>
-          <Text style={styles.btnTxt}>Roleta</Text>
-          <BtnSvg width={300} height={131} />
-        </TouchableOpacity>
-        
-      </View>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+  },
   container: {
     flex: 1,
     backgroundColor: '#F8F9FA',
@@ -62,23 +75,30 @@ const styles = StyleSheet.create({
     marginTop: '50%',
     alignItems: 'center',
   },
-
   btn: {
     width: '90%',
     height: 131,
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  btnSvg: {
-    position: 'absolute',
-    zIndex: -1,
+    marginBottom: 16,
   },
   btnTxt: {
-    fontSize: 30,
+    fontSize: 25,
+    fontWeight: 'bold',
     color: '#F8F9FA',
     position: 'absolute',
     zIndex: 1,
+    textAlign: 'center',
+  },
+  ementasTxt: {
+    paddingLeft: '20%',
+  },
+  marcacoesTxt: {
+    paddingRight: '30%',
+  },
+  pendentesTxt: {
+    paddingLeft: '25%',
   },
 });
 
