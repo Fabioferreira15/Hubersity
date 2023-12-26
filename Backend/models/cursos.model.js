@@ -14,6 +14,10 @@ Cursos.init(
       type: DataTypes.STRING(255),
       allowNull: false,
     },
+    Descricao: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
   },
   {
     sequelize: mysqlDB,
