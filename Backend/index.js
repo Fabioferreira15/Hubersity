@@ -6,11 +6,12 @@ const mysqlDB = require("./connections/mysql").sequelize;
 
 const utilizadoresRoutes = require("./routes/utilizadores");
 const cursosRoutes = require("./routes/cursos");
+const cantinaRoutes = require("./routes/cantina");
 
 app.use(express.json());
 app.use("/utilizadores", utilizadoresRoutes);
 app.use("/cursos", cursosRoutes);
-
+app.use("/cantina", cantinaRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hubersity API");
