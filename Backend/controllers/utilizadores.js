@@ -144,8 +144,6 @@ exports.verPerfil = function (req, res) {
 
     const userId = parseInt(id);
 
-    
-
     Utilizadores.findByPk(userId)
       .then((user) => {
         if (!user) {
@@ -169,48 +167,104 @@ exports.verPerfil = function (req, res) {
   }
 };
 
-/* //obter dados do parque de estacionamento
-exports.obterDadosPagamento = function (req, res) {
+//obter os dados do pagamento do parque de estacionamento
+exports.obterDadosPagamentoEstacionamento = function (req, res) {
+  //verificar se o token é válido
   let auth = utilities.verifyToken(req.headers.authorization);
-  const UserId = req.params.id;
+
   if (auth) {
-    if (auth.data.id == UserId) {
-      // Substitua 'id_parque' pelo campo correto que identifica o parque de estacionamento no seu modelo
-      Utilizadores.findOne({ where: { UserId } })
-        .then((pagamentoEstacionamento) => {
-          if (!pagamentoEstacionamento) {
-            res.status(404).send({
-              message:
-                "Dados de pagamento não encontrados para o parque de estacionamento.",
-            });
-            return;
-          }
+    const { id } = req.params;
 
-          // Construa a resposta com os dados de pagamento
-          const newDadosPagamento = {
-            idDoPagamento: pagamentoEstacionamento.idPagamento,
-            PróximoPagamento: pagamentoEstacionamento.PróximoPagamento,
-            qrCode: pagamentoEstacionamento.QRCode,
-          };
-
-          res.status(200).send(newDadosPagamento);
-        })
-        .catch((error) => {
-          res.status(500).send({
-            message:
-              error.message ||
-              "Ocorreu um erro ao buscar os dados de pagamento.",
-          });
-        });
-    } else {
+    //verificar se o id do token é igual ao id do utilizador
+    if (auth.id != id) {
       res.status(401).send({
         message: "Não autorizado.",
       });
+      return;
     }
+
+    const userId = parseInt(id);
+
+    Utilizadores.findByPk(userId)
+      .then((user) => {
+        if (!user) {
+          res.status(404).send({
+            message: "Utilizador não encontrado.",
+          });
+          return;
+        }
+
+        res.send({
+          idPagamento: user.idPagamentoEstacionamento,
+          proximoPagamento: user.PróximoPagamento,
+          qrCode: user.QRCode
+        });
+      })
+      .catch((error) => {
+        res.status(500).send({
+          message: error.message || "Ocorreu um erro ao buscar o utilizador.",
+        });
+      });
   } else {
     res.status(401).send({
       message: "Não autorizado.",
     });
   }
 };
- */
+
+//editar perfil
+exports.editarPerfil = function (req, res) {
+  //verificar se o token é válido
+  let auth = utilities.verifyToken(req.headers.authorization);
+
+  if (auth) {
+    const { id } = req.params;
+
+    //verificar se o id do token é igual ao id do utilizador
+    if (auth.id != id) {
+      res.status(401).send({
+        message: "Não autorizado.",
+      });
+      return;
+    }
+
+    const userId = parseInt(id);
+
+    Utilizadores.findByPk(userId)
+      .then((user) => {
+        if (!user) {
+          res.status(404).send({
+            message: "Utilizador não encontrado.",
+          });
+          return;
+        }
+
+        const { imgPerfil, imgCapa, password } = req.body;
+        Utilizadores.update(
+          {
+            imagemPerfil: imgPerfil,
+            imagemCapa: imgCapa,
+            //password com o hash
+            password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
+          },
+          { where: { UserId: userId } }
+        )
+          .then(() => {
+            res.send({
+              message: "Perfil editado com sucesso!",
+            });
+          })
+          .catch((error) => {
+            res.status(500).send({
+              message:
+                error.message || "Ocorreu um erro ao editar o perfil.",
+            });
+          });
+      })
+      .catch((error) => {
+        res.status(500).send({
+          message: error.message || "Ocorreu um erro ao buscar o utilizador.",
+        });
+      });
+  }
+};

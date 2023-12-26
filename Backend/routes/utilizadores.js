@@ -59,8 +59,13 @@ router.get("/:id", function (req, res) {
 });
 
 //rota obter pagamento do estacionamento
-router.get("/parque-estacionamento/:id", function (req, res) {
-  utilizadores.obterDadosPagamento(req, res);
+router.get("Api/pagamentos/parque-estacionamento/:UserId", function (req, res) {
+  utilizadores.obterDadosPagamentoEstacionamento(req, res);
+});
+
+//rota de editar perfil
+router.patch("Api/utilizadores/:id", function (req, res) {
+  utilizadores.editarPerfil(req, res);
 });
 
 module.exports = router;
