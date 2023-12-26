@@ -30,6 +30,14 @@ MarcacaoCantina.init(
         type: DataTypes.ENUM("pendente", "aceite", "recusada"),
         defaultValue: "pendente",
     },
+    IdPagamento: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+            model: "Pagamento",
+            key: "IdPagamento",
+        },
+    },
     QRCode: {
         type: DataTypes.STRING(255),
         allowNull: false,
