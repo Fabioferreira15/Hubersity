@@ -1,7 +1,14 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import {Text, View} from 'react-native';
+import PrimaryBtn from '../components/PrimaryBtn';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthContext } from '../context/AuthProvider';
 
 const Perfil = () => {
+  const {logout} = useContext(AuthContext);
+
+
+
   return (
     <View
       style={{
@@ -10,6 +17,12 @@ const Perfil = () => {
         alignItems: 'center',
       }}>
       <Text>Perfil</Text>
+      <PrimaryBtn
+        text="Logout"
+        onPress={() => {
+          logout();
+        }}
+      />
     </View>
   );
 };

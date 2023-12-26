@@ -6,34 +6,61 @@ import HeroImg from '../assets/Registo/Hero-image.svg';
 import HeroImgPassword from '../assets/Registo/Hero-image-password.svg';
 import HeroImgCurso from '../assets/Registo/Hero-image-curso.svg';
 import DropDownPicker from 'react-native-dropdown-picker';
+import PrimaryBtn from '../components/PrimaryBtn';
 
 
 const Registo = ({navigation}) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [nome, setNome] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [ConfirmarPassword, setConfirmarPassword] = useState('');
+  
+
+
+
+  const registar = async () => {
+    try {
+      const response = await fetch(`http:/ip:3000/utilizadores/register`,{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nome: nome,
+          email: email,
+          password: password,
+          confirmarPassword: ConfirmarPassword,
+          nomeCurso: value,
+        }),
+      });
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   
 
   useEffect(() => {
     const getCursos = async () => {
       try {
-        const response = await fetch(`http:/${IP}:3000/cursos`);
+        const response = await fetch(`http:/ip:3000/cursos`);
         const data = await response.json();
         const cursos = data.map((curso) => ({
             label: curso.nomeCurso,
-            value: curso.idCurso.toString(),
+            value: curso.nomeCurso,
         }));
 
         console.log(cursos);
 
 
         setItems(cursos);
-        setLoading(false);
       } catch (error) {
         console.log(error);
-        setLoading(false);
       }
     };
     getCursos();
@@ -67,6 +94,8 @@ const Registo = ({navigation}) => {
                 keyboardType="email-address"
                 autoCapitalize="none"
                 autoCorrect={false}
+                value={nome}
+                onChangeText={(text) => setNome(text)}
               />
               <TextInput
                 style={styles.input}
@@ -75,6 +104,8 @@ const Registo = ({navigation}) => {
                 keyboardType="email-address"
                 autoCapitalize="none"
                 autoCorrect={false}
+                value={email}
+                onChangeText={(text) => setEmail(text)}
               />
             </View>
           </View>
@@ -94,12 +125,16 @@ const Registo = ({navigation}) => {
                 placeholder="Password"
                 placeholderTextColor="#6C757D"
                 secureTextEntry={true}
+                value={password}
+                onChangeText={(text) => setPassword(text)}
               />
               <TextInput
                 style={styles.input}
                 placeholder="Confirmar Password"
                 placeholderTextColor="#6C757D"
                 secureTextEntry={true}
+                value={ConfirmarPassword}
+                onChangeText={(text) => setConfirmarPassword(text)}
               />
             </View>
           </View>
@@ -127,6 +162,12 @@ const Registo = ({navigation}) => {
                 searchablePlaceholder="Pesquisar..."
               />
             </View>
+            <PrimaryBtn
+              text="Registar"
+              onPress={() => {
+                registar();
+              }}
+            />
           </View>
         </View>
       </Swiper>

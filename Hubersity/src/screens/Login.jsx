@@ -1,10 +1,17 @@
-import React from 'react';
+import React, {useState,useContext} from 'react';
 import {View, Text, StyleSheet, TextInput} from 'react-native';
 import Blob from '../assets/Login/Background-blob.svg';
 import Logo from '../assets/Login/logo.svg';
 import PrimaryBtn from '../components/PrimaryBtn';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {AuthContext} from '../context/AuthProvider.js';
 
 const Login = ({navigation}) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const {login} = useContext(AuthContext);
+
+
   return (
     <View style={styles.container}>
       <View>
@@ -21,16 +28,26 @@ const Login = ({navigation}) => {
             keyboardType="email-address"
             autoCapitalize="none"
             autoCorrect={false}
+            value={email}
+            onChangeText={text => setEmail(text)}
           />
           <TextInput
             style={styles.input}
             placeholder="Password"
             placeholderTextColor="#6C757D"
             secureTextEntry={true}
+            value={password}
+            onChangeText={text => setPassword(text)}
           />
         </View>
         <View style={styles.btn}>
-            <PrimaryBtn onPress={() => navigation.navigate('Main')} text="Login" paddingHorizontal={"40%"} paddingVertical={10} borderRadius={5}/>
+          <PrimaryBtn
+            onPress={()=>{login(email,password)}}
+            text="Login"
+            paddingHorizontal={'40%'}
+            paddingVertical={10}
+            borderRadius={5}
+          />
         </View>
       </View>
     </View>

@@ -1,7 +1,36 @@
-import {React, useEffect} from 'react';
-import {View, Text} from 'react-native';
+import {React, useEffect,useState} from 'react';
+import {View, Text, StyleSheet, Image} from 'react-native';
+import Background from '../assets/Home/backgorund.svg';
+import Notificacoes from '../assets/icons/notificações.svg';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = ({navigation}) => {
+  const [token, setToken] = useState('');
+  const [id, setId] = useState('');
+  const [nome, setNome] = useState('');
+  const [image, setImage] = useState('');
+
+  const getUser = async () => {
+    try {
+      const tokenValue = await AsyncStorage.getItem('token');
+      const idValue = await AsyncStorage.getItem('id');
+      const nomeValue = await AsyncStorage.getItem('nome');
+      const imageValue = await AsyncStorage.getItem('image');
+      console.log(imageValue)
+  
+      setToken(tokenValue);
+      setId(idValue);
+      setNome(nomeValue);
+      setImage(imageValue);
+    } catch (error) {
+      console.error('Error getting user data:', error);
+    }
+  }
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
   useEffect(() => {
     navigation.addListener('beforeRemove', e => {
       console.log(e.data.action);
@@ -9,10 +38,71 @@ const Home = ({navigation}) => {
     });
   }, []);
   return (
-    <View>
-      <Text>Home</Text>
+    <View style={styles.container}>
+      <View>
+        <View style={styles.Background}>
+          <Background />
+        </View>
+        <View style={styles.user}>
+          <View style={styles.left}>
+            <Image
+              source={{uri: image}}
+              style={styles.imgPerfil}
+            />
+            <Text style={styles.txt}>Olá,{nome}</Text>
+          </View>
+          <View style={styles.right}>
+            <View style={styles.svgCircle}>
+              <Notificacoes width={25} height={25} />
+            </View>
+          </View>
+        </View>
+      </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F8F9FA',
+  },
+  Background: {
+    position: 'absolute',
+    zIndex: -1,
+  },
+  user: {
+    marginTop: '10%',
+    marginLeft: '5%',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  left: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  imgPerfil: {
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+  },
+  txt: {
+    fontSize: 23,
+    marginLeft: '2%',
+  },
+  svgCircle: {
+    backgroundColor: '#F8F9FA',
+    width: 42,
+    height: 42,
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  right: {
+    marginRight: '5%',
+  },
+});
 
 export default Home;
