@@ -1,8 +1,10 @@
-import {React, useEffect,useState} from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {React, useEffect, useState} from 'react';
+import {View, Text, StyleSheet, Image, TouchableWithoutFeedback, TouchableOpacity} from 'react-native';
 import Background from '../assets/Home/backgorund.svg';
 import Notificacoes from '../assets/icons/notificações.svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import BtnSvg from '../assets/Home/btn.svg';
+import BtnInvertedSvg from '../assets/Home/btnInverted.svg';
 
 const Home = ({navigation}) => {
   const [token, setToken] = useState('');
@@ -16,8 +18,8 @@ const Home = ({navigation}) => {
       const idValue = await AsyncStorage.getItem('id');
       const nomeValue = await AsyncStorage.getItem('nome');
       const imageValue = await AsyncStorage.getItem('image');
-      console.log(imageValue)
-  
+      console.log(imageValue);
+
       setToken(tokenValue);
       setId(idValue);
       setNome(nomeValue);
@@ -25,7 +27,7 @@ const Home = ({navigation}) => {
     } catch (error) {
       console.error('Error getting user data:', error);
     }
-  }
+  };
 
   useEffect(() => {
     getUser();
@@ -45,10 +47,7 @@ const Home = ({navigation}) => {
         </View>
         <View style={styles.user}>
           <View style={styles.left}>
-            <Image
-              source={{uri: image}}
-              style={styles.imgPerfil}
-            />
+            <Image source={{uri: image}} style={styles.imgPerfil} />
             <Text style={styles.txt}>Olá,{nome}</Text>
           </View>
           <View style={styles.right}>
@@ -57,6 +56,26 @@ const Home = ({navigation}) => {
             </View>
           </View>
         </View>
+      </View>
+      <View style={styles.main}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Cantina')}
+          style={styles.btn}>
+          <Text style={styles.btnTxt}>Cantina</Text>
+          <BtnSvg width={300} height={131} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Bar')}
+          style={styles.btn}>
+          <Text style={styles.btnTxt}>Bar</Text>
+          <BtnInvertedSvg width={300} height={131} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Roleta')}
+          style={styles.btn}>
+          <Text style={styles.btnTxt}>Roleta</Text>
+          <BtnSvg width={300} height={131} />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -102,6 +121,28 @@ const styles = StyleSheet.create({
   },
   right: {
     marginRight: '5%',
+  },
+  main: {
+    marginTop: '50%',
+    alignItems: 'center',
+  },
+
+  btn: {
+    width: '80%',
+    height: 131,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  btnSvg: {
+    position: 'absolute',
+    zIndex: -1,
+  },
+  btnTxt: {
+    fontSize: 30,
+    color: '#F8F9FA',
+    position: 'absolute',
+    zIndex: 1,
   },
 });
 
