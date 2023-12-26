@@ -206,3 +206,60 @@ exports.obterDadosPagamentoEstacionamento = function (req, res) {
     });
   }
 };
+
+//editar perfil
+exports.editarPerfil = function (req, res) {
+  //verificar se o token é válido
+  let auth = utilities.verifyToken(req.headers.authorization);
+
+  if (auth) {
+    const { id } = req.params;
+
+    //verificar se o id do token é igual ao id do utilizador
+    if (auth.id != id) {
+      res.status(401).send({
+        message: "Não autorizado.",
+      });
+      return;
+    }
+
+    const userId = parseInt(id);
+
+    Utilizadores.findByPk(userId)
+      .then((user) => {
+        if (!user) {
+          res.status(404).send({
+            message: "Utilizador não encontrado.",
+          });
+          return;
+        }
+
+        const { imgPerfil, imgCapa, password } = req.body;
+        Utilizadores.update(
+          {
+            imagemPerfil: imgPerfil,
+            imagemCapa: imgCapa,
+            //password com o hash
+            password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
+          },
+          { where: { UserId: userId } }
+        )
+          .then(() => {
+            res.send({
+              message: "Perfil editado com sucesso!",
+            });
+          })
+          .catch((error) => {
+            res.status(500).send({
+              message:
+                error.message || "Ocorreu um erro ao editar o perfil.",
+            });
+          });
+      })
+      .catch((error) => {
+        res.status(500).send({
+          message: error.message || "Ocorreu um erro ao buscar o utilizador.",
+        });
+      });
+  }
+};
