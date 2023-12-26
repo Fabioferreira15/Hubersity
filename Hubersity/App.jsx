@@ -1,23 +1,30 @@
-import React from 'react';
-import {View} from 'react-native';
+import React, {useState, useEffect, useContext} from 'react';
+import {View, ActivityIndicator} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Onboarding from './src/screens/OnboardingSwipe';
-import Login from './src/screens/Login';
-import Registo from './src/screens/Registo';
-import Main from './src/screens/Main';
+import AuthStack from './src/navigation/auth.js';
+import AppNavigation from './src/navigation/AppNavigation.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {AuthProvider, AuthContext} from './src/context/AuthProvider.js';
 
-const Stack = createNativeStackNavigator();
+const AppNav = () => {
+  const {isLoading, userToken} = useContext(AuthContext);
+  if (isLoading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size={'large'} />
+      </View>
+    );
+  }
+  return userToken ? <AppNavigation /> : <AuthStack />;
+};
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Onboarding" component={Onboarding} />
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Registo" component={Registo} />
-        <Stack.Screen name="Main" component={Main} />
-      </Stack.Navigator>
+
+      <AuthProvider>
+        <AppNav />
+      </AuthProvider>
     </NavigationContainer>
   );
 };

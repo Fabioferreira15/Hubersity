@@ -1,4 +1,4 @@
-import {React} from 'react';
+import {React, useState, useEffect} from 'react';
 import {Text, View, StatusBar, StyleSheet, Image} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import PerfilSvg from '../assets/icons/perfil.svg';
@@ -12,23 +12,25 @@ import HomeActiveSvg from '../assets/icons/home_active.svg';
 import RoletaActiveSvg from '../assets/icons/roleta_active.svg';
 import CantinaActiveSvg from '../assets/icons/cantina_active.svg';
 
-import Bar from './Bar';
-import Cantina from './Cantina';
-import Home from './Home';
-import Perfil from './Perfil';
-import Roleta from './Roleta';
+import Bar from '../screens/Bar';
+import Cantina from '../screens/Cantina';
+import Home from '../screens/Home';
+import Perfil from '../screens/Perfil';
+import Roleta from '../screens/Roleta';
 
 const Tab = createBottomTabNavigator();
 
-const HomeScreen = ({navigation}) => {
+const Main = ({navigation}) => {
+  
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={{
         headerShown: false,
         tabBarStyle: {backgroundColor: '#7F8BF3', height: 80},
-        tabBarActiveTintColor: '#000',
-        tabBarInactiveTintColor: '#000',
+        tabBarActiveTintColor: '#212529',
+        tabBarInactiveTintColor: '#212529',
       }}>
       <Tab.Screen
         name="Cantina"
@@ -109,7 +111,7 @@ const HomeScreen = ({navigation}) => {
   );
 };
 
-export default HomeScreen;
+export default Main;
 
 const styles = StyleSheet.create({
   text: {

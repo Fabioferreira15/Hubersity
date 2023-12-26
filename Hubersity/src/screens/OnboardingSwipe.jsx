@@ -7,6 +7,7 @@ import UnderlineBtn from '../components/UnderlineBtn';
 import Voltar from '../assets/icons/Voltar.svg';
 
 const Onboarding = ({navigation}) => {
+
   let swiper;
 
   const handleSkip = () => {

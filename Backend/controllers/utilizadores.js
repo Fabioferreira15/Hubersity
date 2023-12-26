@@ -106,6 +106,11 @@ exports.login = function (req, res) {
             res.send({
               mensagem: "Login efetuado com sucesso!",
               token: token,
+              UserInfo: {
+                UserId: user.UserId,
+                nome: user.nome,
+                imgPerfil: user.imgPerfil,
+              },
             });
           });
         } else {
