@@ -37,3 +37,14 @@ Pagamento.init(
         timestamps: false,
     }
 );
+
+mysqlDB
+    .sync()
+    .then(() => {
+        console.log("A tabela Pagamento foi criada com sucesso!");
+    })
+    .catch((error) => {
+        console.log("A tabela Pagamento não foi criada!" + error);
+    });
+
+exports.Pagamento = Pagamento;
