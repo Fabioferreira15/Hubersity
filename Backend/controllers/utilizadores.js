@@ -5,9 +5,12 @@ const categoriasBar = require("../models/categoriasBar.model").CategoriasBar;
 const ProdutosBar = require("../models/produtosBar.model").ProdutosBar;
 const CarrinhoItens = require("../models/carrinhoItens.model").CarrinhoItens;
 const PedidosBar = require("../models/pedidosBar.model").PedidosBar;
-const PedidosBarProdutos = require("../models/pedidosBarProdutos.model")
-const MarcacaoCantina = require("../models/marcacaoCantina.model").MarcacaoCantina;
-const PagamentoEstacionamento = require("../models/pagamentoEstacionamento.model").PagamentoEstacionamento;
+const PedidosBarProdutos = require("../models/pedidosBarProdutos.model");
+const MarcacaoCantina =
+  require("../models/marcacaoCantina.model").MarcacaoCantina;
+const PagamentoEstacionamento =
+  require("../models/pagamentoEstacionamento.model").PagamentoEstacionamento;
+const Pagamento = require("../models/pagamento.model").Pagamento;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const utilities = require("../utilities/utilities");
@@ -135,13 +138,11 @@ exports.login = function (req, res) {
 };
 
 exports.verPerfil = function (req, res) {
-  //verificar se o token é válido
   let auth = utilities.verifyToken(req.headers.authorization);
 
   if (auth) {
     const { id } = req.params;
 
-    //verificar se o id do token é igual ao id do utilizador
     if (auth.id != id) {
       res.status(401).send({
         message: "Não autorizado.",
@@ -174,104 +175,133 @@ exports.verPerfil = function (req, res) {
   }
 };
 
-//obter os dados do pagamento do parque de estacionamento
-exports.obterDadosPagamentoEstacionamento = function (req, res) {
-  //verificar se o token é válido
-  let auth = utilities.verifyToken(req.headers.authorization);
+//obterPagamentoEstacionamento do utilizador
 
-  if (auth) {
-    const { id } = req.params;
+exports.obterPagamentoEstacionamento = async function (req, res) {
+  try {
+    let auth = utilities.verifyToken(req.headers.authorization);
 
-    //verificar se o id do token é igual ao id do utilizador
-    if (auth.id != id) {
-      res.status(401).send({
+    if (!auth || auth.id != req.params.id) {
+      return res.status(401).send({
         message: "Não autorizado.",
       });
-      return;
     }
 
-    const userId = parseInt(id);
+    const userId = parseInt(req.params.id);
 
-    Utilizadores.findByPk(userId)
-      .then((user) => {
-        if (!user) {
-          res.status(404).send({
-            message: "Utilizador não encontrado.",
-          });
-          return;
-        }
+    const estacionamento = await PagamentoEstacionamento.findOne({
+      where: { UserId: userId },
+    });
 
-        res.send({
-          idPagamento: user.idPagamentoEstacionamento,
-          proximoPagamento: user.PróximoPagamento,
-          qrCode: user.QRCode
-        });
-      })
-      .catch((error) => {
-        res.status(500).send({
-          message: error.message || "Ocorreu um erro ao buscar o utilizador.",
-        });
+    if (estacionamento) {
+      res.status(200).send({
+        message: "Estacionamento encontrado!",
+        estacionamento: estacionamento,
       });
-  } else {
-    res.status(401).send({
-      message: "Não autorizado.",
+    } else {
+      res.status(404).send({
+        message: "Ainda não efetuou o pagamento do estacionamento!",
+      });
+    }
+  } catch (error) {
+    res.status(500).send({
+      message:
+        error.message ||
+        "Ocorreu um erro ao buscar o pagamento de estacionamento.",
+    });
+  }
+};
+
+//Pagar estacionamento
+exports.pagarEstacionamento = async function (req, res) {
+  try {
+    let auth = utilities.verifyToken(req.headers.authorization);
+
+    if (!auth || auth.id != req.params.id) {
+      return res.status(401).send({
+        message: "Não autorizado.",
+      });
+    }
+
+    const userId = parseInt(req.params.id);
+
+    const estacionamentoExistente = await PagamentoEstacionamento.findOne({
+      where: { UserId: userId },
+    });
+
+    if (estacionamentoExistente) {
+      res.status(400).send({
+        message: "Já efetuou o pagamento do estacionamento!",
+      });
+    }
+
+    const pagamento = await Pagamento.create({
+      UserId: userId,
+      Valor: 5,
+      Data: new Date(),
+      MetodoPagamento: "MBWay",
+    });
+
+    if (pagamento) {
+      const estacionamento = await PagamentoEstacionamento.create({
+        UserId: userId,
+        ProximoPagamento: new Date().setDate(new Date().getDate() + 30),
+        QRCode: "teste",
+        IdPagamento: pagamento.IdPagamento,
+      });
+
+      res.status(200).send({
+        message: "Pagamento efetuado com sucesso!",
+        pagamento: pagamento,
+        estacionamento: estacionamento,
+      });
+    }
+  } catch (error) {
+    res.status(500).send({
+      message: error.message || "Ocorreu um erro ao pagar o estacionamento.",
     });
   }
 };
 
 //editar perfil
-exports.editarPerfil = function (req, res) {
-  //verificar se o token é válido
-  let auth = utilities.verifyToken(req.headers.authorization);
+exports.editarPerfil = async function (req, res) {
+  try {
+    let auth = utilities.verifyToken(req.headers.authorization);
 
-  if (auth) {
-    const { id } = req.params;
-
-    //verificar se o id do token é igual ao id do utilizador
-    if (auth.id != id) {
-      res.status(401).send({
+    if (!auth || auth.id != req.params.id) {
+      return res.status(401).send({
         message: "Não autorizado.",
+      });
+    }
+
+    const userId = parseInt(req.params.id);
+
+    const user = await Utilizadores.findByPk(userId);
+
+    if (!user) {
+      res.status(404).send({
+        message: "Utilizador não encontrado.",
       });
       return;
     }
 
-    const userId = parseInt(id);
+    const { nome, password } = req.body;
 
-    Utilizadores.findByPk(userId)
-      .then((user) => {
-        if (!user) {
-          res.status(404).send({
-            message: "Utilizador não encontrado.",
-          });
-          return;
-        }
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(password, salt);
 
-        const { imgPerfil, imgCapa, password } = req.body;
-        Utilizadores.update(
-          {
-            imagemPerfil: imgPerfil,
-            imagemCapa: imgCapa,
-            //password com o hash
-            password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)),
-          },
-          { where: { UserId: userId } }
-        )
-          .then(() => {
-            res.send({
-              message: "Perfil editado com sucesso!",
-            });
-          })
-          .catch((error) => {
-            res.status(500).send({
-              message:
-                error.message || "Ocorreu um erro ao editar o perfil.",
-            });
-          });
-      })
-      .catch((error) => {
-        res.status(500).send({
-          message: error.message || "Ocorreu um erro ao buscar o utilizador.",
-        });
-      });
+    const updatedUser = await user.update({
+      nome: nome,
+      password: hash,
+    });
+
+    res.status(200).send({
+      message: "Perfil editado com sucesso!",
+      user: updatedUser,
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: error.message || "Ocorreu um erro ao editar o perfil.",
+    });
   }
 };

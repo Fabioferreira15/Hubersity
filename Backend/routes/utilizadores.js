@@ -59,13 +59,23 @@ router.get("/:id", function (req, res) {
 });
 
 //rota obter pagamento do estacionamento
-router.get("Api/pagamentos/parque-estacionamento/:UserId", function (req, res) {
-  utilizadores.obterDadosPagamentoEstacionamento(req, res);
+router.get("/parqueestacionamento/:id", function (req, res) {
+  utilizadores.obterPagamentoEstacionamento(req, res);
+});
+
+//rota pagar estacionamento
+router.post("/pagamentoestacionamento/:id", function (req, res) {
+  utilizadores.pagarEstacionamento(req, res);
 });
 
 //rota de editar perfil
-router.patch("Api/utilizadores/:id", function (req, res) {
+router.patch("/:id", function (req, res) {
   utilizadores.editarPerfil(req, res);
+});
+
+//rota editar imagem perfil
+router.patch("/imagem/:id", function (req, res) {
+  utilizadores.editarImagemPerfil(req, res);
 });
 
 module.exports = router;

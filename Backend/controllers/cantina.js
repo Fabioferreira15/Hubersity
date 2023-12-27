@@ -1,236 +1,258 @@
 const Utilizadores = require("../models/utilizadores.model").Utilizadores;
 const Carrinho = require("../models/carrinho.model").Carrinho;
-const RefeicaoCantina = require("../models/refeicaoCantina.model").RefeicaoCantina;
-const MarcacaoCantina = require("../models/marcacaoCantina.model").MarcacaoCantina;
+const RefeicaoCantina =
+  require("../models/refeicaoCantina.model").RefeicaoCantina;
+const MarcacaoCantina =
+  require("../models/marcacaoCantina.model").MarcacaoCantina;
 const Pagamento = require("../models/pagamento.model").Pagamento;
 const utilities = require("../utilities/utilities");
 
-//obter as refeições da cantina
-exports.obterRefeicoesCantina = (req, res, next) => {
+//criar refeições na cantina
+exports.criarRefeicaoCantina = async function (req, res) {
+  try {
+    let auth = utilities.verifyToken(req.headers.authorization);
 
-let auth = utilities.verifyToken(req.headers.authorization);
-
-if (auth) {
-    const { id } = req.params;
-    
-    if (auth.id != id) {
-        res.status(401).send({
-            message: "Não autorizado.",
-        });
-        return;
+    if (!auth || auth.tipo !== "admin") {
+      return res.status(401).send({
+        message: "Não autorizado.",
+      });
     }
 
-    RefeicaoCantina.findAll({
-        attributes: ["IdRefeicao", "Nome", "TipoPrato", "Data", "Preco"],
-    })
-        .then((refeicoes) => {
-            res.status(200).json(refeicoes);
-        })
-        .catch((error) => {
-            console.log(error);
-            res.status(500).json({
-                message: "Ocorreu um erro ao obter as refeições da cantina!",
-            });
-        });
-} else {
-    res.status(401).send({
-        message: "Não autorizado.",
+    const { Nome, Descricao, TipoPrato, Data, Preco } = req.body;
+
+    if (!Nome || !Descricao || !TipoPrato || !Data || !Preco) {
+      return res.status(400).send({
+        message: "Dados em falta!",
+      });
+    }
+
+    const refeicaoExistente = await RefeicaoCantina.findOne({
+      where: {
+        TipoPrato: TipoPrato,
+        Data: Data,
+      },
     });
- }
+
+    if (refeicaoExistente) {
+      return res.status(400).send({
+        message: `Já existe uma refeição do tipo ${TipoPrato} para a data ${Data}.`,
+      });
+    }
+
+    await RefeicaoCantina.create({
+      Nome: Nome,
+      Descricao: Descricao,
+      TipoPrato: TipoPrato,
+      Data: Data,
+      Preco: Preco,
+    });
+
+    res.status(200).send({
+      message: "Refeição criada com sucesso!",
+    });
+  } catch (error) {
+    res.status(500).send({
+      message:
+        error.message || "Ocorreu um erro ao criar a refeição na cantina.",
+    });
+  }
 };
 
-//marcar refeições
-exports.marcarRefeicao = async (req, res, next) => {
-    try {
-        let auth = utilities.verifyToken(req.headers.authorization);
+//obter as refeições da cantina
+exports.obterRefeicoesCantina = (req, res, next) => {
+  let auth = utilities.verifyToken(req.headers.authorization);
 
-        if (auth) {
-            const { id } = req.params;
-            
-            if (auth.id != id) {
-                res.status(401).send({
-                    message: "Não autorizado.",
-                });
-                return;
-            }
-        
-        const { IdRefeicao, UserId, Valor } = req.body;
-
-        if(!IdRefeicao || !UserId || !Valor ) {
-            res.status(400).send({
-                message: "Dados em falta!",
-            });
-            return;
+  if (auth) {
+    RefeicaoCantina.findAll({
+      attributes: ["IdRefeicao", "Nome", "TipoPrato", "Data", "Preco"],
+    })
+      .then((refeicoes) => {
+        if (refeicoes.length === 0) {
+          res.status(200).send({
+            message: "Não há refeições disponíveis na cantina.",
+          });
+        } else {
+          res.status(200).send({
+            message: "Refeições encontradas!",
+            refeicoes: refeicoes,
+          });
         }
-
-        //verificar se já existe a refeição
-        await MarcacaoCantina.findOne({
-            where: {
-                IdRefeicao: IdRefeicao,
-                UserId: UserId,
-            },
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(500).json({
+          message: "Ocorreu um erro ao obter as refeições da cantina!",
         });
+      });
+  } else {
+    res.status(401).send({
+      message: "Não autorizado.",
+    });
+  }
+};
 
-        //criar marcação na cantina
-        await MarcacaoCantina.create({
-            IdRefeicao: IdRefeicao,
-            UserId: UserId,
-        });
+// marcar refeições
 
-        //criar pagamento
-        await Pagamento.create({
-            Valor: Valor,
-            UserId: UserId,
-        });
+exports.pagamentoMarcacao = async (req, res) => {
+  try {
+    let auth = utilities.verifyToken(req.headers.authorization);
 
-        res.status(200).send({
-            message: "Refeição marcada com sucesso!",
-            //recebe támbem o idPagamento, o valor, a dataPagamento, e o idMarcacaoRefeicao
-            idPagamento: Pagamento.idPagamento,
-            Valor: Pagamento.Valor,
-            Data: Pagamento.Data,
-            IdMarcacao: MarcacaoCantina.IdMarcacao,
-        });
+    if (!auth || auth.id != req.params.id) {
+      return res.status(401).send({
+        message: "Não autorizado.",
+      });
     }
-    } catch (error) {
-        res.status(500).send({
-            message: "Something went wrong",
-            error: error.message
-        });
+
+    const userId = parseInt(req.params.id);
+    const { IdRefeicao, Valor } = req.body;
+
+    if (!IdRefeicao || !Valor) {
+      return res.status(400).send({
+        message: "Dados em falta!",
+      });
     }
+
+    //verificar se já existe a refeição
+    const refeicaoExistente = await RefeicaoCantina.findOne({
+      where: {
+        IdRefeicao: IdRefeicao,
+      },
+    });
+
+    if (!refeicaoExistente) {
+      return res.status(400).send({
+        message: "Refeição não existe!",
+      });
+    }
+
+    const marcacaoExistente = await MarcacaoCantina.findOne({
+      where: {
+        IdRefeicao: IdRefeicao,
+        UserId: userId,
+      },
+    });
+
+    if (marcacaoExistente) {
+      return res.status(400).send({
+        message: "Já tem uma marcação para esta refeição!",
+      });
+    }
+
+    //criar pagamento
+    const pagamento = await Pagamento.create({
+      UserId: userId,
+      Valor: Valor,
+      MetodoPagamento: "MBWay",
+      Data: new Date(),
+    });
+
+    //criar marcacao
+    const marcacao = await MarcacaoCantina.create({
+      IdRefeicao: IdRefeicao,
+      UserId: userId,
+      IdPagamento: pagamento.IdPagamento,
+      status: "Pendente",
+      QRCode: "QRCode",
+      Data: refeicaoExistente.Data,
+    });
+    res.status(200).send({
+      message: "Pagamento efetuado com sucesso!",
+      pagamento: pagamento,
+      marcacao: marcacao,
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: error.message || "Ocorreu um erro ao pagar o estacionamento.",
+    });
+  }
 };
 
 //obter marcação individual
-exports.obterMarcacaoIndividual = (req, res, next) => {
+exports.obterMarcacaoIndividual = async (req, res) => {
+  try {
     let auth = utilities.verifyToken(req.headers.authorization);
 
-    if (auth) {
-        const { id } = req.params;
-
-        if (auth.id != id) {
-            res.status(401).send({
-                message: "Não autorizado.",
-            });
-            return;
-        }
-
-        MarcacaoCantina.findOne({
-            where: {
-                IdMarcacao: id,  // Certifique-se de que IdMarcacao seja o campo correto para encontrar a marcação desejada
-            },
-        })
-            .then((marcacao) => {
-                if (!marcacao) {
-                    return res.status(404).json({
-                        message: "Marcação não encontrada.",
-                    });
-                }
-
-                // Obtendo detalhes da refeição associada
-                return RefeicaoCantina.findOne({
-                    where: {
-                        IdRefeicao: marcacao.IdRefeicao,  // Certifique-se de que IdRefeicao seja o campo correto
-                    },
-                })
-                    .then((refeicao) => {
-                        if (!refeicao) {
-                            return res.status(404).json({
-                                message: "Refeição não encontrada.",
-                            });
-                        }
-
-                        // Responder com o formato desejado
-                        res.status(200).json({
-                            idMarcacao: marcacao.IdMarcacao,
-                            UserId: marcacao.UserId,
-                            idRefeicao: marcacao.IdRefeicao,
-                            status: marcacao.status,
-                            QRCode: marcacao.QRCode,
-                            detalhesRefeicao: {
-                                idRefeicao: refeicao.IdRefeicao,
-                                nomeRefeicao: refeicao.Nome,
-                                tipoPrato: refeicao.TipoPrato,
-                                dataRefeicao: refeicao.Data,
-                                precoRefeicao: refeicao.Preco,
-                            },
-                        });
-                    });
-            })
-            .catch((error) => {
-                console.log(error);
-                res.status(500).json({
-                    message: "Ocorreu um erro ao obter a marcação da cantina!",
-                });
-            });
-    } else {
-        res.status(401).send({
-            message: "Não autorizado.",
-        });
+    if (!auth || auth.id != req.params.Userid) {
+      return res.status(401).send({
+        message: "Não autorizado.",
+      });
     }
+
+    const userId = parseInt(req.params.Userid);
+    const idMarcacao = parseInt(req.params.idMarcacao);
+
+    // Aguardar a resolução da Promessa
+    const marcacaoExistente = await MarcacaoCantina.findOne({
+      where: {
+        UserId: userId,
+        IdMarcacao: idMarcacao,
+      },
+    });
+
+    if (!marcacaoExistente) {
+      return res.status(400).send({
+        message: "Marcação não existe!",
+      });
+    }
+
+    //obter refecição
+    const refeicao = await RefeicaoCantina.findOne({
+      where: {
+        IdRefeicao: marcacaoExistente.IdRefeicao,
+      },
+    });
+
+    console.log(refeicao);
+
+    res.status(200).json({
+      idMarcacao: marcacaoExistente.IdMarcacao,
+      UserId: marcacaoExistente.UserId,
+      idRefeicao: marcacaoExistente.IdRefeicao,
+      status: marcacaoExistente.status,
+      QRCode: marcacaoExistente.QRCode,
+      detalhesRefeicao: {
+        nomeRefeicao: refeicao.Nome,
+        tipoPrato: refeicao.TipoPrato,
+        dataRefeicao: refeicao.Data,
+      },
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: error.message || "Ocorreu um erro ao obter a marcação.",
+    });
+  }
 };
 
 //obter marcações pendentes
-exports.obterMarcacoesPendentes = (req, res, next) => {
+exports.obterMarcacoesPendentes = async (req, res) => {
+  try {
     let auth = utilities.verifyToken(req.headers.authorization);
 
-    if (auth) {
-        const { id } = req.params;
-
-        if (auth.id != id) {
-            res.status(401).send({
-                message: "Não autorizado.",
-            });
-            return;
-        }
-
-        // Encontrar marcações pendentes
-        MarcacaoCantina.findAll({
-            where: {
-                UserId: id,
-                status: "Por consumir",
-            },
-        })
-            .then((marcacoes) => {
-                if (marcacoes.length === 0) {
-                    // Não existem marcações pendentes
-                    res.status(204).json({
-                        mensagem: "Não existem marcações pendentes",
-                    });
-                    return;
-                }
-
-                // Mapear as marcações para o formato desejado
-                const marcacoesFormatadas = marcacoes.map((marcacao) => {
-                    return {
-                        idMarcacao: marcacao.IdMarcacao,
-                        UserId: marcacao.UserId,
-                        idRefeicao: marcacao.IdRefeicao,
-                        status: marcacao.status,
-                        QRCode: marcacao.QRCode,
-                        detalhesRefeicao: {
-                            idRefeicao: marcacao.idRefeicao,
-                            nomeRefeicao: marcacao.nomeRefeicao,
-                            tipoPrato: marcacao.tipoPrato,
-                            dataRefeicao: marcacao.dataRefeicao,
-                            precoRefeicao: marcacao.precoRefeicao,
-                        },
-                    };
-                });
-
-                // Responder com as marcações formatadas
-                res.status(200).json(marcacoesFormatadas);
-            })
-            .catch((error) => {
-                console.log(error);
-                res.status(500).json({
-                    message: "Ocorreu um erro ao obter as marcações pendentes!",
-                });
-            });
-    } else {
-        res.status(401).send({
-            message: "Não autorizado.",
-        });
-    }
-};
-
     
+
+    const userId = parseInt(req.params.id);
+
+    const marcacoes = await MarcacaoCantina.findAll({
+      where: {
+        UserId: userId,
+        status: "Pendente",
+      },
+    });
+
+    if (!marcacoes) {
+      return res.status(400).send({
+        message: "Não tem marcações pendentes!",
+      });
+    }
+
+    res.status(200).send({
+      message: "Marcações pendentes encontradas!",
+      marcacoes: marcacoes,
+    });
+  } catch (error) {
+    res.status(500).send({
+      message:
+        error.message || "Ocorreu um erro ao obter as marcações pendentes.",
+    });
+  }
+};

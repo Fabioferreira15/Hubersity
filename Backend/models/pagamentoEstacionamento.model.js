@@ -20,17 +20,9 @@ PagamentoEstacionamento.init(
                 key: "UserId",
             },
         },
-        DataPagamento: {
-            type: DataTypes.DATE,
-            allowNull: false,
-        },
         ProximoPagamento: {
             type: DataTypes.DATE,
             allowNull: false,
-        },
-        Estado: {
-            type: DataTypes.ENUM("pendente", "aceite", "recusada"),
-            defaultValue: "pendente",
         },
         IdPagamento: {
             type: DataTypes.INTEGER,
