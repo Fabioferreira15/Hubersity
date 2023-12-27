@@ -45,6 +45,14 @@ const HomeCantina = ({navigation}) => {
             </Text>
             <BtnSvg width={300} height={131} />
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('MarcacoesPendentes')}
+            style={styles.btn}>
+            <Text style={[styles.btnTxt, styles.historicoTxt]}>
+              Histórico
+            </Text>
+            <BtnSvg width={300} height={131} />
+          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>
@@ -98,6 +106,9 @@ const styles = StyleSheet.create({
     paddingRight: '30%',
   },
   pendentesTxt: {
+    paddingLeft: '25%',
+  },
+  historicoTxt: {
     paddingLeft: '25%',
   },
 });
