@@ -21,7 +21,7 @@ if (auth) {
     }
 
     RefeicaoCantina.findAll({
-        attributes: ["IdRefeicao", "Nome", "Descricao", "TipoPrato", "Data", "Preco"],
+        attributes: ["IdRefeicao", "Nome", "TipoPrato", "Data", "Preco"],
     })
         .then((refeicoes) => {
             res.status(200).json(refeicoes);
@@ -38,3 +38,66 @@ if (auth) {
     });
  }
 };
+
+//marcar refeições
+exports.marcarRefeicao = async (req, res, next) => {
+    try {
+        let auth = utilities.verifyToken(req.headers.authorization);
+
+        if (auth) {
+            const { id } = req.params;
+            
+            if (auth.id != id) {
+                res.status(401).send({
+                    message: "Não autorizado.",
+                });
+                return;
+            }
+        
+        const { IdRefeicao, UserId, Valor } = req.body;
+
+        if(!IdRefeicao || !UserId || !Valor ) {
+            res.status(400).send({
+                message: "Dados em falta!",
+            });
+            return;
+        }
+
+        //verificar se já existe a refeição
+        await MarcacaoCantina.findOne({
+            where: {
+                IdRefeicao: IdRefeicao,
+                UserId: UserId,
+            },
+        });
+
+        //criar marcação na cantina
+        await MarcacaoCantina.create({
+            IdRefeicao: IdRefeicao,
+            UserId: UserId,
+        });
+
+        //criar pagamento
+        await Pagamento.create({
+            Valor: Valor,
+            UserId: UserId,
+        });
+
+        res.status(200).send({
+            message: "Refeição marcada com sucesso!",
+            //recebe támbem o idPagamento, o valor, a dataPagamento, e o idMarcacaoRefeicao
+            idPagamento: Pagamento.idPagamento,
+            Valor: Pagamento.Valor,
+            Data: Pagamento.Data,
+            IdMarcacao: MarcacaoCantina.IdMarcacao,
+        });
+    }
+    } catch (error) {
+        res.status(500).send({
+            message: "Something went wrong",
+            error: error.message
+        });
+    }
+}
+    
+    

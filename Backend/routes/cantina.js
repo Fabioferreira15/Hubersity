@@ -5,7 +5,12 @@ const { body, validationResult } = require("express-validator");
 
 // rota para ver todas as refeições
 router.get("/refeicoes", function (req, res) {
-  cantinaController.findAll(req, res);
+  cantinaController.obterRefeicoesCantina(req, res);
+});
+
+//rota marcar refeições
+router.post("/marcacao", function (req, res) {
+  cantinaController.marcarRefeicao(req, res);
 });
 
 module.exports = router;
