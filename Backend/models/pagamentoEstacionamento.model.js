@@ -36,7 +36,7 @@ PagamentoEstacionamento.init(
             type: DataTypes.INTEGER,
             allowNull: true,
             references: {
-                model: "Pagamento",
+                model: "Pagamentos",
                 key: "IdPagamento",
             },
         },

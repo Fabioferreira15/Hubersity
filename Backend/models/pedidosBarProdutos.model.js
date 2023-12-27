@@ -1,4 +1,4 @@
-/* const { Model, DataTypes } = require("sequelize");
+const { Model, DataTypes } = require("sequelize");
 const mysqlDB = require("../connections/mysql").sequelize;
 const { PedidosBar } = require("./pedidosBar.model");
 const { ProdutosBar } = require("./produtosBar.model");
@@ -16,7 +16,7 @@ PedidosBarProdutos.init(
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: "PedidosBar",
+                model: "PedidosBars",
                 key: "IdPedido",
             },
         },
@@ -24,7 +24,7 @@ PedidosBarProdutos.init(
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: "ProdutosBar",
+                model: "ProdutosBars",
                 key: "IdProduto",
             },
         },
@@ -52,4 +52,4 @@ mysqlDB
         console.log("A tabela PedidosBarProdutos não foi criada!" + error);
     });
 
-exports.PedidosBarProdutos = PedidosBarProdutos; */
+exports.PedidosBarProdutos = PedidosBarProdutos;

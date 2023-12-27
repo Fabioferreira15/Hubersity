@@ -1,4 +1,4 @@
-/* const { Model, DataTypes } = require("sequelize");
+const { Model, DataTypes } = require("sequelize");
 const mysqlDB = require("../connections/mysql").sequelize;
 const { Utilizadores } = require("./utilizadores.model");
 const { RefeicaoCantina } = require("./refeicaoCantina.model");
@@ -26,7 +26,7 @@ MarcacaoCantina.init(
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: "RefeicaoCantina",
+            model: "RefeicaoCantinas",
             key: "IdRefeicao",
         },
     },
@@ -38,7 +38,7 @@ MarcacaoCantina.init(
         type: DataTypes.INTEGER,
         allowNull: true,
         references: {
-            model: "Pagamento",
+            model: "Pagamentos",
             key: "IdPagamento",
         },
     },
@@ -67,4 +67,3 @@ mysqlDB
     });
 
 exports.MarcacaoCantina = MarcacaoCantina;
- */

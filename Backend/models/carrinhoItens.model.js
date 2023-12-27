@@ -16,7 +16,7 @@ CarrinhoItens.init(
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: "Carrinho",
+                model: "Carrinhos",
                 key: "IdCarrinho",
             },
         },
@@ -24,7 +24,7 @@ CarrinhoItens.init(
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: "ProdutosBar",
+                model: "ProdutosBars",
                 key: "IdProduto",
             },
         },

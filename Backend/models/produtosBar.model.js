@@ -31,8 +31,8 @@ ProdutosBar.init(
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: "CategoriasBar",
-                key: "IdCategoria",
+                model: "CategoriasBars",
+                key: "idCategoriaBar",
             },
         },
     },
@@ -43,7 +43,7 @@ ProdutosBar.init(
     }
 );
 
-ProdutosBar.belongsTo(CategoriasBar, {foreignKey: 'IdCategoria'});
+ProdutosBar.belongsTo(CategoriasBar, {foreignKey: 'idCategoriaBar'});
 mysqlDB
     .sync()
     .then(() => {
