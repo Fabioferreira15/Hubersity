@@ -27,7 +27,7 @@ MarcacaoCantina.init(
         },
     },
     status: {
-        type: DataTypes.ENUM("pendente", "aceite", "recusada"),
+        type: DataTypes.ENUM("Por Consumir", "Consumida"),
         defaultValue: "pendente",
     },
     IdPagamento: {

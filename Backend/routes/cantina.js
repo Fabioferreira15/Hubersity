@@ -18,4 +18,9 @@ router.get("/marcacao/:id", function (req, res) {
   cantinaController.obterMarcacaoIndividual(req, res);
 });
 
+//rota para obter marcacoes pendentes
+router.get("/marcacao/pendentes", function (req, res) {
+  cantinaController.obterMarcacoesPendentes(req, res);
+});
+
 module.exports = router;

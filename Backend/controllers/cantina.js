@@ -106,7 +106,7 @@ exports.obterMarcacaoIndividual = (req, res, next) => {
 
     if (auth) {
         const { id } = req.params;
-        
+
         if (auth.id != id) {
             res.status(401).send({
                 message: "Não autorizado.",
@@ -116,29 +116,121 @@ exports.obterMarcacaoIndividual = (req, res, next) => {
 
         MarcacaoCantina.findOne({
             where: {
-                IdMarcacao: IdMarcacao,
+                IdMarcacao: id,  // Certifique-se de que IdMarcacao seja o campo correto para encontrar a marcação desejada
             },
         })
-        .then((marcacao) => {
-            res.status(200).json({
-                idMarcacao: marcacao.IdMarcacao,
-                UserId: marcacao.UserId,
-                idRefeicao: marcacao.idRefeicao,
-                status: marcacao.status,
-                QRCode: marcacao.QRCode,
+            .then((marcacao) => {
+                if (!marcacao) {
+                    return res.status(404).json({
+                        message: "Marcação não encontrada.",
+                    });
+                }
+
+                // Obtendo detalhes da refeição associada
+                return RefeicaoCantina.findOne({
+                    where: {
+                        IdRefeicao: marcacao.IdRefeicao,  // Certifique-se de que IdRefeicao seja o campo correto
+                    },
+                })
+                    .then((refeicao) => {
+                        if (!refeicao) {
+                            return res.status(404).json({
+                                message: "Refeição não encontrada.",
+                            });
+                        }
+
+                        // Responder com o formato desejado
+                        res.status(200).json({
+                            idMarcacao: marcacao.IdMarcacao,
+                            UserId: marcacao.UserId,
+                            idRefeicao: marcacao.IdRefeicao,
+                            status: marcacao.status,
+                            QRCode: marcacao.QRCode,
+                            detalhesRefeicao: {
+                                idRefeicao: refeicao.IdRefeicao,
+                                nomeRefeicao: refeicao.Nome,
+                                tipoPrato: refeicao.TipoPrato,
+                                dataRefeicao: refeicao.Data,
+                                precoRefeicao: refeicao.Preco,
+                            },
+                        });
+                    });
+            })
+            .catch((error) => {
+                console.log(error);
+                res.status(500).json({
+                    message: "Ocorreu um erro ao obter a marcação da cantina!",
+                });
             });
-        })
-        .catch((error) => {
-            console.log(error);
-            res.status(500).json({
-                message: "Ocorreu um erro ao obter a marcação da cantina!",
-            });
-        });
     } else {
         res.status(401).send({
             message: "Não autorizado.",
         });
     }
 };
-    
+
+//obter marcações pendentes
+exports.obterMarcacoesPendentes = (req, res, next) => {
+    let auth = utilities.verifyToken(req.headers.authorization);
+
+    if (auth) {
+        const { id } = req.params;
+
+        if (auth.id != id) {
+            res.status(401).send({
+                message: "Não autorizado.",
+            });
+            return;
+        }
+
+        // Encontrar marcações pendentes
+        MarcacaoCantina.findAll({
+            where: {
+                UserId: id,
+                status: "Por consumir",
+            },
+        })
+            .then((marcacoes) => {
+                if (marcacoes.length === 0) {
+                    // Não existem marcações pendentes
+                    res.status(204).json({
+                        mensagem: "Não existem marcações pendentes",
+                    });
+                    return;
+                }
+
+                // Mapear as marcações para o formato desejado
+                const marcacoesFormatadas = marcacoes.map((marcacao) => {
+                    return {
+                        idMarcacao: marcacao.IdMarcacao,
+                        UserId: marcacao.UserId,
+                        idRefeicao: marcacao.IdRefeicao,
+                        status: marcacao.status,
+                        QRCode: marcacao.QRCode,
+                        detalhesRefeicao: {
+                            idRefeicao: marcacao.idRefeicao,
+                            nomeRefeicao: marcacao.nomeRefeicao,
+                            tipoPrato: marcacao.tipoPrato,
+                            dataRefeicao: marcacao.dataRefeicao,
+                            precoRefeicao: marcacao.precoRefeicao,
+                        },
+                    };
+                });
+
+                // Responder com as marcações formatadas
+                res.status(200).json(marcacoesFormatadas);
+            })
+            .catch((error) => {
+                console.log(error);
+                res.status(500).json({
+                    message: "Ocorreu um erro ao obter as marcações pendentes!",
+                });
+            });
+    } else {
+        res.status(401).send({
+            message: "Não autorizado.",
+        });
+    }
+};
+
     
