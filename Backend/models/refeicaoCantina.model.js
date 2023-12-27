@@ -1,6 +1,7 @@
 const { Model, DataTypes } = require("sequelize");
 const mysqlDB = require("../connections/mysql").sequelize;
 
+
 class RefeicaoCantina extends Model {}
 
 RefeicaoCantina.init(

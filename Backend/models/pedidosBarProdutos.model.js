@@ -1,5 +1,7 @@
-const { Model, DataTypes } = require("sequelize");
+/* const { Model, DataTypes } = require("sequelize");
 const mysqlDB = require("../connections/mysql").sequelize;
+const { PedidosBar } = require("./pedidosBar.model");
+const { ProdutosBar } = require("./produtosBar.model");
 
 class PedidosBarProdutos extends Model {}
 
@@ -38,6 +40,9 @@ PedidosBarProdutos.init(
     }
 );
 
+PedidosBarProdutos.belongsTo(PedidosBar, { foreignKey: "IdPedido" });
+PedidosBarProdutos.belongsTo(ProdutosBar, { foreignKey: "IdProduto" });
+
 mysqlDB
     .sync()
     .then(() => {
@@ -47,4 +52,4 @@ mysqlDB
         console.log("A tabela PedidosBarProdutos não foi criada!" + error);
     });
 
-exports.PedidosBarProdutos = PedidosBarProdutos;
+exports.PedidosBarProdutos = PedidosBarProdutos; */

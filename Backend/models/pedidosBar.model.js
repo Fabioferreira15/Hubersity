@@ -1,5 +1,7 @@
 const { Model, DataTypes } = require("sequelize");
 const mysqlDB = require("../connections/mysql").sequelize;
+const { Utilizadores } = require("./utilizadores.model");
+const { Pagamento } = require("./pagamento.model");
 
 class PedidosBar extends Model {}
 
@@ -46,6 +48,9 @@ PedidosBar.init(
     }
 );
 
+PedidosBar.belongsTo(Utilizadores, {foreignKey: 'UserId'});
+PedidosBar.belongsTo(Pagamento, {foreignKey: 'IdPagamento'});
+
 mysqlDB
     .sync()
     .then(() => {
@@ -56,3 +61,5 @@ mysqlDB
     });
 
 exports.PedidosBar = PedidosBar;
+
+//não esta a criar a tabela

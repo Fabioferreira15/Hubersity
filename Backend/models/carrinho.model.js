@@ -1,5 +1,7 @@
 const { Model, DataTypes } = require("sequelize");
 const mysqlDB = require("../connections/mysql").sequelize;
+const { Utilizadores } = require("./utilizadores.model");
+
 
 class Carrinho extends Model {}
 
@@ -25,6 +27,8 @@ Carrinho.init(
     timestamps: false,
   }
 );
+
+Carrinho.belongsTo(Utilizadores, { foreignKey: "UserId" });
 
 mysqlDB
   .sync()

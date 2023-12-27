@@ -1,4 +1,4 @@
-const Utilizadores = require("../models/utilizadores").Utilizadores;
+const Utilizadores = require("../models/utilizadores.model").Utilizadores;
 const Carrinho = require("../models/carrinho.model").Carrinho;
 const Cursos = require("../models/cursos.model").Cursos;
 const bcrypt = require("bcrypt");

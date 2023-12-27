@@ -1,5 +1,6 @@
 const { Model, DataTypes } = require("sequelize");
 const mysqlDB = require("../connections/mysql").sequelize;
+const { Cursos } = require("./cursos.model");
 
 class Utilizadores extends Model {}
 
@@ -54,6 +55,7 @@ Utilizadores.init(
     timestamps: false,
   }
 );
+Utilizadores.belongsTo(Cursos, {foreignKey: 'idCurso'});
 
 mysqlDB
   .sync()

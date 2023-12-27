@@ -1,5 +1,6 @@
 const { Model, DataTypes } = require("sequelize");
 const mysqlDB = require("../connections/mysql").sequelize;
+const { Utilizadores } = require("./utilizadores.model");
 
 class Pagamento extends Model {}
 
@@ -37,6 +38,8 @@ Pagamento.init(
         timestamps: false,
     }
 );
+
+Pagamento.belongsTo(Utilizadores, {foreignKey: 'UserId'});
 
 mysqlDB
     .sync()

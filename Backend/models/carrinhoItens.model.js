@@ -1,5 +1,7 @@
 const { Model, DataTypes } = require("sequelize");
 const mysqlDB = require("../connections/mysql").sequelize;
+const { Carrinho } = require("./carrinho.model");
+const { ProdutosBar } = require("./produtosBar.model");
 
 class CarrinhoItens extends Model {}
 
@@ -37,6 +39,8 @@ CarrinhoItens.init(
         timestamps: false,
     }
 );
+CarrinhoItens.belongsTo(Carrinho, { foreignKey: "IdCarrinho" });
+CarrinhoItens.belongsTo(ProdutosBar, { foreignKey: "IdProduto" });
 
 mysqlDB
     .sync()
@@ -48,3 +52,5 @@ mysqlDB
     });
 
 exports.CarrinhoItens = CarrinhoItens;
+
+//não esta a criar a tabela

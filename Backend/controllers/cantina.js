@@ -1,4 +1,4 @@
-const Utilizadores = require("../models/utilizadores").Utilizadores;
+const Utilizadores = require("../models/utilizadores.model").Utilizadores;
 const Carrinho = require("../models/carrinho.model").Carrinho;
 const RefeicaoCantina = require("../models/refeicaoCantina.model").RefeicaoCantina;
 const MarcacaoCantina = require("../models/marcacaoCantina.model").MarcacaoCantina;

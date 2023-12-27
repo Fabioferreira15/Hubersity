@@ -1,5 +1,9 @@
-const { Model, DataTypes } = require("sequelize");
+/* const { Model, DataTypes } = require("sequelize");
 const mysqlDB = require("../connections/mysql").sequelize;
+const { Utilizadores } = require("./utilizadores.model");
+const { RefeicaoCantina } = require("./refeicaoCantina.model");
+const { Pagamento } = require("./pagamento.model");
+
 
 class MarcacaoCantina extends Model {}
 
@@ -27,8 +31,8 @@ MarcacaoCantina.init(
         },
     },
     status: {
-        type: DataTypes.ENUM("Por Consumir", "Consumida"),
-        defaultValue: "pendente",
+        type: DataTypes.ENUM("Por Consumir", "Consumida","Pendente"),
+        defaultValue: "Pendente",
     },
     IdPagamento: {
         type: DataTypes.INTEGER,
@@ -49,6 +53,9 @@ MarcacaoCantina.init(
     timestamps: false,
   }
 );
+MarcacaoCantina.belongsTo(Utilizadores, {foreignKey: 'UserId'});
+MarcacaoCantina.belongsTo(RefeicaoCantina, {foreignKey: 'IdRefeicao'});
+MarcacaoCantina.belongsTo(Pagamento, {foreignKey: 'IdPagamento'});
 
 mysqlDB
     .sync()
@@ -60,3 +67,4 @@ mysqlDB
     });
 
 exports.MarcacaoCantina = MarcacaoCantina;
+ */
