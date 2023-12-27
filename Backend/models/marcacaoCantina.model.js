@@ -28,7 +28,7 @@ MarcacaoCantina.init(
     },
     status: {
         type: DataTypes.ENUM("Por Consumir", "Consumida"),
-        defaultValue: "pendente",
+        defaultValue: "Por consumir",
     },
     IdPagamento: {
         type: DataTypes.INTEGER,
