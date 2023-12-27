@@ -13,4 +13,9 @@ router.post("/marcacao", function (req, res) {
   cantinaController.marcarRefeicao(req, res);
 });
 
+//rota para obter marcacao indidividual
+router.get("/marcacao/:id", function (req, res) {
+  cantinaController.obterMarcacaoIndividual(req, res);
+});
+
 module.exports = router;

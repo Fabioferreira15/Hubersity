@@ -98,6 +98,47 @@ exports.marcarRefeicao = async (req, res, next) => {
             error: error.message
         });
     }
-}
+};
+
+//obter marcação individual
+exports.obterMarcacaoIndividual = (req, res, next) => {
+    let auth = utilities.verifyToken(req.headers.authorization);
+
+    if (auth) {
+        const { id } = req.params;
+        
+        if (auth.id != id) {
+            res.status(401).send({
+                message: "Não autorizado.",
+            });
+            return;
+        }
+
+        MarcacaoCantina.findOne({
+            where: {
+                IdMarcacao: IdMarcacao,
+            },
+        })
+        .then((marcacao) => {
+            res.status(200).json({
+                idMarcacao: marcacao.IdMarcacao,
+                UserId: marcacao.UserId,
+                idRefeicao: marcacao.idRefeicao,
+                status: marcacao.status,
+                QRCode: marcacao.QRCode,
+            });
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(500).json({
+                message: "Ocorreu um erro ao obter a marcação da cantina!",
+            });
+        });
+    } else {
+        res.status(401).send({
+            message: "Não autorizado.",
+        });
+    }
+};
     
     
