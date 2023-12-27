@@ -48,8 +48,11 @@ const Onboarding = ({navigation}) => {
               <UnderlineBtn onPress={handleSkip} text="Skip" />
             </View>
 
-            <View>
-              <HeroSvg />
+            <View style={styles.imgContainer}>
+            <Image
+              source={require('../assets/Onboarding/Hero-image-1.png')}
+              style={{width: '100%', height: 300, alignSelf: 'center'}}
+            />
             </View>
 
             <View style={styles.content}>
@@ -147,7 +150,7 @@ const Onboarding = ({navigation}) => {
             </View>
             <Image
               source={require('../assets/Onboarding/hero-image-4.png')}
-              style={{width: '100%', height: 300, alignSelf: 'center'}}
+              style={{width: 10, height: 300, alignSelf: 'center'}}
             />
             <View></View>
 
@@ -183,6 +186,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#151C4D',
+    
   },
   btn: {
     alignItems: 'flex-end',
@@ -192,6 +196,7 @@ const styles = StyleSheet.create({
   content: {
     alignItems: 'center',
     marginTop: 40,
+    borderWidth: 1,
   },
   title: {
     color: '#F8F9FA',
@@ -199,6 +204,7 @@ const styles = StyleSheet.create({
     fontFamily: 'BaiJamjuree',
     fontWeight: 'bold',
     marginTop: 20,
+    borderWidth: 1,
   },
   text: {
     color: '#F8F9FA',
@@ -206,13 +212,21 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
     marginHorizontal: 20,
+    borderWidth: 1,
   },
   txt: {
     textDecorationLine: 'underline',
   },
   primaryBtn: {
     alignItems: 'center',
-    marginTop: 157,
+    marginBottom: "5%",
+
+    height: "30%",
+    justifyContent: 'flex-end',
+  },
+  imgContainer: {
+    borderWidth: 1,
+    width: '90%',
   },
 });
 
