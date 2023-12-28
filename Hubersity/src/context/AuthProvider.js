@@ -1,5 +1,6 @@
 import React, {useState, createContext, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import IP from './env';
 
 const AuthContext = createContext();
 
@@ -10,20 +11,17 @@ const AuthProvider = ({children}) => {
 
   const login = async (email, password) => {
     try {
-        setIsLoading(true);
-      const response = await fetch(
-        'http://ip:3000/utilizadores/login',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: email,
-            password: password,
-          }),
+      setIsLoading(true);
+      const response = await fetch(`http://${IP}:3000/utilizadores/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      });
 
       const data = await response.json();
 
@@ -33,7 +31,7 @@ const AuthProvider = ({children}) => {
         AsyncStorage.setItem('token', data.token);
         AsyncStorage.setItem('id', data.UserInfo.UserId);
         AsyncStorage.setItem('nome', data.UserInfo.nome);
-        AsyncStorage.setItem('image', data.UserInfo.imgPerfil); 
+        AsyncStorage.setItem('image', data.UserInfo.imgPerfil);
         setIsLoading(false);
       } else {
         console.log('Falha no login:', data);
