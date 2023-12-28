@@ -29,7 +29,7 @@ const Registo = ({navigation}) => {
   const registar = async () => {
     try {
       const response = await fetch(
-        `http:/192.168.1.72:3000/utilizadores/register`,
+        `http:/ip:3000/utilizadores/register`,
         {
           method: 'POST',
           headers: {
@@ -79,7 +79,7 @@ const Registo = ({navigation}) => {
   useEffect(() => {
     const getCursos = async () => {
       try {
-        const response = await fetch(`http:/192.168.1.72:3000/cursos`);
+        const response = await fetch(`http:/ip:3000/cursos`);
         const data = await response.json();
         const cursos = data.map(curso => ({
           label: curso.nomeCurso,
