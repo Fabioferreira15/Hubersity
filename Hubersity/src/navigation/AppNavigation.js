@@ -21,8 +21,6 @@ import Roleta from '../screens/Roleta';
 const Tab = createBottomTabNavigator();
 
 const Main = ({navigation}) => {
-  
-
   return (
     <Tab.Navigator
       initialRouteName="Home"

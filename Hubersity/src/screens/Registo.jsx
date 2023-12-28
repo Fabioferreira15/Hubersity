@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect,useContext} from 'react';
 import {View, Text, StyleSheet, TextInput} from 'react-native';
 import Swiper from 'react-native-swiper';
 import HeroSvg from '../assets/Registo/Herro-background.svg';
@@ -7,7 +7,7 @@ import HeroImgPassword from '../assets/Registo/Hero-image-password.svg';
 import HeroImgCurso from '../assets/Registo/Hero-image-curso.svg';
 import DropDownPicker from 'react-native-dropdown-picker';
 import PrimaryBtn from '../components/PrimaryBtn';
-
+import { AuthContext } from '../context/AuthProvider';
 
 const Registo = ({navigation}) => {
   const [open, setOpen] = useState(false);
@@ -17,46 +17,76 @@ const Registo = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [ConfirmarPassword, setConfirmarPassword] = useState('');
-  
 
+  const [nomeError, setNomeError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [confirmarPasswordError, setConfirmarPasswordError] = useState('');
+  const [cursoError, setCursoError] = useState('');
 
+  const {login} = useContext(AuthContext);
 
   const registar = async () => {
     try {
-      const response = await fetch(`http:/ip:3000/utilizadores/register`,{
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        `http:/192.168.1.72:3000/utilizadores/register`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            nome: nome,
+            email: email,
+            password: password,
+            confirmarPassword: ConfirmarPassword,
+            nomeCurso: value,
+          }),
         },
-        body: JSON.stringify({
-          nome: nome,
-          email: email,
-          password: password,
-          confirmarPassword: ConfirmarPassword,
-          nomeCurso: value,
-        }),
-      });
+      );
       const data = await response.json();
-      console.log(data);
+      if (response.ok) {
+        login(email,password);
+      } else {
+        const errors = data.errors || [];
+        errors.forEach(error => {
+          switch (error.path) {
+            case 'nome':
+              setNomeError(error.msg || '');
+              break;
+            case 'email':
+              setEmailError(error.msg || '');
+              break;
+            case 'password':
+              setPasswordError(error.msg || '');
+              break;
+            case 'confirmarPassword':
+              setConfirmarPasswordError(error.msg || '');
+              break;
+            case 'nomeCurso':
+              setCursoError(error.msg || '');
+              break;
+            default:
+              break;
+          }
+        });
+      }
     } catch (error) {
       console.log(error);
     }
-  }
-
-  
+  };
 
   useEffect(() => {
     const getCursos = async () => {
       try {
-        const response = await fetch(`http:/ip:3000/cursos`);
+        const response = await fetch(`http:/192.168.1.72:3000/cursos`);
         const data = await response.json();
-        const cursos = data.map((curso) => ({
-            label: curso.nomeCurso,
-            value: curso.nomeCurso,
+        const cursos = data.map(curso => ({
+          label: curso.nomeCurso,
+          value: curso.nomeCurso,
         }));
 
         console.log(cursos);
-
 
         setItems(cursos);
       } catch (error) {
@@ -65,7 +95,6 @@ const Registo = ({navigation}) => {
     };
     getCursos();
   }, []);
-
 
   return (
     <>
@@ -80,8 +109,10 @@ const Registo = ({navigation}) => {
         loop={false}>
         <View style={styles.slide}>
           <View style={styles.container}>
-            <HeroSvg style={styles.blob} />
-            <HeroImg style={styles.hero} />
+            <View style={styles.imgContainer}>
+              <HeroSvg style={styles.blob} />
+              <HeroImg style={styles.hero} />
+            </View>
             <View>
               <Text style={styles.title}>Informações pessoais</Text>
               <Text style={styles.text}>Passo 1 de 3</Text>
@@ -95,8 +126,15 @@ const Registo = ({navigation}) => {
                 autoCapitalize="none"
                 autoCorrect={false}
                 value={nome}
-                onChangeText={(text) => setNome(text)}
+                onChangeText={text => {
+                  setNome(text);
+                  setNomeError('');
+                }}
               />
+              {nomeError ? (
+                <Text style={styles.errorText}>{nomeError}</Text>
+              ) : null}
+
               <TextInput
                 style={styles.input}
                 placeholder="Email"
@@ -105,8 +143,14 @@ const Registo = ({navigation}) => {
                 autoCapitalize="none"
                 autoCorrect={false}
                 value={email}
-                onChangeText={(text) => setEmail(text)}
+                onChangeText={text => {
+                  setEmail(text);
+                  setEmailError('');
+                }}
               />
+              {emailError ? (
+                <Text style={styles.errorText}>{emailError}</Text>
+              ) : null}
             </View>
           </View>
         </View>
@@ -126,16 +170,29 @@ const Registo = ({navigation}) => {
                 placeholderTextColor="#6C757D"
                 secureTextEntry={true}
                 value={password}
-                onChangeText={(text) => setPassword(text)}
+                onChangeText={text => {
+                  setPassword(text);
+                  setPasswordError('');
+                }}
               />
+              {passwordError ? (
+                <Text style={styles.errorText}>{passwordError}</Text>
+              ) : null}
+
               <TextInput
                 style={styles.input}
                 placeholder="Confirmar Password"
                 placeholderTextColor="#6C757D"
                 secureTextEntry={true}
                 value={ConfirmarPassword}
-                onChangeText={(text) => setConfirmarPassword(text)}
+                onChangeText={text => {
+                  setConfirmarPassword(text);
+                  setConfirmarPasswordError('');
+                }}
               />
+              {confirmarPasswordError ? (
+                <Text style={styles.errorText}>{confirmarPasswordError}</Text>
+              ) : null}
             </View>
           </View>
         </View>
@@ -162,6 +219,9 @@ const Registo = ({navigation}) => {
                 searchablePlaceholder="Pesquisar..."
               />
             </View>
+            {cursoError ? (
+              <Text style={styles.errorText}>{cursoError}</Text>
+            ) : null}
             <PrimaryBtn
               text="Registar"
               onPress={() => {
@@ -231,6 +291,11 @@ const styles = StyleSheet.create({
     marginTop: '5%',
     borderRadius: 5,
     color: '#212529',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginLeft: '5%',
   },
 });
 

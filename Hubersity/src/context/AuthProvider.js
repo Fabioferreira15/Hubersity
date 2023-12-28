@@ -12,7 +12,7 @@ const AuthProvider = ({children}) => {
     try {
         setIsLoading(true);
       const response = await fetch(
-        'http://ip:3000/utilizadores/login',
+        'http://192.168.1.72:3000/utilizadores/login',
         {
           method: 'POST',
           headers: {

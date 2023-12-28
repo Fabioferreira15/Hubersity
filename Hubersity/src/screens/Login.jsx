@@ -1,4 +1,4 @@
-import React, {useState,useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import {View, Text, StyleSheet, TextInput} from 'react-native';
 import Blob from '../assets/Login/Background-blob.svg';
 import Logo from '../assets/Login/logo.svg';
@@ -10,7 +10,7 @@ const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const {login} = useContext(AuthContext);
-
+  const {emailError, passwordError} = useContext(AuthContext);
 
   return (
     <View style={styles.container}>
@@ -31,6 +31,9 @@ const Login = ({navigation}) => {
             value={email}
             onChangeText={text => setEmail(text)}
           />
+          {emailError ? (
+            <Text style={styles.errorText}>{emailError}</Text>
+          ) : null}
           <TextInput
             style={styles.input}
             placeholder="Password"
@@ -39,10 +42,15 @@ const Login = ({navigation}) => {
             value={password}
             onChangeText={text => setPassword(text)}
           />
+          {passwordError ? (
+            <Text style={styles.errorText}>{passwordError}</Text>
+          ) : null}
         </View>
         <View style={styles.btn}>
           <PrimaryBtn
-            onPress={()=>{login(email,password)}}
+            onPress={() => {
+              login(email, password);
+            }}
             text="Login"
             paddingHorizontal={'40%'}
             paddingVertical={10}

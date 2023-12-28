@@ -25,10 +25,8 @@ const PrimaryBtn = ({
 
 const styles = StyleSheet.create({
   primaryBtn: {
-    display: 'flex',
     backgroundColor: '#F0D060',
     alignSelf: 'center',
-    marginTop: 20,
   },
   primaryBtnTxt: {
     color: '#151C4D',
