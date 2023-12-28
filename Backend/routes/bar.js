@@ -8,4 +8,8 @@ router.get("/produtos", function (req, res) {
   barController.obterProdutos(req, res);
 });
 
+//adicionar produto ao carrinho
+router.post("/carrinho", function (req, res) {
+  barController.adicionarProdutoCarrinho(req, res);
+});
 module.exports = router;
