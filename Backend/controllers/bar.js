@@ -90,30 +90,32 @@ exports.adicionarProdutoCarrinho = async function (req, res) {
             raw: true,
         });
 
+        // Se o produto já estiver no carrinho, incrementar a quantidade
         if (produtoCarrinho) {
-            return res.status(400).send({
-                message: "Produto já está no carrinho.",
+            await CarrinhoItens.update(
+                { Quantidade: produtoCarrinho.Quantidade + 1 },
+                { where: { IdProduto: idProduto, IdCarrinho: userId } }
+            );
+        } else {
+            // Criar carrinho se ainda não existir
+            const carrinho = await Carrinho.findOne({
+                where: { IdCarrinho: userId },
+                raw: true,
             });
-        }
 
-        // Criar carrinho se ainda não existir
-        const carrinho = await Carrinho.findOne({
-            where: { IdCarrinho: userId },
-            raw: true,
-        });
+            if (!carrinho) {
+                await Carrinho.create({
+                    IdCarrinho: userId,
+                });
+            }
 
-        if (!carrinho) {
-            await Carrinho.create({
+            // Adicionar produto ao carrinho com quantidade inicial 1
+            await CarrinhoItens.create({
                 IdCarrinho: userId,
+                IdProduto: idProduto,
+                Quantidade: 1,
             });
         }
-
-        // Adicionar produto ao carrinho
-        await CarrinhoItens.create({
-            IdCarrinho: userId,
-            IdProduto: idProduto,
-            Quantidade: 1,
-        });
 
         return res.status(200).send({
             message: "Produto adicionado ao carrinho.",
