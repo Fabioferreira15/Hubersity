@@ -18,9 +18,9 @@ exports.criarRefeicaoCantina = async function (req, res) {
       });
     }
 
-    const { Nome, Descricao, TipoPrato, Data, Preco } = req.body;
+    const { Nome, Descricao, TipoPrato, Data, Preco,Periodo } = req.body;
 
-    if (!Nome || !Descricao || !TipoPrato || !Data || !Preco) {
+    if (!Nome || !Descricao || !TipoPrato || !Data || !Preco || !Periodo) {
       return res.status(400).send({
         message: "Dados em falta!",
       });
@@ -30,10 +30,11 @@ exports.criarRefeicaoCantina = async function (req, res) {
       where: {
         TipoPrato: TipoPrato,
         Data: Data,
+        Periodo: Periodo,
       },
     });
 
-    if (refeicaoExistente) {
+    if (refeicaoExistente ) {
       return res.status(400).send({
         message: `Já existe uma refeição do tipo ${TipoPrato} para a data ${Data}.`,
       });
@@ -45,6 +46,7 @@ exports.criarRefeicaoCantina = async function (req, res) {
       TipoPrato: TipoPrato,
       Data: Data,
       Preco: Preco,
+      Periodo: Periodo,
     });
 
     res.status(200).send({
@@ -63,14 +65,12 @@ exports.obterRefeicoesCantina = (req, res, next) => {
   let auth = utilities.verifyToken(req.headers.authorization);
 
   if (auth) {
-    const { data } = req.query; // Obtém a data da query
+    const { data } = req.query; 
 
-    // Cria um objeto de condição para a consulta
     const condition = {
-      attributes: ["IdRefeicao", "Nome", "TipoPrato", "Data", "Preco"],
+      attributes: ["IdRefeicao", "Nome", "TipoPrato", "Data", "Preco","Periodo"],
     };
 
-    // Adiciona a condição de data se fornecida na query
     if (data) {
       condition.where = {
         Data: new Date(data),

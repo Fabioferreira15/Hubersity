@@ -5,7 +5,6 @@ import HeroSvg from '../assets/Onboarding/Hero-image.svg';
 import PrimaryBtn from '../components/PrimaryBtn';
 import UnderlineBtn from '../components/UnderlineBtn';
 import Voltar from '../assets/icons/Voltar.svg';
-import LottieView from 'lottie-react-native';
 
 const Onboarding = ({navigation}) => {
   let swiper;

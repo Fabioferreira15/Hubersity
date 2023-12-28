@@ -9,9 +9,10 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import CalendarioSvg from '../../assets/icons/calendário.svg';
 import IP from '../../context/env';
 
-const Ementas = () => {
+const Ementas = ({navigation}) => {
   const [ementas, setEmentas] = useState([]);
   const [data, setData] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -79,9 +80,7 @@ const Ementas = () => {
         <Text style={styles.inputButtonText}>
           {data && data.toLocaleDateString()}
         </Text>
-        <Image
-          source={require('../../assets/icons/roleta.png')} /* depois mete o icone do calendario na pasta */
-          style={styles.icon}></Image>
+        <CalendarioSvg style={styles.icon} />
       </TouchableOpacity>
       {showDatePicker && (
         <DateTimePicker
@@ -103,7 +102,9 @@ const Ementas = () => {
           </View>
         </View>
         {filtrarRefeicoesPorData().map(refeicao => (
-          <View key={refeicao.IdRefeicao} style={[styles.linha,{backgroundColor:'#BFC5F9'}]}>
+          <View
+            key={refeicao.IdRefeicao}
+            style={[styles.linha, {backgroundColor: '#BFC5F9'}]}>
             <View style={styles.celula}>
               <Text>{refeicao.TipoPrato}</Text>
             </View>
