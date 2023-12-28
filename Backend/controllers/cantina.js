@@ -63,9 +63,21 @@ exports.obterRefeicoesCantina = (req, res, next) => {
   let auth = utilities.verifyToken(req.headers.authorization);
 
   if (auth) {
-    RefeicaoCantina.findAll({
+    const { data } = req.query; // Obtém a data da query
+
+    // Cria um objeto de condição para a consulta
+    const condition = {
       attributes: ["IdRefeicao", "Nome", "TipoPrato", "Data", "Preco"],
-    })
+    };
+
+    // Adiciona a condição de data se fornecida na query
+    if (data) {
+      condition.where = {
+        Data: new Date(data),
+      };
+    }
+
+    RefeicaoCantina.findAll(condition)
       .then((refeicoes) => {
         if (refeicoes.length === 0) {
           res.status(200).send({
@@ -162,7 +174,7 @@ exports.pagamentoMarcacao = async (req, res) => {
     });
   } catch (error) {
     res.status(500).send({
-      message: error.message || "Ocorreu um erro ao pagar o estacionamento.",
+      message: error.message || "Ocorreu um erro ao pagar.",
     });
   }
 };
@@ -227,8 +239,6 @@ exports.obterMarcacaoIndividual = async (req, res) => {
 exports.obterMarcacoesPendentes = async (req, res) => {
   try {
     let auth = utilities.verifyToken(req.headers.authorization);
-
-    
 
     const userId = parseInt(req.params.id);
 

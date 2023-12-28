@@ -5,9 +5,9 @@ import HeroSvg from '../assets/Onboarding/Hero-image.svg';
 import PrimaryBtn from '../components/PrimaryBtn';
 import UnderlineBtn from '../components/UnderlineBtn';
 import Voltar from '../assets/icons/Voltar.svg';
+import LottieView from 'lottie-react-native';
 
 const Onboarding = ({navigation}) => {
-
   let swiper;
 
   const handleSkip = () => {
@@ -27,7 +27,6 @@ const Onboarding = ({navigation}) => {
       swiper.scrollBy(-1, true);
     }
   };
-  
 
   return (
     <>
@@ -40,19 +39,25 @@ const Onboarding = ({navigation}) => {
         activeDotStyle={{width: 12, height: 12, borderRadius: 10}}
         paginationStyle={{bottom: 100}}
         loop={false}
-        ref={(ref) => { swiper = ref; }}
-        >
+        ref={ref => {
+          swiper = ref;
+        }}>
         <View style={styles.slide}>
           <View style={styles.container}>
             <View style={styles.btn}>
+              <TouchableOpacity onPress={handlePrev}>
+                <Voltar />
+              </TouchableOpacity>
               <UnderlineBtn onPress={handleSkip} text="Skip" />
             </View>
-
             <View style={styles.imgContainer}>
-            <Image
-              source={require('../assets/Onboarding/Hero-image-1.png')}
-              style={{width: '100%', height: 300, alignSelf: 'center'}}
-            />
+              <View style={styles.img}>
+                <Image
+                  source={require('../assets/Onboarding/Hero-image-1.png')}
+                  resizeMode="contain"
+                  style={{width: '100%', height: 300}}
+                />
+              </View>
             </View>
 
             <View style={styles.content}>
@@ -77,16 +82,20 @@ const Onboarding = ({navigation}) => {
         <View style={styles.slide}>
           <View style={styles.container}>
             <View style={styles.btn}>
-              <UnderlineBtn
-                onPress={handleSkip}
-                text="Skip"
-              />
+              <TouchableOpacity onPress={handlePrev}>
+                <Voltar />
+              </TouchableOpacity>
+              <UnderlineBtn onPress={handleSkip} text="Skip" />
             </View>
-            <Image
-              source={require('../assets/Onboarding/Hero-image.png')}
-              style={{width: '100%', height: 300, alignSelf: 'center'}}
-            />
-            <View></View>
+            <View style={styles.imgContainer}>
+              <View style={styles.img}>
+                <Image
+                  source={require('../assets/Onboarding/Hero-image.png')}
+                  resizeMode="contain"
+                  style={{width: '100%', height: 300}}
+                />
+              </View>
+            </View>
 
             <View style={styles.content}>
               <Text style={styles.title}>Descobre o menu do bar</Text>
@@ -110,16 +119,20 @@ const Onboarding = ({navigation}) => {
         <View style={styles.slide}>
           <View style={styles.container}>
             <View style={styles.btn}>
-              <UnderlineBtn
-                onPress={handleSkip}
-                text="Skip"
-              />
+              <TouchableOpacity onPress={handlePrev}>
+                <Voltar />
+              </TouchableOpacity>
+              <UnderlineBtn onPress={handleSkip} text="Skip" />
             </View>
-            <Image
-              source={require('../assets/Onboarding/hero-image-3.png')}
-              style={{width: '100%', height: 300, alignSelf: 'center'}}
-            />
-            <View></View>
+            <View style={styles.imgContainer}>
+              <View style={styles.img}>
+                <Image
+                  source={require('../assets/Onboarding/hero-image-3.png')}
+                  resizeMode="contain"
+                  style={{width: '100%', height: 300}}
+                />
+              </View>
+            </View>
 
             <View style={styles.content}>
               <Text style={styles.title}>Paga sem complicações</Text>
@@ -143,35 +156,37 @@ const Onboarding = ({navigation}) => {
         <View style={styles.slide}>
           <View style={styles.container}>
             <View style={styles.btn}>
-              <TouchableOpacity
-                onPress={handlePrev}>
+              <TouchableOpacity onPress={handlePrev}>
                 <Voltar />
               </TouchableOpacity>
             </View>
-            <Image
-              source={require('../assets/Onboarding/hero-image-4.png')}
-              style={{width: 10, height: 300, alignSelf: 'center'}}
-            />
-            <View></View>
+            <View style={styles.imgContainer}>
+              <View style={styles.img}>
+                <Image
+                  source={require('../assets/Onboarding/hero-image-4.png')}
+                  resizeMode="contain"
+                  style={{width: '100%', height: 300, alignSelf: 'center'}}
+                />
+              </View>
+            </View>
 
             <View style={styles.content}>
               <Text style={styles.title}>Pronto para começar?</Text>
               <Text style={styles.text}>Explora e desfruta a Hubersity!</Text>
             </View>
-            <PrimaryBtn
-              onPress={() => navigation.navigate('Login')}
-              text="Login"
-              paddingHorizontal={59}
-              paddingVertical={10}
-              borderRadius={10}
-            />
-            <PrimaryBtn
-              onPress={() => navigation.navigate('Registo')}
-              text="Criar conta"
-              paddingHorizontal={59}
-              paddingVertical={10}
-              borderRadius={10}
-            />
+            <View style={styles.primaryBtnLast}>
+              <PrimaryBtn
+                onPress={() => navigation.navigate('Registo')}
+                text="Criar conta"
+                paddingHorizontal={10}
+                paddingVertical={5}
+                borderRadius={10}
+              />
+              <UnderlineBtn
+                onPress={() => navigation.navigate('Login')}
+                text="Login"
+              />
+            </View>
           </View>
         </View>
       </Swiper>
@@ -186,25 +201,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#151C4D',
-    
   },
   btn: {
-    alignItems: 'flex-end',
-    marginTop: 20,
-    marginRight: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginLeft: '5%',
+    marginTop: '5%',
+    marginRight: '5%',
   },
   content: {
     alignItems: 'center',
-    marginTop: 40,
-    borderWidth: 1,
+    marginTop: '10%',
+    height: '20%',
   },
   title: {
     color: '#F8F9FA',
     fontSize: 20,
+    width: '100%',
+    textAlign: 'center',
     fontFamily: 'BaiJamjuree',
     fontWeight: 'bold',
-    marginTop: 20,
-    borderWidth: 1,
   },
   text: {
     color: '#F8F9FA',
@@ -212,21 +229,27 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
     marginHorizontal: 20,
-    borderWidth: 1,
   },
   txt: {
     textDecorationLine: 'underline',
   },
   primaryBtn: {
     alignItems: 'center',
-    marginBottom: "5%",
-
-    height: "30%",
     justifyContent: 'flex-end',
+    height: '25%',
+  },
+  img: {
+    width: '90%',
   },
   imgContainer: {
-    borderWidth: 1,
-    width: '90%',
+    alignItems: 'center',
+  },
+  primaryBtnLast: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+    height: '25%',
+    paddingHorizontal: '5%',
   },
 });
 
