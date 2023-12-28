@@ -174,7 +174,7 @@ exports.pagamentoMarcacao = async (req, res) => {
     });
   } catch (error) {
     res.status(500).send({
-      message: error.message || "Ocorreu um erro ao pagar o estacionamento.",
+      message: error.message || "Ocorreu um erro ao pagar.",
     });
   }
 };
