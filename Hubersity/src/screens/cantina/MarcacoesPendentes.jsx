@@ -5,7 +5,6 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  Button,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import IP from '../../context/env';
@@ -51,17 +50,19 @@ const MarcacoesPendentes = ({navigation}) => {
   }, [marcacoes]);
 
   return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <View style={styles.container}>
         <View style={styles.Background}>
           <YellowBackground />
         </View>
+
         <View style={styles.nav}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Voltar />
+            <Voltar style={styles.svg}/>
           </TouchableOpacity>
           <Text style={styles.titleTxt}>Marcacoes Pendentes</Text>
         </View>
+
         <View style={styles.main}>
           {marcacoes.map((marcacao, index) => (
             <View key={index} style={styles.marcacaoContainer}>
@@ -86,20 +87,24 @@ const MarcacoesPendentes = ({navigation}) => {
                   <Text style={styles.txt}>{marcacao.status}</Text>
                 </View>
               </View>
-              <View style={styles.btnQr}>
-                <Text>Mostrar Qr Code</Text>
-              </View>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('QrCode', {marcacao})}>
+                <View style={styles.btnQr}>
+                  <Text style={styles.txtBtn}>Mostrar Qr Code</Text>
+                </View>
+              </TouchableOpacity>
             </View>
           ))}
         </View>
-      </ScrollView>
-    </View>
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
+    paddingBottom: '15%',
   },
   container: {
     flex: 1,
@@ -109,18 +114,23 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: -1,
   },
+
   nav: {
     flexDirection: 'row',
+    alignItems: 'center',
+
+    width: '90%',
     marginLeft: '5%',
     marginTop: '15%',
     alignItems: 'center',
   },
   titleTxt: {
     fontSize: 27,
-    width: '50%',
-    fontWeight: 'bold',
-    color: '#F8F9FA',
+    fontFamily: 'BaiJamjuree-Bold',
+    color: '#212529',
     textAlign: 'center',
+
+    marginLeft: '20%',
   },
   main: {
     marginTop: '40%',
@@ -130,10 +140,19 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   titulo: {
-    color: '#000',
+    color: '#212529',
+    fontSize: 23,
+    fontFamily: 'BaiJamjuree-Bold',
   },
   txt: {
-    color: '#000',
+    color: '#212529',
+    fontFamily: 'Tajawal-Regular',
+    fontSize: 18,
+  },
+  txtBtn: {
+    color: '#F8F9FA',
+    fontFamily: 'BaiJamjuree-Bold',
+    fontSize: 17,
   },
   prato: {
     flexDirection: 'row',
@@ -142,19 +161,22 @@ const styles = StyleSheet.create({
   data: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop: 5,
   },
   estado: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop: 5,
   },
   txtBold: {
-    fontWeight: 'bold',
-    color: '#000',
+    color: '#212529',
+    fontFamily: 'Tajawal-Bold',
+    fontSize: 18,
   },
   card: {
     backgroundColor: '#DFE2FC',
-    width: '90%',
-    height: 100,
+    width: '95%',
+    height: 110,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     marginTop: 10,
@@ -166,7 +188,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
-    width: '90%',
+    width: '95%',
     justifyContent: 'center',
     alignItems: 'center',
   },

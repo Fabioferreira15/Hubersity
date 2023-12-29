@@ -14,18 +14,25 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-Hubersity-HubersityTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-Hubersity-HubersityTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		02FED7F3ACFE433FBB63F416 /* BaiJamjuree-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 91D43B61D9F740B98B48FD07 /* BaiJamjuree-Bold.ttf */; };
-		5E185FA0984A4885A30F4054 /* BaiJamjuree-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7E21C111AD294A35912A361C /* BaiJamjuree-BoldItalic.ttf */; };
-		52C3AFAF57B64A79A1D8C2ED /* BaiJamjuree-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD1256C9941945478A6F33A1 /* BaiJamjuree-ExtraLight.ttf */; };
-		03DEA168AEDE4E1C90BD9CCC /* BaiJamjuree-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 682D5E8145614B7DAF93B876 /* BaiJamjuree-ExtraLightItalic.ttf */; };
-		6D3F29A4C7C648A4AF30E2C5 /* BaiJamjuree-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F86D493B5C59474791187B91 /* BaiJamjuree-Italic.ttf */; };
-		0F11111BF5634DA188A841D3 /* BaiJamjuree-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 62A504F99977462EAACCE671 /* BaiJamjuree-Light.ttf */; };
-		F32072A70E2A4E228EED2679 /* BaiJamjuree-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 176B7C43E5F54046B65306C0 /* BaiJamjuree-LightItalic.ttf */; };
-		9183AFBD05274720867C8C11 /* BaiJamjuree-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E90676ADD6CA4A369D586164 /* BaiJamjuree-Medium.ttf */; };
-		877E3464CB8C444EB82982C8 /* BaiJamjuree-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8925D52F1463423E94B1F804 /* BaiJamjuree-MediumItalic.ttf */; };
-		F080109616F24F0EAAAEAE1A /* BaiJamjuree-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B5DEE62DFF9A4E9A9C34CB07 /* BaiJamjuree-Regular.ttf */; };
-		9F8D3EE1CE8D4EA6952FDA90 /* BaiJamjuree-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5DD6623921654869961A1B30 /* BaiJamjuree-SemiBold.ttf */; };
-		E1784A6CF3A543D894C94D38 /* BaiJamjuree-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 786649BC602A4F368B303AA3 /* BaiJamjuree-SemiBoldItalic.ttf */; };
+		900E20C77383484DB7BFAB94 /* BaiJamjuree-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8D2EA0CD07A44F01AFFEEF14 /* BaiJamjuree-Bold.ttf */; };
+		1EA8600FF8F04A5C9C7D2DF3 /* BaiJamjuree-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8C296497D0EA4121A8E732D1 /* BaiJamjuree-BoldItalic.ttf */; };
+		20ED0DCA61874944AE5A1A06 /* BaiJamjuree-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 89D714FD4CF1468C8E0DBBE2 /* BaiJamjuree-ExtraLight.ttf */; };
+		8102E41FA7654CEF8B0602F6 /* BaiJamjuree-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ACDC7F9F15D74AA3B7C3FAEB /* BaiJamjuree-ExtraLightItalic.ttf */; };
+		51AE7EB0883844228500E14C /* BaiJamjuree-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4EABB56AA6934ED2991F6BB1 /* BaiJamjuree-Italic.ttf */; };
+		3E9484990AF04C238F2C437B /* BaiJamjuree-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D6C9B60BF8D141D89C6113EC /* BaiJamjuree-Light.ttf */; };
+		9FFC73D6218F46818DED1AE6 /* BaiJamjuree-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8F4803E37CCC43348FEDED73 /* BaiJamjuree-LightItalic.ttf */; };
+		8740690E75B8419FBC9BCFAC /* BaiJamjuree-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1BAEDC4478B04C24A55FF05E /* BaiJamjuree-Medium.ttf */; };
+		8DFC13A4678648FAB6661AF2 /* BaiJamjuree-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AB267E544E444A96BE7D081E /* BaiJamjuree-MediumItalic.ttf */; };
+		713BDE9BB2DE4B55A0006B53 /* BaiJamjuree-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A385771DA9C1481C81375C88 /* BaiJamjuree-Regular.ttf */; };
+		71B8BB62BAAF456A928F9D7D /* BaiJamjuree-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 11FB9D0F6A754FC3A1070797 /* BaiJamjuree-SemiBold.ttf */; };
+		F3165AB0608145D2B3923266 /* BaiJamjuree-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1826F79159E345B19E3914CE /* BaiJamjuree-SemiBoldItalic.ttf */; };
+		0452CAF622DB45A39A702378 /* Tajawal-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5499A5AF70394D3D9AF8B96C /* Tajawal-Black.ttf */; };
+		ECA42124E1804AE4A3E32DBD /* Tajawal-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 29853F071B084D25AECEAD27 /* Tajawal-Bold.ttf */; };
+		7D5488B2D02C4D15B8E84414 /* Tajawal-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 00500F2EC458441CAC19A3D8 /* Tajawal-ExtraBold.ttf */; };
+		75E50BB1106F45728FCF4755 /* Tajawal-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 23E554AF07164EA7BDBEA5E5 /* Tajawal-ExtraLight.ttf */; };
+		044BC73DC45444DE8F0A436A /* Tajawal-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 405985EC81314BF091527C22 /* Tajawal-Light.ttf */; };
+		E0FB4BA9C7374A3AA897B441 /* Tajawal-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B0FE05B7BEEC4A90A382A561 /* Tajawal-Medium.ttf */; };
+		805A10D5A6D840DE93A51C28 /* Tajawal-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6385979669E24A169D77AF61 /* Tajawal-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,18 +63,25 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Hubersity/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Hubersity-HubersityTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hubersity-HubersityTests.release.xcconfig"; path = "Target Support Files/Pods-Hubersity-HubersityTests/Pods-Hubersity-HubersityTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		91D43B61D9F740B98B48FD07 /* BaiJamjuree-Bold.ttf */ = {isa = PBXFileReference; name = "BaiJamjuree-Bold.ttf"; path = "../assets/fonts/BaiJamjuree-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		7E21C111AD294A35912A361C /* BaiJamjuree-BoldItalic.ttf */ = {isa = PBXFileReference; name = "BaiJamjuree-BoldItalic.ttf"; path = "../assets/fonts/BaiJamjuree-BoldItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		CD1256C9941945478A6F33A1 /* BaiJamjuree-ExtraLight.ttf */ = {isa = PBXFileReference; name = "BaiJamjuree-ExtraLight.ttf"; path = "../assets/fonts/BaiJamjuree-ExtraLight.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		682D5E8145614B7DAF93B876 /* BaiJamjuree-ExtraLightItalic.ttf */ = {isa = PBXFileReference; name = "BaiJamjuree-ExtraLightItalic.ttf"; path = "../assets/fonts/BaiJamjuree-ExtraLightItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		F86D493B5C59474791187B91 /* BaiJamjuree-Italic.ttf */ = {isa = PBXFileReference; name = "BaiJamjuree-Italic.ttf"; path = "../assets/fonts/BaiJamjuree-Italic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		62A504F99977462EAACCE671 /* BaiJamjuree-Light.ttf */ = {isa = PBXFileReference; name = "BaiJamjuree-Light.ttf"; path = "../assets/fonts/BaiJamjuree-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		176B7C43E5F54046B65306C0 /* BaiJamjuree-LightItalic.ttf */ = {isa = PBXFileReference; name = "BaiJamjuree-LightItalic.ttf"; path = "../assets/fonts/BaiJamjuree-LightItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		E90676ADD6CA4A369D586164 /* BaiJamjuree-Medium.ttf */ = {isa = PBXFileReference; name = "BaiJamjuree-Medium.ttf"; path = "../assets/fonts/BaiJamjuree-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		8925D52F1463423E94B1F804 /* BaiJamjuree-MediumItalic.ttf */ = {isa = PBXFileReference; name = "BaiJamjuree-MediumItalic.ttf"; path = "../assets/fonts/BaiJamjuree-MediumItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		B5DEE62DFF9A4E9A9C34CB07 /* BaiJamjuree-Regular.ttf */ = {isa = PBXFileReference; name = "BaiJamjuree-Regular.ttf"; path = "../assets/fonts/BaiJamjuree-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		5DD6623921654869961A1B30 /* BaiJamjuree-SemiBold.ttf */ = {isa = PBXFileReference; name = "BaiJamjuree-SemiBold.ttf"; path = "../assets/fonts/BaiJamjuree-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		786649BC602A4F368B303AA3 /* BaiJamjuree-SemiBoldItalic.ttf */ = {isa = PBXFileReference; name = "BaiJamjuree-SemiBoldItalic.ttf"; path = "../assets/fonts/BaiJamjuree-SemiBoldItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		8D2EA0CD07A44F01AFFEEF14 /* BaiJamjuree-Bold.ttf */ = {isa = PBXFileReference; name = "BaiJamjuree-Bold.ttf"; path = "../src/assets/fonts/BaiJamjuree-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		8C296497D0EA4121A8E732D1 /* BaiJamjuree-BoldItalic.ttf */ = {isa = PBXFileReference; name = "BaiJamjuree-BoldItalic.ttf"; path = "../src/assets/fonts/BaiJamjuree-BoldItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		89D714FD4CF1468C8E0DBBE2 /* BaiJamjuree-ExtraLight.ttf */ = {isa = PBXFileReference; name = "BaiJamjuree-ExtraLight.ttf"; path = "../src/assets/fonts/BaiJamjuree-ExtraLight.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		ACDC7F9F15D74AA3B7C3FAEB /* BaiJamjuree-ExtraLightItalic.ttf */ = {isa = PBXFileReference; name = "BaiJamjuree-ExtraLightItalic.ttf"; path = "../src/assets/fonts/BaiJamjuree-ExtraLightItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		4EABB56AA6934ED2991F6BB1 /* BaiJamjuree-Italic.ttf */ = {isa = PBXFileReference; name = "BaiJamjuree-Italic.ttf"; path = "../src/assets/fonts/BaiJamjuree-Italic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		D6C9B60BF8D141D89C6113EC /* BaiJamjuree-Light.ttf */ = {isa = PBXFileReference; name = "BaiJamjuree-Light.ttf"; path = "../src/assets/fonts/BaiJamjuree-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		8F4803E37CCC43348FEDED73 /* BaiJamjuree-LightItalic.ttf */ = {isa = PBXFileReference; name = "BaiJamjuree-LightItalic.ttf"; path = "../src/assets/fonts/BaiJamjuree-LightItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		1BAEDC4478B04C24A55FF05E /* BaiJamjuree-Medium.ttf */ = {isa = PBXFileReference; name = "BaiJamjuree-Medium.ttf"; path = "../src/assets/fonts/BaiJamjuree-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		AB267E544E444A96BE7D081E /* BaiJamjuree-MediumItalic.ttf */ = {isa = PBXFileReference; name = "BaiJamjuree-MediumItalic.ttf"; path = "../src/assets/fonts/BaiJamjuree-MediumItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A385771DA9C1481C81375C88 /* BaiJamjuree-Regular.ttf */ = {isa = PBXFileReference; name = "BaiJamjuree-Regular.ttf"; path = "../src/assets/fonts/BaiJamjuree-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		11FB9D0F6A754FC3A1070797 /* BaiJamjuree-SemiBold.ttf */ = {isa = PBXFileReference; name = "BaiJamjuree-SemiBold.ttf"; path = "../src/assets/fonts/BaiJamjuree-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		1826F79159E345B19E3914CE /* BaiJamjuree-SemiBoldItalic.ttf */ = {isa = PBXFileReference; name = "BaiJamjuree-SemiBoldItalic.ttf"; path = "../src/assets/fonts/BaiJamjuree-SemiBoldItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		5499A5AF70394D3D9AF8B96C /* Tajawal-Black.ttf */ = {isa = PBXFileReference; name = "Tajawal-Black.ttf"; path = "../src/assets/fonts/Tajawal-Black.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		29853F071B084D25AECEAD27 /* Tajawal-Bold.ttf */ = {isa = PBXFileReference; name = "Tajawal-Bold.ttf"; path = "../src/assets/fonts/Tajawal-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		00500F2EC458441CAC19A3D8 /* Tajawal-ExtraBold.ttf */ = {isa = PBXFileReference; name = "Tajawal-ExtraBold.ttf"; path = "../src/assets/fonts/Tajawal-ExtraBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		23E554AF07164EA7BDBEA5E5 /* Tajawal-ExtraLight.ttf */ = {isa = PBXFileReference; name = "Tajawal-ExtraLight.ttf"; path = "../src/assets/fonts/Tajawal-ExtraLight.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		405985EC81314BF091527C22 /* Tajawal-Light.ttf */ = {isa = PBXFileReference; name = "Tajawal-Light.ttf"; path = "../src/assets/fonts/Tajawal-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		B0FE05B7BEEC4A90A382A561 /* Tajawal-Medium.ttf */ = {isa = PBXFileReference; name = "Tajawal-Medium.ttf"; path = "../src/assets/fonts/Tajawal-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		6385979669E24A169D77AF61 /* Tajawal-Regular.ttf */ = {isa = PBXFileReference; name = "Tajawal-Regular.ttf"; path = "../src/assets/fonts/Tajawal-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,18 +190,25 @@
 		48C0F2D0BF9146518AABAB4D /* Resources */ = {
 			isa = "PBXGroup";
 			children = (
-				91D43B61D9F740B98B48FD07 /* BaiJamjuree-Bold.ttf */,
-				7E21C111AD294A35912A361C /* BaiJamjuree-BoldItalic.ttf */,
-				CD1256C9941945478A6F33A1 /* BaiJamjuree-ExtraLight.ttf */,
-				682D5E8145614B7DAF93B876 /* BaiJamjuree-ExtraLightItalic.ttf */,
-				F86D493B5C59474791187B91 /* BaiJamjuree-Italic.ttf */,
-				62A504F99977462EAACCE671 /* BaiJamjuree-Light.ttf */,
-				176B7C43E5F54046B65306C0 /* BaiJamjuree-LightItalic.ttf */,
-				E90676ADD6CA4A369D586164 /* BaiJamjuree-Medium.ttf */,
-				8925D52F1463423E94B1F804 /* BaiJamjuree-MediumItalic.ttf */,
-				B5DEE62DFF9A4E9A9C34CB07 /* BaiJamjuree-Regular.ttf */,
-				5DD6623921654869961A1B30 /* BaiJamjuree-SemiBold.ttf */,
-				786649BC602A4F368B303AA3 /* BaiJamjuree-SemiBoldItalic.ttf */,
+				8D2EA0CD07A44F01AFFEEF14 /* BaiJamjuree-Bold.ttf */,
+				8C296497D0EA4121A8E732D1 /* BaiJamjuree-BoldItalic.ttf */,
+				89D714FD4CF1468C8E0DBBE2 /* BaiJamjuree-ExtraLight.ttf */,
+				ACDC7F9F15D74AA3B7C3FAEB /* BaiJamjuree-ExtraLightItalic.ttf */,
+				4EABB56AA6934ED2991F6BB1 /* BaiJamjuree-Italic.ttf */,
+				D6C9B60BF8D141D89C6113EC /* BaiJamjuree-Light.ttf */,
+				8F4803E37CCC43348FEDED73 /* BaiJamjuree-LightItalic.ttf */,
+				1BAEDC4478B04C24A55FF05E /* BaiJamjuree-Medium.ttf */,
+				AB267E544E444A96BE7D081E /* BaiJamjuree-MediumItalic.ttf */,
+				A385771DA9C1481C81375C88 /* BaiJamjuree-Regular.ttf */,
+				11FB9D0F6A754FC3A1070797 /* BaiJamjuree-SemiBold.ttf */,
+				1826F79159E345B19E3914CE /* BaiJamjuree-SemiBoldItalic.ttf */,
+				5499A5AF70394D3D9AF8B96C /* Tajawal-Black.ttf */,
+				29853F071B084D25AECEAD27 /* Tajawal-Bold.ttf */,
+				00500F2EC458441CAC19A3D8 /* Tajawal-ExtraBold.ttf */,
+				23E554AF07164EA7BDBEA5E5 /* Tajawal-ExtraLight.ttf */,
+				405985EC81314BF091527C22 /* Tajawal-Light.ttf */,
+				B0FE05B7BEEC4A90A382A561 /* Tajawal-Medium.ttf */,
+				6385979669E24A169D77AF61 /* Tajawal-Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -288,18 +309,25 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				02FED7F3ACFE433FBB63F416 /* BaiJamjuree-Bold.ttf in Resources */,
-				5E185FA0984A4885A30F4054 /* BaiJamjuree-BoldItalic.ttf in Resources */,
-				52C3AFAF57B64A79A1D8C2ED /* BaiJamjuree-ExtraLight.ttf in Resources */,
-				03DEA168AEDE4E1C90BD9CCC /* BaiJamjuree-ExtraLightItalic.ttf in Resources */,
-				6D3F29A4C7C648A4AF30E2C5 /* BaiJamjuree-Italic.ttf in Resources */,
-				0F11111BF5634DA188A841D3 /* BaiJamjuree-Light.ttf in Resources */,
-				F32072A70E2A4E228EED2679 /* BaiJamjuree-LightItalic.ttf in Resources */,
-				9183AFBD05274720867C8C11 /* BaiJamjuree-Medium.ttf in Resources */,
-				877E3464CB8C444EB82982C8 /* BaiJamjuree-MediumItalic.ttf in Resources */,
-				F080109616F24F0EAAAEAE1A /* BaiJamjuree-Regular.ttf in Resources */,
-				9F8D3EE1CE8D4EA6952FDA90 /* BaiJamjuree-SemiBold.ttf in Resources */,
-				E1784A6CF3A543D894C94D38 /* BaiJamjuree-SemiBoldItalic.ttf in Resources */,
+				900E20C77383484DB7BFAB94 /* BaiJamjuree-Bold.ttf in Resources */,
+				1EA8600FF8F04A5C9C7D2DF3 /* BaiJamjuree-BoldItalic.ttf in Resources */,
+				20ED0DCA61874944AE5A1A06 /* BaiJamjuree-ExtraLight.ttf in Resources */,
+				8102E41FA7654CEF8B0602F6 /* BaiJamjuree-ExtraLightItalic.ttf in Resources */,
+				51AE7EB0883844228500E14C /* BaiJamjuree-Italic.ttf in Resources */,
+				3E9484990AF04C238F2C437B /* BaiJamjuree-Light.ttf in Resources */,
+				9FFC73D6218F46818DED1AE6 /* BaiJamjuree-LightItalic.ttf in Resources */,
+				8740690E75B8419FBC9BCFAC /* BaiJamjuree-Medium.ttf in Resources */,
+				8DFC13A4678648FAB6661AF2 /* BaiJamjuree-MediumItalic.ttf in Resources */,
+				713BDE9BB2DE4B55A0006B53 /* BaiJamjuree-Regular.ttf in Resources */,
+				71B8BB62BAAF456A928F9D7D /* BaiJamjuree-SemiBold.ttf in Resources */,
+				F3165AB0608145D2B3923266 /* BaiJamjuree-SemiBoldItalic.ttf in Resources */,
+				0452CAF622DB45A39A702378 /* Tajawal-Black.ttf in Resources */,
+				ECA42124E1804AE4A3E32DBD /* Tajawal-Bold.ttf in Resources */,
+				7D5488B2D02C4D15B8E84414 /* Tajawal-ExtraBold.ttf in Resources */,
+				75E50BB1106F45728FCF4755 /* Tajawal-ExtraLight.ttf in Resources */,
+				044BC73DC45444DE8F0A436A /* Tajawal-Light.ttf in Resources */,
+				E0FB4BA9C7374A3AA897B441 /* Tajawal-Medium.ttf in Resources */,
+				805A10D5A6D840DE93A51C28 /* Tajawal-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

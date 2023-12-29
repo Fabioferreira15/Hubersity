@@ -9,6 +9,7 @@ import {
 import Background from '../../assets/Home/backgorund.svg';
 import BtnSvg from '../../assets/Home/btn.svg';
 import BtnInvertedSvg from '../../assets/Home/btnInverted.svg';
+import LottieView from 'lottie-react-native';
 
 const HomeCantina = ({navigation}) => {
   return (
@@ -22,6 +23,8 @@ const HomeCantina = ({navigation}) => {
             <Text style={styles.txt}>Cantina</Text>
           </View>
         </View>
+        
+
         <View style={styles.main}>
           <TouchableOpacity
             onPress={() => navigation.navigate('Ementas')}
@@ -48,9 +51,7 @@ const HomeCantina = ({navigation}) => {
           <TouchableOpacity
             onPress={() => navigation.navigate('MarcacoesPendentes')}
             style={styles.btn}>
-            <Text style={[styles.btnTxt, styles.historicoTxt]}>
-              Histórico
-            </Text>
+            <Text style={[styles.btnTxt, styles.historicoTxt]}>Histórico</Text>
             <BtnSvg width={300} height={131} />
           </TouchableOpacity>
         </View>
@@ -62,6 +63,7 @@ const HomeCantina = ({navigation}) => {
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
+    paddingBottom: '15%',
   },
   container: {
     flex: 1,
@@ -110,6 +112,11 @@ const styles = StyleSheet.create({
   },
   historicoTxt: {
     paddingLeft: '25%',
+  },
+  ani: {
+    height: "10%",
+    borderWidth: 1,
+    position: 'fixed',
   },
 });
 

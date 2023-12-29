@@ -26,7 +26,7 @@ const Main = ({navigation}) => {
       initialRouteName="Home"
       screenOptions={{
         headerShown: false,
-        tabBarStyle: {backgroundColor: '#7F8BF3', height: 80},
+        tabBarStyle: {backgroundColor: '#7F8BF3',height: 60,position:'absolute'},
         tabBarActiveTintColor: '#212529',
         tabBarInactiveTintColor: '#212529',
       }}>
@@ -39,9 +39,9 @@ const Main = ({navigation}) => {
           ),
           tabBarIcon: ({focused}) =>
             focused ? (
-              <CantinaActiveSvg width={48} height={48} />
+              <CantinaActiveSvg width={30} height={30} />
             ) : (
-              <CantinaSvg width={48} height={48} />
+              <CantinaSvg width={30} height={30} />
             ),
         }}
       />
@@ -54,9 +54,9 @@ const Main = ({navigation}) => {
           ),
           tabBarIcon: ({focused}) =>
             focused ? (
-              <BarActiveSvg width={48} height={48} />
+              <BarActiveSvg width={30} height={30} />
             ) : (
-              <BarSvg width={48} height={48} />
+              <BarSvg width={30} height={30} />
             ),
         }}
       />
@@ -69,9 +69,9 @@ const Main = ({navigation}) => {
           ),
           tabBarIcon: ({focused}) =>
             focused ? (
-              <HomeActiveSvg width={48} height={48} />
+              <HomeActiveSvg width={30} height={30} />
             ) : (
-              <HomeSvg width={48} height={48} />
+              <HomeSvg width={30} height={30} />
             ),
         }}
       />
@@ -84,9 +84,9 @@ const Main = ({navigation}) => {
           ),
           tabBarIcon: ({focused}) =>
             focused ? (
-              <RoletaActiveSvg width={48} height={48} />
+              <RoletaActiveSvg width={30} height={30} />
             ) : (
-              <RoletaSvg width={48} height={48} />
+              <RoletaSvg width={30} height={30} />
             ),
         }}
       />
@@ -99,9 +99,9 @@ const Main = ({navigation}) => {
           ),
           tabBarIcon: ({focused}) =>
             focused ? (
-              <PerfilActiveSvg width={48} height={48} />
+              <PerfilActiveSvg width={30} height={30} />
             ) : (
-              <PerfilSvg width={48} height={48} />
+              <PerfilSvg width={30} height={30} />
             ),
         }}
       />
