@@ -95,56 +95,64 @@ const Ementas = ({navigation}) => {
         )}
         <Text></Text>
         <Text style={styles.title2}>ALMOÇO</Text>
-        <View style={styles.tabela}>
-          <View style={[styles.linha, {backgroundColor: '#4D59C7'}]}>
-            <View style={styles.celula}>
-              <Text style={styles.tituloTabela}>Menu</Text>
-            </View>
-            <View style={styles.celula}>
-              <Text style={styles.tituloTabela}>Prato</Text>
-            </View>
-          </View>
-          {ementas
-            .filter(refeicao => refeicao.Periodo === 'Almoço')
-            .map(refeicao => (
-              <View
-                key={refeicao.IdRefeicao}
-                style={[styles.linha, {backgroundColor: '#BFC5F9'}]}>
-                <View style={styles.celula}>
-                  <Text>{refeicao.TipoPrato}</Text>
-                </View>
-                <View style={styles.celula}>
-                  <Text>{refeicao.Nome}</Text>
-                </View>
+        {ementas.length > 0 ? (
+          <View style={styles.tabela}>
+            <View style={[styles.linha, {backgroundColor: '#4D59C7'}]}>
+              <View style={styles.celula}>
+                <Text style={styles.tituloTabela}>Menu</Text>
               </View>
-            ))}
-        </View>
+              <View style={styles.celula}>
+                <Text style={styles.tituloTabela}>Prato</Text>
+              </View>
+            </View>
+            {ementas
+              .filter(refeicao => refeicao.Periodo === 'Almoço')
+              .map(refeicao => (
+                <View
+                  key={refeicao.IdRefeicao}
+                  style={[styles.linha, {backgroundColor: '#BFC5F9'}]}>
+                  <View style={styles.celula}>
+                    <Text>{refeicao.TipoPrato}</Text>
+                  </View>
+                  <View style={styles.celula}>
+                    <Text>{refeicao.Nome}</Text>
+                  </View>
+                </View>
+              ))}
+          </View>
+        ) : (
+          <Text>Não há ementas disponíveis.</Text>
+        )}
         <Text></Text>
         <Text style={styles.title2}>JANTAR</Text>
-        <View style={styles.tabela}>
-          <View style={[styles.linha, {backgroundColor: '#4D59C7'}]}>
-            <View style={styles.celula}>
-              <Text style={styles.tituloTabela}>Menu</Text>
-            </View>
-            <View style={styles.celula}>
-              <Text style={styles.tituloTabela}>Prato</Text>
-            </View>
-          </View>
-          {ementas
-            .filter(refeicao => refeicao.Periodo === 'Jantar')
-            .map(refeicao => (
-              <View
-                key={refeicao.IdRefeicao}
-                style={[styles.linha, {backgroundColor: '#BFC5F9'}]}>
-                <View style={styles.celula}>
-                  <Text>{refeicao.TipoPrato}</Text>
-                </View>
-                <View style={styles.celula}>
-                  <Text>{refeicao.Nome}</Text>
-                </View>
+        {ementas.length > 0 ? (
+          <View style={styles.tabela}>
+            <View style={[styles.linha, {backgroundColor: '#4D59C7'}]}>
+              <View style={styles.celula}>
+                <Text style={styles.tituloTabela}>Menu</Text>
               </View>
-            ))}
-        </View>
+              <View style={styles.celula}>
+                <Text style={styles.tituloTabela}>Prato</Text>
+              </View>
+            </View>
+            {ementas
+              .filter(refeicao => refeicao.Periodo === 'Jantar')
+              .map(refeicao => (
+                <View
+                  key={refeicao.IdRefeicao}
+                  style={[styles.linha, {backgroundColor: '#BFC5F9'}]}>
+                  <View style={styles.celula}>
+                    <Text>{refeicao.TipoPrato}</Text>
+                  </View>
+                  <View style={styles.celula}>
+                    <Text>{refeicao.Nome}</Text>
+                  </View>
+                </View>
+              ))}
+          </View>
+        ) : (
+          <Text>Não há ementas disponíveis.</Text>
+        )}
       </View>
     </ScrollView>
   );

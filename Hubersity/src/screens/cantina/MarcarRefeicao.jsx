@@ -4,9 +4,11 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   Image,
   FlatList,
   ScrollView,
+  Alert,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -20,6 +22,7 @@ const Ementas = ({navigation}) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [token, setToken] = useState('');
   const [periodo, setPeriodo] = useState('Almoço');
+  const [refeicaoSelecionada, setRefeicaoSelecionada] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,6 +67,7 @@ const Ementas = ({navigation}) => {
       ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
       setData(new Date(formattedDate));
+      setRefeicaoSelecionada(null);
     }
     setShowDatePicker(false);
   };
@@ -96,43 +100,85 @@ const Ementas = ({navigation}) => {
         <Text></Text>
         <Text style={styles.title3}>Refeição</Text>
         <Dropdown
-          data={[
-            {value: 'Almoço'},
-            {value: 'Jantar'},
-          ]}
+          data={[{value: 'Almoço'}, {value: 'Jantar'}]}
           labelField="value"
           valueField="value"
           placeholder="Seleciona uma refeição"
           containerStyle={{width: 200}}
           onChange={item => {
             setPeriodo(item.value);
+            setRefeicaoSelecionada(null);
           }}
         />
         <Text style={styles.title2}>{periodo}</Text>
-        <View style={styles.tabela}>
-          <View style={[styles.linha, {backgroundColor: '#4D59C7'}]}>
-            <View style={styles.celula}>
-              <Text style={styles.tituloTabela}>Preço</Text>
-            </View>
-            <View style={styles.celula}>
-              <Text style={styles.tituloTabela}>Prato</Text>
-            </View>
-          </View>
-          {ementas
-            .filter(refeicao => refeicao.Periodo === periodo)
-            .map(refeicao => (
-              <View
-                key={refeicao.IdRefeicao}
-                style={[styles.linha, {backgroundColor: '#BFC5F9'}]}>
-                <View style={styles.celula}>
-                  <Text>{refeicao.Preco}€</Text>
-                </View>
-                <View style={styles.celula}>
-                  <Text>{refeicao.Nome}</Text>
-                </View>
+        {ementas.filter(refeicao => refeicao.Periodo === periodo).length >
+          0 && (
+          <View style={styles.tabela}>
+            <View style={[styles.linha, {backgroundColor: '#4D59C7'}]}>
+              <View style={styles.celula}>
+                <Text style={styles.tituloTabela}>Preço</Text>
               </View>
-            ))}
-        </View>
+              <View style={styles.celula}>
+                <Text style={styles.tituloTabela}>Prato</Text>
+              </View>
+            </View>
+            {ementas
+              .filter(refeicao => refeicao.Periodo === periodo)
+              .map(refeicao => (
+                <View
+                  key={refeicao.IdRefeicao}
+                  style={[styles.linha, {backgroundColor: '#BFC5F9'}]}>
+                  <View style={styles.celula}>
+                    <Text>{refeicao.Preco}€</Text>
+                  </View>
+                  <View style={[styles.celula, styles.selectContainer]}>
+                    <Text>{refeicao.Nome}</Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setRefeicaoSelecionada(refeicao);
+                      }}
+                      style={styles.select}>
+                      <View
+                        style={[
+                          styles.selectDot,
+                          refeicao === refeicaoSelecionada &&
+                            styles.selectedDot,
+                        ]}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ))}
+          </View>
+        )}
+        {ementas.filter(refeicao => refeicao.Periodo === periodo).length ===
+          0 && (
+          <Text style={styles.noRefeicoesText}>
+            Não há refeições disponíveis.
+          </Text>
+        )}
+        <TouchableOpacity
+          style={[
+            styles.button,
+            refeicaoSelecionada === null && {opacity: 0.7},
+          ]}
+          disabled={refeicaoSelecionada === null}
+          onPress={()=>{
+            Alert.alert(`Marcar refeição ${refeicaoSelecionada.Nome}`)
+          }}>
+          <Text style={styles.tituloTabela}>
+            Marcar Refeição
+            {refeicaoSelecionada ? ` | ${refeicaoSelecionada.Preco}€` : ''}
+          </Text>
+        </TouchableOpacity>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            Alert.alert('Adicionar outro método de pagamento')
+          }}>
+          <Text style={styles.title2}>
+            + Adicionar outro método de pagamento
+          </Text>
+        </TouchableWithoutFeedback>
       </View>
     </ScrollView>
   );
@@ -200,6 +246,33 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'white',
     padding: 5,
+  },
+  selectContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 10,
+  },
+  select: {
+    marginLeft: 5,
+  },
+  selectDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: 'white',
+  },
+  selectedDot: {
+    backgroundColor: 'black',
+  },
+  noRefeicoesText: {
+    marginTop: 20,
+    fontSize: 16,
+  },
+  button: {
+    backgroundColor: '#4D59C7',
+    borderRadius: 5,
+    padding: 10,
+    marginTop: 20,
   },
 });
 
