@@ -240,6 +240,12 @@ exports.obterMarcacoesPendentes = async (req, res) => {
   try {
     let auth = utilities.verifyToken(req.headers.authorization);
 
+    if (!auth || auth.id != req.params.id) {
+      return res.status(401).send({
+        message: "Não autorizado.",
+      });
+    }
+
     const userId = parseInt(req.params.id);
 
     const marcacoes = await MarcacaoCantina.findAll({
@@ -247,9 +253,15 @@ exports.obterMarcacoesPendentes = async (req, res) => {
         UserId: userId,
         status: "Pendente",
       },
+      include: [
+        {
+          model: RefeicaoCantina,
+          attributes: ["IdRefeicao", "Nome", "TipoPrato", "Data","Periodo"],
+        },
+      ],
     });
 
-    if (!marcacoes) {
+    if (!marcacoes || marcacoes.length === 0) {
       return res.status(400).send({
         message: "Não tem marcações pendentes!",
       });

@@ -35,6 +35,7 @@ const Ementas = ({navigation}) => {
         const responseData = await response.json();
         setEmentas(responseData.refeicoes);
         console.log(responseData.refeicoes);
+        console.log(`ementas: ${ementas}`);
       } catch (error) {
         console.error(error);
       }
