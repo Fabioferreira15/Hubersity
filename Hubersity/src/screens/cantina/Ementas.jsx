@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  ScrollView,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -16,24 +17,36 @@ const Ementas = ({navigation}) => {
   const [ementas, setEmentas] = useState([]);
   const [data, setData] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [token, setToken] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = await AsyncStorage.getItem('token');
+        const storedToken = await AsyncStorage.getItem('token');
 
-        if (!token) {
+        if (!storedToken) {
           console.error('Sem token');
           return;
         }
 
-        const response = await fetch(`http://${IP}:3000/cantina/refeicoes`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
+        setToken(storedToken);
+
+        const formattedDate = `${data.getFullYear()}-${String(
+          data.getMonth() + 1,
+        ).padStart(2, '0')}-${String(data.getDate()).padStart(2, '0')}`;
+
+        const dataURL = encodeURIComponent(formattedDate);
+
+        const response = await fetch(
+          `http://${IP}:3000/cantina/refeicoes?data=${dataURL}`,
+          {
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+            },
           },
-        });
+        );
         const responseData = await response.json();
-        setEmentas(responseData.refeicoes);
+        setEmentas(responseData.refeicoes || []);
         console.log(responseData.refeicoes);
         console.log(`ementas: ${ementas}`);
       } catch (error) {
@@ -42,7 +55,7 @@ const Ementas = ({navigation}) => {
     };
 
     fetchData();
-  }, []);
+  }, [data, token]);
 
   const handleDateChange = (event, date) => {
     if (date !== undefined && event.type === 'set') {
@@ -51,7 +64,6 @@ const Ementas = ({navigation}) => {
       ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
       setData(new Date(formattedDate));
-      console.log(formattedDate);
     }
     setShowDatePicker(false);
   };
@@ -60,66 +72,96 @@ const Ementas = ({navigation}) => {
     setShowDatePicker(true);
   };
 
-  const filtrarRefeicoesPorData = () => {
-    return ementas.filter(refeicao => {
-      const dataRefeicao = new Date(refeicao.Data);
-      return (
-        dataRefeicao.getDate() === data.getDate() &&
-        dataRefeicao.getMonth() === data.getMonth() &&
-        dataRefeicao.getFullYear() === data.getFullYear()
-      );
-    });
-  };
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Ementas</Text>
-      <Text style={styles.title3}>Data</Text>
-      <TouchableOpacity
-        style={styles.inputButton}
-        onPress={showDatePickerComponent}>
-        <Text style={styles.inputButtonText}>
-          {data && data.toLocaleDateString()}
-        </Text>
-        <CalendarioSvg style={styles.icon} />
-      </TouchableOpacity>
-      {showDatePicker && (
-        <DateTimePicker
-          value={data}
-          mode="date"
-          display="default"
-          onChange={handleDateChange}
-        />
-      )}
-      <Text></Text>
-      <Text style={styles.title2}>ALMOÇO</Text>
-      <View style={styles.tabela}>
-        <View style={[styles.linha, {backgroundColor: '#4D59C7'}]}>
-          <View style={styles.celula}>
-            <Text style={styles.tituloTabela}>Menu</Text>
-          </View>
-          <View style={styles.celula}>
-            <Text style={styles.tituloTabela}>Prato</Text>
-          </View>
-        </View>
-        {filtrarRefeicoesPorData().map(refeicao => (
-          <View
-            key={refeicao.IdRefeicao}
-            style={[styles.linha, {backgroundColor: '#BFC5F9'}]}>
-            <View style={styles.celula}>
-              <Text>{refeicao.TipoPrato}</Text>
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Ementas</Text>
+        <Text style={styles.title3}>Data</Text>
+        <TouchableOpacity
+          style={styles.inputButton}
+          onPress={showDatePickerComponent}>
+          <Text style={styles.inputButtonText}>
+            {data && data.toLocaleDateString()}
+          </Text>
+          <CalendarioSvg style={styles.icon} />
+        </TouchableOpacity>
+        {showDatePicker && (
+          <DateTimePicker
+            value={data}
+            mode="date"
+            display="default"
+            onChange={handleDateChange}
+          />
+        )}
+        <Text></Text>
+        <Text style={styles.title2}>ALMOÇO</Text>
+        {ementas.length > 0 ? (
+          <View style={styles.tabela}>
+            <View style={[styles.linha, {backgroundColor: '#4D59C7'}]}>
+              <View style={styles.celula}>
+                <Text style={styles.tituloTabela}>Menu</Text>
+              </View>
+              <View style={styles.celula}>
+                <Text style={styles.tituloTabela}>Prato</Text>
+              </View>
             </View>
-            <View style={styles.celula}>
-              <Text>{refeicao.Nome}</Text>
-            </View>
+            {ementas
+              .filter(refeicao => refeicao.Periodo === 'Almoço')
+              .map(refeicao => (
+                <View
+                  key={refeicao.IdRefeicao}
+                  style={[styles.linha, {backgroundColor: '#BFC5F9'}]}>
+                  <View style={styles.celula}>
+                    <Text>{refeicao.TipoPrato}</Text>
+                  </View>
+                  <View style={styles.celula}>
+                    <Text>{refeicao.Nome}</Text>
+                  </View>
+                </View>
+              ))}
           </View>
-        ))}
+        ) : (
+          <Text>Não há ementas disponíveis.</Text>
+        )}
+        <Text></Text>
+        <Text style={styles.title2}>JANTAR</Text>
+        {ementas.length > 0 ? (
+          <View style={styles.tabela}>
+            <View style={[styles.linha, {backgroundColor: '#4D59C7'}]}>
+              <View style={styles.celula}>
+                <Text style={styles.tituloTabela}>Menu</Text>
+              </View>
+              <View style={styles.celula}>
+                <Text style={styles.tituloTabela}>Prato</Text>
+              </View>
+            </View>
+            {ementas
+              .filter(refeicao => refeicao.Periodo === 'Jantar')
+              .map(refeicao => (
+                <View
+                  key={refeicao.IdRefeicao}
+                  style={[styles.linha, {backgroundColor: '#BFC5F9'}]}>
+                  <View style={styles.celula}>
+                    <Text>{refeicao.TipoPrato}</Text>
+                  </View>
+                  <View style={styles.celula}>
+                    <Text>{refeicao.Nome}</Text>
+                  </View>
+                </View>
+              ))}
+          </View>
+        ) : (
+          <Text>Não há ementas disponíveis.</Text>
+        )}
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+  },
   container: {
     flex: 1,
     alignItems: 'center',
