@@ -29,7 +29,7 @@ const AuthProvider = ({children}) => {
         setUserInfo(data.UserInfo);
         setUserToken(data.token);
         AsyncStorage.setItem('token', data.token);
-        AsyncStorage.setItem('id', data.UserInfo.UserId);
+        AsyncStorage.setItem('id', data.UserInfo.UserId.toString());
         AsyncStorage.setItem('nome', data.UserInfo.nome);
         AsyncStorage.setItem('image', data.UserInfo.imgPerfil);
         setIsLoading(false);
