@@ -54,7 +54,9 @@ const Perfil = () => {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
+    <ScrollView
+      contentContainerStyle={styles.scrollContainer}
+      style={{flex: 1, flexGrow: 1}}>
       <Image source={{uri: perfilInfo.imgCapa}} style={styles.capaImage} />
       <View style={styles.overlayContainer}>
         <Image
@@ -66,12 +68,25 @@ const Perfil = () => {
         <View style={styles.pontosContainer}>
           <Text>{perfilInfo.pontos} pontos</Text>
         </View>
-        <PrimaryBtn
-          text="Logout"
-          onPress={() => {
-            logout();
+        <View style={styles.botaoLogout}>
+          <PrimaryBtn
+            text="Logout"
+            onPress={() => {
+              logout();
+            }}
+          />
+        </View>
+        <Text style={[styles.title, {textDecorationLine: 'underline'}]}>
+          Parque de Estacionamento
+        </Text>
+        <Image
+          source={{
+            uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Link_pra_pagina_principal_da_Wikipedia-PT_em_codigo_QR_b.svg/420px-Link_pra_pagina_principal_da_Wikipedia-PT_em_codigo_QR_b.svg.png',
           }}
+          style={styles.qrCode}
         />
+        <Text style={{marginTop: '-10%'}}>Válido até 31/01/2024</Text>
+        <Text style={styles.title}>Formas de pagamento</Text>
       </View>
     </ScrollView>
   );
@@ -82,6 +97,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingBottom: '15%',
   },
+
   capaImage: {
     width: '100%',
     height: 200,
@@ -132,6 +148,18 @@ const styles = StyleSheet.create({
     padding: 5,
     marginTop: 10,
     marginBottom: 20,
+  },
+  botaoLogout: {
+    position: 'absolute',
+    top: '-50%',
+    right: 0,
+    marginRight: '5%',
+  },
+  qrCode: {
+    width: '50%',
+    height: '50%',
+    resizeMode: 'contain',
+    marginTop: '-10%',
   },
 });
 
