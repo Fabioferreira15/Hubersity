@@ -112,7 +112,9 @@ const Ementas = ({navigation}) => {
                   key={refeicao.IdRefeicao}
                   style={[styles.linha, {backgroundColor: '#BFC5F9'}]}>
                   <View style={styles.celula}>
-                    <Text>{refeicao.TipoPrato}</Text>
+                    <Text style={{fontWeight: 'bold'}}>
+                      {refeicao.TipoPrato}
+                    </Text>
                   </View>
                   <View style={styles.celula}>
                     <Text>{refeicao.Nome}</Text>
@@ -142,7 +144,9 @@ const Ementas = ({navigation}) => {
                   key={refeicao.IdRefeicao}
                   style={[styles.linha, {backgroundColor: '#BFC5F9'}]}>
                   <View style={styles.celula}>
-                    <Text>{refeicao.TipoPrato}</Text>
+                    <Text style={{fontWeight: 'bold'}}>
+                      {refeicao.TipoPrato}
+                    </Text>
                   </View>
                   <View style={styles.celula}>
                     <Text>{refeicao.Nome}</Text>
@@ -161,6 +165,7 @@ const Ementas = ({navigation}) => {
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
+    paddingBottom: '15%',
   },
   container: {
     flex: 1,
