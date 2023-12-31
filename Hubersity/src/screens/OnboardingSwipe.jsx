@@ -71,7 +71,7 @@ const Onboarding = ({navigation}) => {
                 onPress={handleNext}
                 text="Próximo"
                 paddingHorizontal={59}
-                paddingVertical={10}
+                paddingVertical={5}
                 borderRadius={10}
               />
             </View>
@@ -108,7 +108,7 @@ const Onboarding = ({navigation}) => {
                 onPress={handleNext}
                 text="Próximo"
                 paddingHorizontal={59}
-                paddingVertical={10}
+                paddingVertical={5}
                 borderRadius={10}
               />
             </View>
@@ -145,7 +145,7 @@ const Onboarding = ({navigation}) => {
                 onPress={handleNext}
                 text="Próximo"
                 paddingHorizontal={59}
-                paddingVertical={10}
+                paddingVertical={5}
                 borderRadius={10}
               />
             </View>
@@ -217,10 +217,9 @@ const styles = StyleSheet.create({
   title: {
     color: '#F8F9FA',
     fontSize: 20,
-    width: '100%',
+    width: '95%',
     textAlign: 'center',
-    fontFamily: 'BaiJamjuree',
-    fontWeight: 'bold',
+    fontFamily: 'BaiJamjuree-Bold',
   },
   text: {
     color: '#F8F9FA',
@@ -228,9 +227,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
     marginHorizontal: 20,
-  },
-  txt: {
-    textDecorationLine: 'underline',
+    fontFamily: 'Tajawal-Regular',
+    width: '95%',
   },
   primaryBtn: {
     alignItems: 'center',

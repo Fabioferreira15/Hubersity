@@ -6,6 +6,7 @@ const PrimaryBtn = ({
   paddingHorizontal,
   paddingVertical,
   borderRadius,
+  underlayColor
 }) => {
   const buttonStyles = [
     styles.primaryBtn,
@@ -17,7 +18,7 @@ const PrimaryBtn = ({
   ];
 
   return (
-    <TouchableHighlight onPress={onPress} style={buttonStyles}>
+    <TouchableHighlight onPress={onPress} style={buttonStyles} underlayColor={ underlayColor || '#C7AC4D'}>
       <Text style={styles.primaryBtnTxt}>{text}</Text>
     </TouchableHighlight>
   );
@@ -31,8 +32,7 @@ const styles = StyleSheet.create({
   primaryBtnTxt: {
     color: '#151C4D',
     fontSize: 17,
-    fontFamily: 'BaiJamjuree',
-    fontWeight: 'bold',
+    fontFamily: 'BaiJamjuree-Bold',
   },
 });
 

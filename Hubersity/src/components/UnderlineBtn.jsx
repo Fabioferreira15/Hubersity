@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
   Txt: {
     color: '#F8F9FA',
     textDecorationLine: 'underline',
+    fontFamily: 'BaiJamjuree-Bold',
   },
 });
 
