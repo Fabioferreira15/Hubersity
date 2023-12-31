@@ -6,6 +6,7 @@ const MarcacaoCantina =
   require("../models/marcacaoCantina.model").MarcacaoCantina;
 const Pagamento = require("../models/pagamento.model").Pagamento;
 const utilities = require("../utilities/utilities");
+const QrCode = require("qrcode");
 
 //criar refeições na cantina
 exports.criarRefeicaoCantina = async function (req, res) {
@@ -116,6 +117,15 @@ exports.pagamentoMarcacao = async (req, res) => {
     }
 
     const userId = parseInt(req.params.id);
+
+
+    //procurar utilizador
+    const utilizador = await Utilizadores.findOne({
+      where: {
+        UserId: userId,
+      },
+    });
+
     const { IdRefeicao, Valor } = req.body;
 
     if (!IdRefeicao || !Valor) {
@@ -158,13 +168,25 @@ exports.pagamentoMarcacao = async (req, res) => {
       Data: new Date(),
     });
 
+    //gerar qrcode
+    const qrData ={
+      Utilizador: utilizador.nome,
+      status: "Pendente",
+      Refeição: refeicaoExistente.TipoPrato,
+      Prato: refeicaoExistente.Nome,
+      data: refeicaoExistente.Data,
+
+    }
+
+    const qrCode = await QrCode.toDataURL(JSON.stringify(qrData));
+
     //criar marcacao
     const marcacao = await MarcacaoCantina.create({
       IdRefeicao: IdRefeicao,
       UserId: userId,
       IdPagamento: pagamento.IdPagamento,
       status: "Pendente",
-      QRCode: "QRCode",
+      QRCode: qrCode,
       Data: refeicaoExistente.Data,
     });
     res.status(200).send({

@@ -68,6 +68,12 @@ const Perfil = () => {
         <View style={styles.pontosContainer}>
           <Text>{perfilInfo.pontos} pontos</Text>
         </View>
+        <PrimaryBtn
+          text="Logout"
+          onPress={() => {
+            logout();
+          }}
+        />
         <View style={styles.botaoLogout}>
           <PrimaryBtn
             text="Logout"

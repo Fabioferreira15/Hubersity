@@ -1,13 +1,12 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet,Image} from 'react-native';
 import React, {useEffect} from 'react';
 import PrimaryBtn from '../../components/PrimaryBtn';
+
+
 
 const QrCode = ({navigation,route}) => {
   const marcacao = route.params.marcacao;
 
-  useEffect(() => {
-    console.log(marcacao);
-  }, []);
 
   return (
     <View style={styles.container}>
@@ -17,7 +16,12 @@ const QrCode = ({navigation,route}) => {
         </Text>
       </View>
       <View style={styles.qrCode}>
-        <Text style={styles.qrCodeTxt}>QR CODE</Text>
+        <Image
+          source={{
+            uri: marcacao.QRCode,
+          }}
+          style={{width: 200, height: 200, resizeMode: 'contain',borderRadius:10}}
+        />
       </View>
       <View style={styles.info}>
         <Text>Prato</Text>
@@ -57,15 +61,11 @@ const styles = StyleSheet.create({
   qrCode: {
     marginTop: '50%',
     alignItems: 'center',
-    borderWidth: 2,
+
   },
-  qrCodeTxt: {
-    color: '#F8F9FA',
-    fontSize: 25,
-    fontFamily: 'BaiJamjuree-Bold',
-  },
+
   info: {
-    marginTop: '20%',
+    marginTop: '40%',
     alignItems: 'center',
   },
 });
