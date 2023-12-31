@@ -19,7 +19,7 @@ exports.criarRefeicaoCantina = async function (req, res) {
       });
     }
 
-    const { Nome, Descricao, TipoPrato, Data, Preco,Periodo } = req.body;
+    const { Nome, Descricao, TipoPrato, Data, Preco, Periodo } = req.body;
 
     if (!Nome || !Descricao || !TipoPrato || !Data || !Preco || !Periodo) {
       return res.status(400).send({
@@ -35,7 +35,7 @@ exports.criarRefeicaoCantina = async function (req, res) {
       },
     });
 
-    if (refeicaoExistente ) {
+    if (refeicaoExistente) {
       return res.status(400).send({
         message: `Já existe uma refeição do tipo ${TipoPrato} para a data ${Data}.`,
       });
@@ -66,10 +66,17 @@ exports.obterRefeicoesCantina = (req, res, next) => {
   let auth = utilities.verifyToken(req.headers.authorization);
 
   if (auth) {
-    const { data } = req.query; 
+    const { data } = req.query;
 
     const condition = {
-      attributes: ["IdRefeicao", "Nome", "TipoPrato", "Data", "Preco","Periodo"],
+      attributes: [
+        "IdRefeicao",
+        "Nome",
+        "TipoPrato",
+        "Data",
+        "Preco",
+        "Periodo",
+      ],
     };
 
     if (data) {
@@ -105,7 +112,6 @@ exports.obterRefeicoesCantina = (req, res, next) => {
 };
 
 // marcar refeições
-
 exports.pagamentoMarcacao = async (req, res) => {
   try {
     let auth = utilities.verifyToken(req.headers.authorization);
@@ -118,8 +124,7 @@ exports.pagamentoMarcacao = async (req, res) => {
 
     const userId = parseInt(req.params.id);
 
-
-    //procurar utilizador
+    // procurar utilizador
     const utilizador = await Utilizadores.findOne({
       where: {
         UserId: userId,
@@ -134,7 +139,7 @@ exports.pagamentoMarcacao = async (req, res) => {
       });
     }
 
-    //verificar se já existe a refeição
+    // verificar se já existe a refeição
     const refeicaoExistente = await RefeicaoCantina.findOne({
       where: {
         IdRefeicao: IdRefeicao,
@@ -160,7 +165,7 @@ exports.pagamentoMarcacao = async (req, res) => {
       });
     }
 
-    //criar pagamento
+    // criar pagamento
     const pagamento = await Pagamento.create({
       UserId: userId,
       Valor: Valor,
@@ -168,31 +173,35 @@ exports.pagamentoMarcacao = async (req, res) => {
       Data: new Date(),
     });
 
-    //gerar qrcode
-    const qrData ={
+    // gerar qrcode
+    const qrData = {
       Utilizador: utilizador.nome,
       status: "Pendente",
       Refeição: refeicaoExistente.TipoPrato,
       Prato: refeicaoExistente.Nome,
       data: refeicaoExistente.Data,
+    };
 
-    }
+    utilities.generateQrToken(qrData, async (token) => {
+      qrData.token = token;
 
-    const qrCode = await QrCode.toDataURL(JSON.stringify(qrData));
+      const qrCode = await QrCode.toDataURL(JSON.stringify(qrData));
 
-    //criar marcacao
-    const marcacao = await MarcacaoCantina.create({
-      IdRefeicao: IdRefeicao,
-      UserId: userId,
-      IdPagamento: pagamento.IdPagamento,
-      status: "Pendente",
-      QRCode: qrCode,
-      Data: refeicaoExistente.Data,
-    });
-    res.status(200).send({
-      message: "Pagamento efetuado com sucesso!",
-      pagamento: pagamento,
-      marcacao: marcacao,
+      // criar marcacao
+      const marcacao = await MarcacaoCantina.create({
+        IdRefeicao: IdRefeicao,
+        UserId: userId,
+        IdPagamento: pagamento.IdPagamento,
+        status: "Pendente",
+        QRCode: qrCode,
+        Data: refeicaoExistente.Data,
+      });
+
+      res.status(200).send({
+        message: "Pagamento efetuado com sucesso!",
+        pagamento: pagamento,
+        marcacao: marcacao,
+      });
     });
   } catch (error) {
     res.status(500).send({
@@ -278,7 +287,7 @@ exports.obterMarcacoesPendentes = async (req, res) => {
       include: [
         {
           model: RefeicaoCantina,
-          attributes: ["IdRefeicao", "Nome", "TipoPrato", "Data","Periodo"],
+          attributes: ["IdRefeicao", "Nome", "TipoPrato", "Data", "Periodo"],
         },
       ],
     });
