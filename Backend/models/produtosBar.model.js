@@ -43,7 +43,7 @@ ProdutosBar.init(
     }
 );
 
-ProdutosBar.belongsTo(CategoriasBar, {foreignKey: 'idCategoriaBar'});
+ProdutosBar.belongsTo(CategoriasBar, {foreignKey: 'idCategoria'});
 mysqlDB
     .sync()
     .then(() => {
@@ -54,4 +54,3 @@ mysqlDB
     });
 
 exports.ProdutosBar = ProdutosBar;
-//não esta a criar a tabela
