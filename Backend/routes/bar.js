@@ -65,4 +65,9 @@ router.get("/pedidos/:idPedido", function (req, res) {
   barController.verPedidoIndividual(req, res);
 });
 
+//ver pedidos por levantar
+router.get("/pedidos", function (req, res) {
+  barController.verPedidos(req, res);
+});
+
 module.exports = router;

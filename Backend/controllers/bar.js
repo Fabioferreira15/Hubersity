@@ -286,3 +286,41 @@ exports.verPedidoIndividual = async function (req, res) {
     });
   }
 };
+
+//ver pedidos por levantar
+exports.verPedidoPorLevantar = async function (req, res) {
+    try {
+      let auth = utilities.verifyToken(req.headers.auth_key);
+  
+      if (!auth) {
+        return res.status(401).send({
+          message: "Token de autenticação inválido",
+        });
+      }
+  
+      const userId = auth.id;
+  
+      const pedidosPorLevantar = await PedidosBar.findAll({
+        where: {
+          UserId: userId,
+          Status: "pendente",
+        },
+        attributes: ["IdPedido", "Data", "Status"],
+        raw: true,
+      });
+  
+      if (pedidosPorLevantar.length === 0) {
+        return res.status(204).send({
+          message: "Nenhum pedido por levantar",
+        });
+      }
+  
+      return res.status(200).send(pedidosPorLevantar);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send({
+        message: "Algo correu mal, tente novamente mais tarde",
+      });
+    }
+  };
+  
