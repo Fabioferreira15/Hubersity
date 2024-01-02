@@ -235,3 +235,54 @@ exports.obterCarrinho = async function (req, res) {
     });
   }
 };
+
+//ver pedido individual
+exports.verPedidoIndividual = async function (req, res) {
+  try {
+    let auth = utilities.verifyToken(req.headers.authorization);
+
+    if (!auth) {
+      return res.status(401).send({
+        message: "Token inválido.",
+      });
+    }
+
+    const userId = auth.id;
+
+    const pedido = await PedidosBar.findOne({
+      where: { 
+        IdPedido: req.params.IdPedido,
+        UserId: userId
+    },
+      attributes: ["IdPedido", "UserId", "QRCode"],
+      include: [
+        {
+          model: PedidosBarProdutos,
+          attributes: ["IdProduto", "Quantidade"],
+          include: [
+            {
+              model: ProdutosBar,
+              attributes: ["IdProduto", "Nome", "Descricao", "Preco", "Stock"],
+              raw: true,
+            },
+          ],
+          raw: true,
+        },
+      ],
+      raw: true,
+    });
+
+    if (!pedido) {
+      return res.status(404).send({
+        message: "Pedido não existe.",
+      });
+    }
+
+    return res.status(200).send(pedido);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({
+      message: "Ocorreu um erro ao obter o pedido.",
+    });
+  }
+};

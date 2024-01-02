@@ -60,4 +60,9 @@ router.get("/carrinho", function (req, res) {
   barController.obterCarrinho(req, res);
 });
 
+//ver Pedido individual
+router.get("/pedidos/:idPedido", function (req, res) {
+  barController.verPedidoIndividual(req, res);
+});
+
 module.exports = router;
