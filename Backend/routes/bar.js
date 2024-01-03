@@ -70,4 +70,8 @@ router.get("/pedidos", function (req, res) {
   barController.verPedidos(req, res);
 });
 
+//ver todos os pedidos histórico
+router.get("/pedidos/historico", function (req, res) {
+  barController.obterPedidosBarHistorico(req, res);
+});
 module.exports = router;

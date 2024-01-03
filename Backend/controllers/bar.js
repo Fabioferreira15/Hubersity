@@ -322,4 +322,53 @@ exports.verPedidoPorLevantar = async function (req, res) {
       });
     }
   };
+
+  //obter todos os pedidos do bar, histórico
+exports.obterPedidosBarHistorico = async function (req, res) {
+    try {
+      let auth = utilities.verifyToken(req.headers.auth_key);
+  
+      if (!auth) {
+        return res.status(401).send({
+          message: "Token de autenticação inválido",
+        });
+      }
+  
+      const userId = auth.id;
+  
+      const pedidos = await PedidosBar.findAll({
+        where: {
+          UserId: userId,
+        },
+        attributes: ["IdPedido", "Data", "Status"],
+        include: [
+            {
+                model: PedidosBarProdutos,
+                attributes: ["IdProduto", "Quantidade"],
+                include: [
+                {
+                    model: ProdutosBar,
+                    attributes: ["IdProduto", "Nome", "Descricao", "Preco", "Stock"],
+                    raw: true,
+                },
+                ],
+                raw: true,
+            },
+            ],
+      });
+  
+      if (pedidos.length === 0) {
+        return res.status(204).send({
+          message: "Nenhum pedido encontrado",
+        });
+      }
+  
+      return res.status(200).send(pedidos);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send({
+        message: "Algo correu mal, tente novamente mais tarde",
+      });
+    }
+  };
   
