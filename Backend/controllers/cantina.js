@@ -277,7 +277,7 @@ exports.obterMarcacoesPendentes = async (req, res) => {
       });
     }
 
-    const userId = parseInt(req.params.id);
+    const userId = parseInt(req.params.id)
 
     const marcacoes = await MarcacaoCantina.findAll({
       where: {
@@ -315,13 +315,18 @@ exports.obterMarcacoesCantinaHistorico = async (req, res) => {
   try {
     let auth = utilities.verifyToken(req.headers.authorization);
 
-    if (!auth || auth.tipo !== req.params.id) {
+    if (!auth) {
       return res.status(401).send({
         message: "Não autorizado.",
       });
     }
 
+    const userId = auth.id;
+
     const marcacoes = await MarcacaoCantina.findAll({
+      where: {
+        UserId: userId,
+      },
       attributes: ["IdMarcacao", "Status", "QRCode"],
       include: [
         {

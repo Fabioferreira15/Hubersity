@@ -31,7 +31,7 @@ router.get("/marcacao/:Userid/:idMarcacao", function (req, res) {
 });
 
 //rota para obter marcações, histórico
-router.get("/histórico/cantina", function (req, res) {
+router.get("/historico/cantina", function (req, res) {
   cantinaController.obterMarcacoesCantinaHistorico(req, res);
 });
 
