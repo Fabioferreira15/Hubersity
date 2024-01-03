@@ -197,7 +197,6 @@ exports.adicionarProdutoCarrinho = async function (req, res) {
 };
 
 //obter carrinho
-
 exports.obterCarrinho = async function (req, res) {
   let auth = utilities.verifyToken(req.headers.authorization);
 

@@ -309,3 +309,45 @@ exports.obterMarcacoesPendentes = async (req, res) => {
     });
   }
 };
+
+//obter todas as marcações da cantina, histórico
+exports.obterMarcacoesCantinaHistorico = async (req, res) => {
+  try {
+    let auth = utilities.verifyToken(req.headers.authorization);
+
+    if (!auth || auth.tipo !== req.params.id) {
+      return res.status(401).send({
+        message: "Não autorizado.",
+      });
+    }
+
+    const marcacoes = await MarcacaoCantina.findAll({
+      include: [
+        {
+          model: RefeicaoCantina,
+          attributes: ["IdRefeicao", "Nome", "TipoPrato", "Data", "Periodo"],
+        },
+        {
+          model: Utilizadores,
+          attributes: ["UserId", "nome", "email"],
+        },
+      ],
+    });
+
+    if (!marcacoes || marcacoes.length === 0) {
+      return res.status(400).send({
+        message: "Não existem marcações!",
+      });
+    }
+
+    res.status(200).send({
+      message: "Marcações encontradas!",
+      marcacoes: marcacoes,
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: error.message || "Ocorreu um erro ao obter as marcações.",
+    });
+  }
+};
+
