@@ -322,6 +322,7 @@ exports.obterMarcacoesCantinaHistorico = async (req, res) => {
     }
 
     const marcacoes = await MarcacaoCantina.findAll({
+      attributes: ["IdMarcacao", "Status", "QRCode"],
       include: [
         {
           model: RefeicaoCantina,
