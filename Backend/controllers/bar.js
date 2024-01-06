@@ -235,6 +235,62 @@ exports.obterCarrinho = async function (req, res) {
   }
 };
 
+// apaagar produto do carrinho
+exports.apagarProdutoCarrinho = async function (req, res) {
+  let auth = utilities.verifyToken(req.headers.authorization);
+
+  if (!auth) {
+    return res.status(401).send({
+      message: "Não autorizado.",
+    });
+  }
+
+  const userId = auth.id;
+  const idProduto = parseInt(req.params.IdProduto);
+
+  try {
+    const produto = await ProdutosBar.findOne({
+      where: { IdProduto: idProduto },
+      raw: true,
+    });
+
+    if (!produto) {
+      return res.status(400).send({
+        message: "Produto não existe.",
+      });
+    }
+
+    const produtoCarrinho = await CarrinhoItens.findOne({
+      where: { IdProduto: idProduto, IdCarrinho: userId },
+      raw: true,
+    });
+
+    if (!produtoCarrinho) {
+      return res.status(400).send({
+        message: "Produto não está no carrinho no carrinho.",
+      });
+    }
+
+    await CarrinhoItens.destroy({
+      where: { IdProduto: idProduto, IdCarrinho: userId },
+    });
+
+    return res.status(200).send({
+      message: "Produto removido do carrinho.",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Ocorreu um erro ao remover o produto do carrinho.",
+    });
+  }
+};
+
+
+
+
+
+
 //ver pedido individual
 exports.verPedidoIndividual = async function (req, res) {
   try {

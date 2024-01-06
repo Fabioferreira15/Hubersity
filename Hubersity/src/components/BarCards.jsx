@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, ScrollView, Image} from 'react-native';
 import Header from './Header';
 import {fetchBarProducts} from '../api';
 import CarrinhoSvg from '../assets/icons/carrinho.svg';
+import CarrinhoHeader from '../assets/icons/Carrinho_header.svg';
 
 const BarCards = ({navigation}) => {
   const [bebidas, setBebidas] = useState([]);
@@ -24,7 +25,7 @@ const BarCards = ({navigation}) => {
 
   return (
     <View>
-      <Header title="Bar" onPress={() => navigation.navigate('CartScreen')} />
+      <Header iconPosition='right' title="Bar" customIcon={<CarrinhoHeader />} onPress={() => navigation.navigate('CartScreen')} />
       <View style={styles.main}>
         <Text style={styles.title}>Bebidas</Text>
         <ScrollView horizontal={true} style={styles.container}>

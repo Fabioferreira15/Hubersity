@@ -1,21 +1,41 @@
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
 import Background from '../assets/Home/backgorund.svg';
-import CarrinhoHeader from '../assets/icons/Carrinho_header.svg';
 
 const Header = props => {
-  const {title, onPress} = props;
+  const {title, onPress, iconPosition,customIcon} = props;
+
+  const renderLeftContent = () => {
+    if (iconPosition === 'left') {
+      return (
+        <TouchableOpacity style={styles.btnLeft} onPress={onPress}>
+          {customIcon}
+        </TouchableOpacity>
+      );
+    }
+    return null;
+  };
+
+  const renderRightContent = () => {
+    if (iconPosition === 'right') {
+      return (
+        <TouchableOpacity style={styles.btnRight} onPress={onPress}>
+          {customIcon}
+        </TouchableOpacity>
+      );
+    }
+    return null;
+  };
 
   return (
     <View>
       <View style={styles.Background}>
         <Background />
       </View>
-      <View style={styles.title}>
+      <View style={styles.titleContainer}>
+        {renderLeftContent()}
         <Text style={styles.txt}>{title}</Text>
-        <TouchableOpacity style={styles.btn} onPress={onPress}>
-          <CarrinhoHeader />
-        </TouchableOpacity>
+        {renderRightContent()}
       </View>
     </View>
   );
@@ -30,13 +50,19 @@ const styles = StyleSheet.create({
     fontSize: 27,
     color: '#F8F9FA',
   },
-  title: {
+  titleContainer: {
     marginTop: '15%',
-    marginLeft: '45%',
-    width: '50%',
-    alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  btnLeft: {
+    position: 'absolute',
+    left: 10,
+  },
+  btnRight: {
+    position: 'absolute',
+    right: 10,
   },
 });
 

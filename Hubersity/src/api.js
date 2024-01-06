@@ -47,7 +47,7 @@ export const fetchCart = async () => {
       },
     });
 
-    if (response.status!== 200) {
+    if (response.status !== 200) {
       const status = response.status;
       return {status};
     }
@@ -56,5 +56,37 @@ export const fetchCart = async () => {
   } catch (error) {
     console.error(error);
     return [];
+  }
+};
+
+export const removeProduct = async (id) => {
+  try {
+    const storedToken = await AsyncStorage.getItem('token');
+
+    if (!storedToken) {
+      console.error('Sem token');
+      return {success: false, message: 'Sem token'};
+    }
+
+    const response = await fetch(`http://${IP}:3000/bar/carrinho/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${storedToken}`,
+      },
+    });
+
+    if (response.ok) {
+      return {success: true, message: 'Produto removido do carrinho.'};
+    } else {
+      const responseData = await response.json();
+      console.error(responseData);
+      return {success: false, message: responseData.message};
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: 'Ocorreu um erro ao remover o produto do carrinho.',
+    };
   }
 };

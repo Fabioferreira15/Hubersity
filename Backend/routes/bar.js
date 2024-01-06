@@ -60,6 +60,10 @@ router.get("/carrinho", function (req, res) {
   barController.obterCarrinho(req, res);
 });
 
+router.delete("/carrinho/:IdProduto", function (req, res) {
+  barController.apagarProdutoCarrinho(req, res);
+});
+
 //ver Pedido individual
 router.get("/pedidos/:idPedido", function (req, res) {
   barController.verPedidoIndividual(req, res);
