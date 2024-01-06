@@ -22,7 +22,6 @@ const CantinaNavigation = () => {
       <Stack.Screen
         name="QrCode"
         component={QrCode}
-        options={{ tabBarVisible: false }} // Oculta a barra de navegação inferior nesta página
       />
     </Stack.Navigator>
   );
