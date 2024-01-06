@@ -1,56 +1,30 @@
 import React, {useEffect, useState} from 'react';
-
 import {View, Text, StyleSheet, ScrollView, Image} from 'react-native';
-import IP from '../context/env';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Header from './Header';
+import {fetchBarProducts} from '../api';
+import CarrinhoSvg from '../assets/icons/carrinho.svg';
 
-const BarCards = () => {
+const BarCards = ({navigation}) => {
   const [bebidas, setBebidas] = useState([]);
   const [comida, setComida] = useState([]);
-  const [token, setToken] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const storedToken = await AsyncStorage.getItem('token');
-        if (!storedToken) {
-          console.error('Sem token');
-          return;
-        }
-        setToken(storedToken);
-
-        const response = await fetch(`http://${IP}:3000/bar/produtos`, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-          },
-        });
-        const responseData = await response.json();
-        console.log(responseData);
-
-        const bebidasData = responseData.find(
-          category => category.categoria.nome === 'Bebidas',
-        );
-        const comidaData = responseData.find(
-          category => category.categoria.nome === 'Comida',
-        );
-
-        setBebidas(bebidasData ? bebidasData.produtos : []);
-        setComida(comidaData ? comidaData.produtos : []);
+        const data = await fetchBarProducts();
+        setBebidas(data.bebidas);
+        setComida(data.comida);
       } catch (error) {
         console.error(error);
       }
     };
 
     fetchData();
-    console.log(`bebidas: ${bebidas}`);
   }, []);
 
   return (
     <View>
-      <Header 
-        title="Bar"
-      />
+      <Header title="Bar" onPress={() => navigation.navigate('CartScreen')} />
       <View style={styles.main}>
         <Text style={styles.title}>Bebidas</Text>
         <ScrollView horizontal={true} style={styles.container}>
@@ -64,8 +38,13 @@ const BarCards = () => {
                 />
               </View>
               <View style={styles.cardInfo}>
-                <Text style={styles.textNome}>{item.Nome}</Text>
-                <Text style={styles.text}>{item.Preco}€</Text>
+                <View style={styles.info}>
+                  <Text style={styles.textNome}>{item.Nome}</Text>
+                  <Text style={styles.text}>{item.Preco}€</Text>
+                </View>
+                <View style={styles.btn}>
+                  <CarrinhoSvg />
+                </View>
               </View>
             </View>
           ))}
@@ -82,8 +61,13 @@ const BarCards = () => {
                 />
               </View>
               <View style={styles.cardInfo}>
-                <Text style={styles.textNome}>{item.Nome}</Text>
-                <Text style={styles.text}>{item.Preco}€</Text>
+                <View style={styles.info}>
+                  <Text style={styles.textNome}>{item.Nome}</Text>
+                  <Text style={styles.text}>{item.Preco}€</Text>
+                </View>
+                <View style={styles.btn}>
+                  <CarrinhoSvg />
+                </View>
               </View>
             </View>
           ))}
@@ -95,7 +79,7 @@ const BarCards = () => {
 
 const styles = StyleSheet.create({
   main: {
-    marginTop: '55%'
+    marginTop: '55%',
   },
   title: {
     fontSize: 27,
@@ -121,7 +105,7 @@ const styles = StyleSheet.create({
   },
   card: {
     flex: 1,
-    width: 200,
+    width: 250,
     height: 200,
     backgroundColor: '#DFE2FC',
     borderRadius: 10,
@@ -142,8 +126,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#5F6EF0',
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
+    flexDirection: 'row',
+    borderWidth: 1,
+  },
+  btn: {
+    flex: 1,
+    alignItems: 'flex-end',
+    justifyContent: 'center',
     padding: 5,
-    flexDirection: 'column',
   },
 });
 

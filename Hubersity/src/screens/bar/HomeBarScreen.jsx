@@ -3,11 +3,11 @@ import {View, StyleSheet, ScrollView} from 'react-native';
 import BarCards from '../../components/BarCards';
 import Header from '../../components/Header';
 
-const HomeBar = () => {
+const HomeBar = ({navigation}) => {
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scroll}>
-        <BarCards />
+        <BarCards navigation={navigation} />
       </ScrollView>
     </View>
   );
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   scroll: {
     flex: 1,
     marginBottom: '15%',
-  }
+  },
 });
 
 export default HomeBar;

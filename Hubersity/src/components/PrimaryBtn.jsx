@@ -27,7 +27,6 @@ const PrimaryBtn = ({
 const styles = StyleSheet.create({
   primaryBtn: {
     backgroundColor: '#F0D060',
-    alignSelf: 'center',
   },
   primaryBtnTxt: {
     color: '#151C4D',
