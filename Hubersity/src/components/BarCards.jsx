@@ -1,9 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, ScrollView, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import Header from './Header';
-import {fetchBarProducts} from '../api';
+import {fetchBarProducts, addToCart} from '../api';
 import CarrinhoSvg from '../assets/icons/carrinho.svg';
 import CarrinhoHeader from '../assets/icons/Carrinho_header.svg';
+import Toast from 'react-native-toast-message';
 
 const BarCards = ({navigation}) => {
   const [bebidas, setBebidas] = useState([]);
@@ -23,9 +31,35 @@ const BarCards = ({navigation}) => {
     fetchData();
   }, []);
 
+  const handleAddToCart = async (id) => {
+    const response = await addToCart(id);
+    if (response.success){
+      Toast.show({
+        type: 'success',
+        text1: 'Sucesso',
+        text2: response.message,
+        autoHide:true,
+        visibilityTime:3000,
+      });
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Erro',
+        text2: response.message,
+        autoHide:true,
+        visibilityTime:3000,
+      });
+    }
+  };
+
   return (
     <View>
-      <Header iconPosition='right' title="Bar" customIcon={<CarrinhoHeader />} onPress={() => navigation.navigate('CartScreen')} />
+      <Header
+        iconPosition="right"
+        title="Bar"
+        customIcon={<CarrinhoHeader />}
+        onPress={() => navigation.navigate('CartScreen')}
+      />
       <View style={styles.main}>
         <Text style={styles.title}>Bebidas</Text>
         <ScrollView horizontal={true} style={styles.container}>
@@ -44,7 +78,9 @@ const BarCards = ({navigation}) => {
                   <Text style={styles.text}>{item.Preco}€</Text>
                 </View>
                 <View style={styles.btn}>
-                  <CarrinhoSvg />
+                  <TouchableOpacity onPress={() => handleAddToCart(item.IdProduto)}>
+                    <CarrinhoSvg />
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>

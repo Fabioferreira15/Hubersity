@@ -1,12 +1,23 @@
-import {View, Text, StyleSheet,Dimensions} from 'react-native';
+import {View, Text, StyleSheet, Dimensions} from 'react-native';
 import React from 'react';
 import EmptyStateSvg from '../../assets/Bar/emptystate.svg';
+import Header from '../../components/Header';
+import Voltar from '../../assets/icons/Voltar.svg';
 
-const EmptyStateScreen = () => {
-    const { width, height } = Dimensions.get('window');
+
+const EmptyStateScreen = ({navigation}) => {
+  const {height} = Dimensions.get('window');
   return (
     <View style={StyleSheet.container}>
-        <View style={[styles.main, { height: height - 60 }]}>
+      <View>
+        <Header
+          iconPosition="left"
+          title="Carrinho"
+          customIcon={<Voltar />}
+          onPress={() => navigation.navigate('HomeBar')}
+        />
+      </View>
+      <View style={[styles.main, {height: height - 60}]}>
         <View>
           <EmptyStateSvg />
         </View>
@@ -18,8 +29,6 @@ const EmptyStateScreen = () => {
   );
 };
 
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -27,19 +36,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  main:{
-    alignItems:'center',
-    justifyContent:'center',
+  main: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  txtContainer:{
-    width:'95%'
-  },    
-  txt:{
+  txtContainer: {
+    width: '95%',
+  },
+  txt: {
     fontFamily: 'BaiJamjuree-Bold',
-    fontSize:27,
-    textAlign:'center',
-    color:'#212529'
-  }
+    fontSize: 27,
+    textAlign: 'center',
+    color: '#212529',
+  },
 });
 
 export default EmptyStateScreen;

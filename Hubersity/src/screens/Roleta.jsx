@@ -1,7 +1,18 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {Text, View,Button} from 'react-native';
+import Toast from 'react-native-toast-message';
 
 const Roleta = () => {
+
+  const showToast = () => {
+    Toast.show({
+      type: 'success',
+      text1: 'Toast',
+      text2: 'Hello world',
+      autoHide:true,
+      visibilityTime:3000,
+    });
+  };
   return (
     <View
       style={{
@@ -10,6 +21,7 @@ const Roleta = () => {
         alignItems: 'center',
       }}>
       <Text>Roleta</Text>
+      <Button title="Show Toast" onPress={showToast} />
     </View>
   );
 };

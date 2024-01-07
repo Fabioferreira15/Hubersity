@@ -13,6 +13,8 @@ import CarrinhoCard from '../../components/CarrinhoCard';
 import Header from '../../components/Header';
 import Voltar from '../../assets/icons/Voltar.svg';
 import PrimaryBtn from '../../components/PrimaryBtn';
+import { LoadingModal } from "react-native-loading-modal";
+
 
 const CartScreen = ({navigation}) => {
   const [cart, setCart] = useState([]);
@@ -22,6 +24,8 @@ const CartScreen = ({navigation}) => {
   const total = cart.reduce((total, item) => {
     return total + item['ProdutosBar.Preco'] * item['Quantidade'];
   }, 0);
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,20 +45,22 @@ const CartScreen = ({navigation}) => {
       }
     };
     fetchData();
-  }, []);
-  useEffect(() => {
-    console.log(cart);
-    console.log(total);
   }, [cart]);
 
   return (
     <View>
       {loading ? (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <ActivityIndicator size={'large'} />
+        <View>
+          <LoadingModal 
+            visible={true}
+            color="white"
+            size="large"
+            loadingMessage="Loading..."
+            
+          />
         </View>
       ) : empty ? (
-        <EmptyStateScreen />
+        <EmptyStateScreen navigation={navigation}/>
       ) : (
         <View style={styles.container}>
           <View>
@@ -71,6 +77,7 @@ const CartScreen = ({navigation}) => {
                 {cart.map(item => (
                   <CarrinhoCard
                     key={item.IdProduto}
+                    id={item.IdProduto}
                     nome={item['ProdutosBar.Nome']}
                     descricao={item['ProdutosBar.Descricao']}
                     preco={item['ProdutosBar.Preco']}

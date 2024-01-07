@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   Image,
-  TouchableWithoutFeedback,
   TouchableOpacity,
 } from 'react-native';
 import Background from '../assets/Home/backgorund.svg';

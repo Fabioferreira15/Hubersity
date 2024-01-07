@@ -59,10 +59,9 @@ export const fetchCart = async () => {
   }
 };
 
-export const removeProduct = async (id) => {
+export const removeFromCart = async (id) => {
+  const storedToken = await AsyncStorage.getItem('token');
   try {
-    const storedToken = await AsyncStorage.getItem('token');
-
     if (!storedToken) {
       console.error('Sem token');
       return {success: false, message: 'Sem token'};
@@ -76,7 +75,8 @@ export const removeProduct = async (id) => {
     });
 
     if (response.ok) {
-      return {success: true, message: 'Produto removido do carrinho.'};
+      const responseData = await response.json();
+      return {success: true, message: responseData.message};
     } else {
       const responseData = await response.json();
       console.error(responseData);
@@ -87,6 +87,38 @@ export const removeProduct = async (id) => {
     return {
       success: false,
       message: 'Ocorreu um erro ao remover o produto do carrinho.',
+    };
+  }
+};
+
+export const addToCart = async (id) => {
+  const storedToken = await AsyncStorage.getItem('token');
+  try {
+    if (!storedToken) {
+      console.error('Sem token');
+      return {success: false, message: 'Sem token'};
+    }
+
+    const response = await fetch(`http://${IP}:3000/bar/carrinho/${id}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${storedToken}`,
+      },
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      return {success: true, message: responseData.message};
+    } else {
+      const responseData = await response.json();
+      console.error(responseData);
+      return {success: false, message: responseData.message};
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: 'Ocorreu um erro ao adicionar o produto ao carrinho.',
     };
   }
 };
