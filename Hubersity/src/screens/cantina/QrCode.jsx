@@ -24,12 +24,12 @@ const QrCode = ({navigation,route}) => {
         />
       </View>
       <View style={styles.info}>
-        <Text>Prato</Text>
-        <Text>
+        <Text style={styles.infoTxtTitle}>Prato</Text>
+        <Text style={styles.infoTxt}>
           {marcacao.RefeicaoCantina.TipoPrato} - {marcacao.RefeicaoCantina.Nome}
         </Text>
       </View>
-      <View>
+      <View style={styles.btn}>
         <PrimaryBtn
           text="Voltar"
           onPress={() => {
@@ -59,13 +59,26 @@ const styles = StyleSheet.create({
     fontFamily: 'BaiJamjuree-Bold',
   },
   qrCode: {
-    marginTop: '50%',
+    marginTop: '20%',
     alignItems: 'center',
 
   },
-
   info: {
-    marginTop: '40%',
+    marginTop: '20%',
+    alignItems: 'center',
+  },
+  infoTxtTitle: {
+    color: '#F8F9FA',
+    fontSize: 25,
+    fontFamily: 'BaiJamjuree-Bold',
+  },
+  infoTxt: {
+    color: '#F8F9FA',
+    fontSize: 20,
+    fontFamily: 'BaiJamjuree-Regular',
+  },
+  btn: {
+    marginTop: '45%',
     alignItems: 'center',
   },
 });
