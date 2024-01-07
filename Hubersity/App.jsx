@@ -5,6 +5,7 @@ import AuthStack from './src/navigation/auth.js';
 import AppNavigation from './src/navigation/AppNavigation.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AuthProvider, AuthContext} from './src/context/AuthProvider.js';
+import Toast from 'react-native-toast-message';
 
 const AppNav = () => {
   const {isLoading, userToken} = useContext(AuthContext);
@@ -20,12 +21,14 @@ const AppNav = () => {
 
 const App = () => {
   return (
-    <NavigationContainer>
-
-      <AuthProvider>
-        <AppNav />
-      </AuthProvider>
-    </NavigationContainer>
+    <>
+      <NavigationContainer>
+        <AuthProvider>
+          <AppNav />
+        </AuthProvider>
+      </NavigationContainer>
+      <Toast ref={ref => Toast.setRef(ref)} />
+    </>
   );
 };
 

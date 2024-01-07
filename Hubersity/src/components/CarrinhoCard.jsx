@@ -3,8 +3,31 @@ import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import UnderlineBtn from './UnderlineBtn';
 import MinusSvg from '../assets/icons/minus.svg';
 import PlusSvg from '../assets/icons/plus.svg';
+import {removeFromCart} from '../api';
+import Toast from 'react-native-toast-message';
 
 const CarrinhoCard = ({id, nome, preco, quantidade}) => {
+  const handleRemoveFromCart = async id => {
+    const response = await removeFromCart(id);
+    if (response.success) {
+      Toast.show({
+        type: 'success',
+        text1: 'Sucesso',
+        text2: response.message,
+        autoHide: true,
+        visibilityTime: 3000,
+      });
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Erro',
+        text2: response.message,
+        autoHide: true,
+        visibilityTime: 3000,
+      });
+    }
+  };
+
   return (
     <View style={styles.card}>
       <View style={styles.Image}>
@@ -17,7 +40,7 @@ const CarrinhoCard = ({id, nome, preco, quantidade}) => {
       <View style={styles.info}>
         <Text style={styles.infoTxtTitle}>{nome}</Text>
         <Text style={styles.infoTxt}>{preco}€</Text>
-        <UnderlineBtn text="remover" />
+        <UnderlineBtn text="remover" onPress={() => handleRemoveFromCart(id)} />
       </View>
       <View style={styles.quantidade}>
         <TouchableOpacity
@@ -61,7 +84,7 @@ const styles = StyleSheet.create({
   info: {
     width: '60%',
     justifyContent: 'center',
-    marginLeft: "2%",
+    marginLeft: '2%',
   },
   quantidade: {
     alignItems: 'center',
