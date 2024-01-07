@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import IP from '../../context/env';
 import YellowBackground from '../../assets/Cantina/YellowSvg.svg';
 import Voltar from '../../assets/icons/Voltar.svg';
+import Header from '../../components/Header';
 
 const MarcacoesPendentes = ({navigation}) => {
   const [marcacoes, setMarcacoes] = useState([]);
@@ -52,16 +53,7 @@ const MarcacoesPendentes = ({navigation}) => {
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
-        <View style={styles.Background}>
-          <YellowBackground />
-        </View>
-
-        <View style={styles.nav}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Voltar style={styles.svg}/>
-          </TouchableOpacity>
-          <Text style={styles.titleTxt}>Marcacoes Pendentes</Text>
-        </View>
+        <Header title="Marcações por consumir" iconPosition='left' customIcon={<Voltar />}/>
 
         <View style={styles.main}>
           {marcacoes.map((marcacao, index) => (

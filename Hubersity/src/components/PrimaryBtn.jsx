@@ -6,7 +6,8 @@ const PrimaryBtn = ({
   paddingHorizontal,
   paddingVertical,
   borderRadius,
-  underlayColor
+  underlayColor,
+  width,
 }) => {
   const buttonStyles = [
     styles.primaryBtn,
@@ -14,6 +15,7 @@ const PrimaryBtn = ({
       paddingHorizontal,
       paddingVertical,
       borderRadius,
+      width,
     },
   ];
 
@@ -27,12 +29,12 @@ const PrimaryBtn = ({
 const styles = StyleSheet.create({
   primaryBtn: {
     backgroundColor: '#F0D060',
-    alignSelf: 'center',
   },
   primaryBtnTxt: {
     color: '#151C4D',
     fontSize: 17,
     fontFamily: 'BaiJamjuree-Bold',
+    textAlign: 'center',
   },
 });
 

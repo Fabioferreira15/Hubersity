@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 import Swiper from 'react-native-swiper';
 import HeroSvg from '../assets/Onboarding/Hero-image.svg';
 import PrimaryBtn from '../components/PrimaryBtn';
@@ -8,6 +15,8 @@ import Voltar from '../assets/icons/Voltar.svg';
 import LottieView from 'lottie-react-native';
 
 const Onboarding = ({navigation}) => {
+  const {width, height} = Dimensions.get('window');
+
   let swiper;
 
   const handleSkip = () => {
@@ -28,6 +37,10 @@ const Onboarding = ({navigation}) => {
     }
   };
 
+  const imgContainerHeight = height * 0.4;
+  const contentHeight = height * 0.2;
+  const primaryBtnHeight = height * 0.25;
+
   return (
     <>
       <Swiper
@@ -37,7 +50,7 @@ const Onboarding = ({navigation}) => {
         dotStyle={{width: 8, height: 8, borderRadius: 10}}
         activeDotColor="#F0D060"
         activeDotStyle={{width: 12, height: 12, borderRadius: 10}}
-        paginationStyle={{bottom: 100}}
+        paginationStyle={{bottom: height * 0.12}}
         loop={false}
         ref={ref => {
           swiper = ref;
@@ -50,7 +63,7 @@ const Onboarding = ({navigation}) => {
               </TouchableOpacity>
               <UnderlineBtn onPress={handleSkip} text="Skip" />
             </View>
-            <View style={styles.imgContainer}>
+            <View style={[styles.imgContainer, {height: imgContainerHeight}]}>
               <View style={styles.img}>
                 <Image
                   source={require('../assets/Onboarding/Hero-image-1.png')}
@@ -60,14 +73,14 @@ const Onboarding = ({navigation}) => {
               </View>
             </View>
 
-            <View style={styles.content}>
+            <View style={[styles.content, {height: contentHeight}]}>
               <Text style={styles.title}>Marca as refeições facilmente</Text>
               <Text style={styles.text}>
                 Dá uma vista de olhos nas ementas diárias da cantina e escolhe a
                 tua refeição preferida sem complicações.
               </Text>
             </View>
-            <View style={styles.primaryBtn}>
+            <View style={[styles.primaryBtn, {height: primaryBtnHeight}]}>
               <PrimaryBtn
                 onPress={handleNext}
                 text="Próximo"
@@ -87,7 +100,7 @@ const Onboarding = ({navigation}) => {
               </TouchableOpacity>
               <UnderlineBtn onPress={handleSkip} text="Skip" />
             </View>
-            <View style={styles.imgContainer}>
+            <View style={[styles.imgContainer, {height: imgContainerHeight}]}>
               <View style={styles.img}>
                 <Image
                   source={require('../assets/Onboarding/Hero-image.png')}
@@ -97,14 +110,14 @@ const Onboarding = ({navigation}) => {
               </View>
             </View>
 
-            <View style={styles.content}>
+            <View style={[styles.content, {height: contentHeight}]}>
               <Text style={styles.title}>Descobre o menu do bar</Text>
               <Text style={styles.text}>
                 Adiciona ao carrinho e faz os teus pedidos de forma simples e
                 rápida.
               </Text>
             </View>
-            <View style={styles.primaryBtn}>
+            <View style={[styles.primaryBtn, {height: primaryBtnHeight}]}>
               <PrimaryBtn
                 onPress={handleNext}
                 text="Próximo"
@@ -124,7 +137,7 @@ const Onboarding = ({navigation}) => {
               </TouchableOpacity>
               <UnderlineBtn onPress={handleSkip} text="Skip" />
             </View>
-            <View style={styles.imgContainer}>
+            <View style={[styles.imgContainer, {height: imgContainerHeight}]}>
               <View style={styles.img}>
                 <Image
                   source={require('../assets/Onboarding/hero-image-3.png')}
@@ -134,14 +147,14 @@ const Onboarding = ({navigation}) => {
               </View>
             </View>
 
-            <View style={styles.content}>
+            <View style={[styles.content, {height: contentHeight}]}>
               <Text style={styles.title}>Paga sem complicações</Text>
               <Text style={styles.text}>
                 Desfruta dos pagamentos fáceis e intuitivos, paga utilizando o
                 telemóvel.
               </Text>
             </View>
-            <View style={styles.primaryBtn}>
+            <View style={[styles.primaryBtn, {height: primaryBtnHeight}]}>
               <PrimaryBtn
                 onPress={handleNext}
                 text="Próximo"
@@ -160,7 +173,7 @@ const Onboarding = ({navigation}) => {
                 <Voltar />
               </TouchableOpacity>
             </View>
-            <View style={styles.imgContainer}>
+            <View style={[styles.imgContainer, {height: imgContainerHeight}]}>
               <View style={styles.img}>
                 <Image
                   source={require('../assets/Onboarding/hero-image-4.png')}
@@ -170,11 +183,11 @@ const Onboarding = ({navigation}) => {
               </View>
             </View>
 
-            <View style={styles.content}>
+            <View style={[styles.content, {height: contentHeight}]}>
               <Text style={styles.title}>Pronto para começar?</Text>
               <Text style={styles.text}>Explora e desfruta a Hubersity!</Text>
             </View>
-            <View style={styles.primaryBtnLast}>
+            <View style={[styles.teste, {height: primaryBtnHeight}]}>
               <PrimaryBtn
                 onPress={() => navigation.navigate('Registo')}
                 text="Criar conta"
@@ -182,6 +195,7 @@ const Onboarding = ({navigation}) => {
                 paddingVertical={5}
                 borderRadius={10}
               />
+
               <UnderlineBtn
                 onPress={() => navigation.navigate('Login')}
                 text="Login"
@@ -234,7 +248,6 @@ const styles = StyleSheet.create({
   primaryBtn: {
     alignItems: 'center',
     justifyContent: 'flex-end',
-    height: '25%',
   },
   img: {
     width: '90%',
@@ -242,15 +255,15 @@ const styles = StyleSheet.create({
   imgContainer: {
     alignItems: 'center',
   },
-  primaryBtnLast: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'space-between',
-    height: '25%',
-    paddingHorizontal: '5%',
-  },
   animationContainer: {
     flex: 1,
+  },
+  teste: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    paddingLeft: '5%',
+    paddingRight: '5%',
   },
 });
 

@@ -1,5 +1,12 @@
 import {React, useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Image, TouchableWithoutFeedback, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+} from 'react-native';
 import Background from '../assets/Home/backgorund.svg';
 import Notificacoes from '../assets/icons/notificações.svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -110,6 +117,8 @@ const styles = StyleSheet.create({
   txt: {
     fontSize: 23,
     marginLeft: '2%',
+    fontFamily: 'BaiJamjuree-Bold',
+    color: '#F8F9FA',
   },
   svgCircle: {
     backgroundColor: '#F8F9FA',
@@ -143,6 +152,7 @@ const styles = StyleSheet.create({
     color: '#F8F9FA',
     position: 'absolute',
     zIndex: 1,
+    fontFamily: 'BaiJamjuree-Bold',
   },
 });
 
