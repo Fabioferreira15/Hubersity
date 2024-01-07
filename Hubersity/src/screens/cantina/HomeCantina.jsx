@@ -9,22 +9,15 @@ import {
 import Background from '../../assets/Home/backgorund.svg';
 import BtnSvg from '../../assets/Home/btn.svg';
 import BtnInvertedSvg from '../../assets/Home/btnInverted.svg';
-import LottieView from 'lottie-react-native';
+import  Header  from '../../components/Header';
 
 const HomeCantina = ({navigation}) => {
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
         <View>
-          <View style={styles.Background}>
-            <Background />
-          </View>
-          <View style={styles.title}>
-            <Text style={styles.txt}>Cantina</Text>
-          </View>
+          <Header title="Cantina" />
         </View>
-        
-
         <View style={styles.main}>
           <TouchableOpacity
             onPress={() => navigation.navigate('Ementas')}
