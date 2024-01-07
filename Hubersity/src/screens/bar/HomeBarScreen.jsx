@@ -1,8 +1,6 @@
 import React from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
 import BarCards from '../../components/BarCards';
-import Header from '../../components/Header';
-
 const HomeBar = ({navigation}) => {
   return (
     <View style={styles.container}>

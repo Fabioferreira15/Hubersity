@@ -128,7 +128,6 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
     flexDirection: 'row',
-    borderWidth: 1,
   },
   btn: {
     flex: 1,
