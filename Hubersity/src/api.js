@@ -16,7 +16,7 @@ export const fetchBarProducts = async () => {
     });
     const responseData = await response.json();
 
-    const bebidasData = responseData.find(
+    /* const bebidasData = responseData.find(
       category => category.categoria.nome === 'Bebidas',
     );
     const comidaData = responseData.find(
@@ -24,9 +24,9 @@ export const fetchBarProducts = async () => {
     );
 
     const bebidas = bebidasData ? bebidasData.produtos : [];
-    const comida = comidaData ? comidaData.produtos : [];
+    const comida = comidaData ? comidaData.produtos : []; */
 
-    return {bebidas, comida};
+    return responseData;
   } catch (error) {
     console.error(error);
     return [];
