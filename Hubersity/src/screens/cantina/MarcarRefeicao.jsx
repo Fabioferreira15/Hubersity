@@ -15,6 +15,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import {Dropdown} from 'react-native-element-dropdown';
 import CalendarioSvg from '../../assets/icons/calendário.svg';
 import IP from '../../context/env';
+import HeaderYellow from '../../components/HeaderYellow';
+import Voltar from '../../assets/icons/Voltar_preto.svg';
 
 const Ementas = ({navigation}) => {
   const [ementas, setEmentas] = useState([]);
@@ -79,7 +81,7 @@ const Ementas = ({navigation}) => {
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
-        <Text style={styles.title}>Ementas</Text>
+        <HeaderYellow title="Marcar Refeição" iconPosition='left' onPress={()=>navigation.navigate('HomeCantina')} customIcon={<Voltar />}/>
         <Text style={styles.title3}>Data</Text>
         <TouchableOpacity
           style={styles.inputButton}
@@ -98,8 +100,9 @@ const Ementas = ({navigation}) => {
           />
         )}
         <Text></Text>
-        <Text style={styles.title3}>Refeição</Text>
+        <Text style={styles.title4}>Refeição</Text>
         <Dropdown
+          style={styles.dropdown}
           data={[{value: 'Almoço'}, {value: 'Jantar'}]}
           labelField="value"
           valueField="value"
@@ -110,7 +113,7 @@ const Ementas = ({navigation}) => {
             setRefeicaoSelecionada(null);
           }}
         />
-        <Text style={styles.title2}>{periodo}</Text>
+        <Text style={styles.refeicaoEscolhida}>{periodo}</Text>
         {ementas.filter(refeicao => refeicao.Periodo === periodo).length >
           0 && (
           <View style={styles.tabela}>
@@ -160,7 +163,7 @@ const Ementas = ({navigation}) => {
         <TouchableOpacity
           style={[
             styles.button,
-            refeicaoSelecionada === null && {opacity: 0.7},
+            refeicaoSelecionada === null /* && {opacity: 0.7} */,
           ]}
           disabled={refeicaoSelecionada === null}
           onPress={()=>{
@@ -187,37 +190,69 @@ const Ementas = ({navigation}) => {
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
+    paddingBottom : '15%',
   },
   container: {
     flex: 1,
-    alignItems: 'center',
+    backgroundColor: '#F8F9FA',
   },
   title: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    marginBottom: 20,
+    fontSize: 27,
+    fontFamily: 'BaiJamjuree-Bold',
+    color: '#212529',
+    textAlign: 'center',
   },
   title2: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 16,
+    fontFamily: 'Tajawal-Regular',
+    color: '#212529',
+    textAlign: 'center',
+    marginTop: 10,
+  },
+  refeicaoEscolhida: {
     marginTop: 20,
+    marginLeft: '5%',
+    fontFamily: 'BaiJamjuree-Bold',
+    color: '#212529',
+    fontSize: 23,
   },
   title3: {
-    fontSize: 16,
-    fontWeight: 'bold',
     alignSelf: 'flex-start',
-    marginLeft: '25%',
+    marginLeft: '5%',
     marginBottom: 5,
+    marginTop: '7%',
+    color: '#212529',
+    fontSize: 16,
+    fontFamily: 'BaiJamjuree-Bold',
+  },
+  title4: {
+    alignSelf: 'flex-start',
+    marginLeft: '5%',
+    marginBottom: 5,
+    marginTop: '1%',
+    color: '#212529',
+    fontSize: 16,
+    fontFamily: 'BaiJamjuree-Bold',
   },
   inputButton: {
     borderWidth: 1,
     borderColor: 'gray',
     padding: 10,
     borderRadius: 5,
-    width: 200,
+    width: '90%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginLeft: '5%',
+  },
+  dropdown: {
+    borderWidth: 1,
+    borderColor: 'gray',
+    padding: 10,
+    borderRadius: 5,
+    width: '90%',
+    justifyContent: 'flex-end',
+    marginLeft: '5%',
   },
   icon: {
     width: 20,
@@ -228,12 +263,14 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 20,
-    width: '80%',
+    paddingVertical: 5,
+    width: '90%',
+    marginLeft: '5%',
   },
   linha: {
     flexDirection: 'row',
-    borderRadius: 5,
+    borderTopLeftRadius:10,
+    borderTopRightRadius:10,
   },
   celula: {
     flex: 1,
@@ -246,6 +283,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'white',
     padding: 5,
+    fontFamily: 'BaiJamjuree-Bold',
   },
   selectContainer: {
     flexDirection: 'row',
@@ -267,11 +305,16 @@ const styles = StyleSheet.create({
   noRefeicoesText: {
     marginTop: 20,
     fontSize: 16,
+    fontFamily: 'Tajawal-Regular',
+    marginLeft: '5%',
   },
   button: {
     backgroundColor: '#4D59C7',
-    borderRadius: 5,
-    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    width: '90%',
+    marginLeft: '5%',
     marginTop: 20,
   },
 });
