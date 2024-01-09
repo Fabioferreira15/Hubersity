@@ -14,9 +14,9 @@ import CantinaActiveSvg from '../assets/icons/cantina_active.svg';
 
 import Bar from '../screens/Bar';
 import Cantina from '../screens/Cantina';
-import Home from '../screens/Home';
-import Perfil from '../screens/Perfil';
-import Roleta from '../screens/Roleta';
+import Home from '../screens/HomeScreen';
+import Perfil from '../screens/PerfilScreen';
+import Roleta from '../screens/RoletaScreen';
 
 const Tab = createBottomTabNavigator();
 

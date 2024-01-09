@@ -1,10 +1,10 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import HomeCantina from '../screens/cantina/HomeCantina';
-import Ementas from '../screens/cantina/Ementas';
-import Marcacoes from '../screens/cantina/MarcarRefeicao';
-import MarcacoesPendentes from '../screens/cantina/MarcacoesPendentes';
-import QrCode from '../screens/cantina/QrCode';
+import HomeCantina from '../screens/cantina/HomeCantinaScreen';
+import Ementas from '../screens/cantina/EmentasScreen';
+import Marcacoes from '../screens/cantina/MarcarRefeicaoScreen';
+import MarcacoesPendentes from '../screens/cantina/MarcacoesPendentesScreen';
+import QrCode from '../screens/cantina/QrCodeScreen';
 
 const Stack = createNativeStackNavigator();
 

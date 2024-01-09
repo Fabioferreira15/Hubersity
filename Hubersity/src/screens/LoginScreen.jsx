@@ -2,7 +2,7 @@ import React, {useState, useContext, useEffect} from 'react';
 import {View, Text, StyleSheet, TextInput} from 'react-native';
 import Blob from '../assets/Login/Background-blob.svg';
 import Logo from '../assets/Login/logo.svg';
-import PrimaryBtn from '../components/PrimaryBtn';
+import PrimaryBtn from '../components/PrimaryBtn.jsx';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AuthContext} from '../context/AuthProvider.js';
 
