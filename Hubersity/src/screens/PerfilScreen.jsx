@@ -6,11 +6,17 @@ import {
   ActivityIndicator,
   ScrollView,
   StyleSheet,
+  TouchableOpacity,
+  Alert,
 } from 'react-native';
 import PrimaryBtn from '../components/PrimaryBtn';
 import {AuthContext} from '../context/AuthProvider';
+import MastercardLogo from '../assets/icons/Mastercard-Logo.svg';
+import MBWayLogo from '../assets/icons/MBWay-Logo.svg';
+import SetaDireita from '../assets/icons/seta-direita.svg';
+import BtnSvg from '../assets/Home/btn.svg';
 
-const Perfil = () => {
+const Perfil = ({navigation}) => {
   const {logout, getPerfilInfo, userInfo} = useContext(AuthContext);
   const [perfilInfo, setPerfilInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -64,7 +70,7 @@ const Perfil = () => {
           style={styles.perfilImage}
         />
         <Text style={[styles.text, styles.title2]}>{perfilInfo.nome}</Text>
-        <Text style={styles.text}>{perfilInfo.email}</Text>
+        {/* <Text style={styles.text}>{perfilInfo.email}</Text>
         <View style={styles.pontosContainer}>
           <Text>{perfilInfo.pontos} pontos</Text>
         </View>
@@ -73,7 +79,7 @@ const Perfil = () => {
           onPress={() => {
             logout();
           }}
-        />
+        /> */}
         <View style={styles.botaoLogout}>
           <PrimaryBtn
             text="Logout"
@@ -82,7 +88,7 @@ const Perfil = () => {
             }}
           />
         </View>
-        <Text style={[styles.title, {textDecorationLine: 'underline'}]}>
+        {/* <Text style={[styles.title, {textDecorationLine: 'underline'}]}>
           Parque de Estacionamento
         </Text>
         <Image
@@ -91,8 +97,40 @@ const Perfil = () => {
           }}
           style={styles.qrCode}
         />
-        <Text style={{marginTop: '-10%'}}>Válido até 31/01/2024</Text>
+        <Text style={{marginTop: '-10%'}}>Válido até 31/01/2024</Text> */}
         <Text style={styles.title}>Formas de pagamento</Text>
+        <TouchableOpacity style={styles.metodoPag}>
+          <View style={styles.metodoPag2}>
+            <MastercardLogo width={30} height={30} />
+            <Text>{'  '}</Text>
+            <Text style={{fontWeight: 'bold', color: 'black'}}>**** 4536</Text>
+          </View>
+          <SetaDireita width={20} height={20} />
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.metodoPag, {borderTopWidth: 1}]}>
+          <View style={styles.metodoPag2}>
+            <MBWayLogo width={40} height={30} />
+            <Text>{'  '}</Text>
+            <Text style={{fontWeight: 'bold', color: 'black'}}>MB WAY</Text>
+          </View>
+          <SetaDireita width={20} height={20} />
+        </TouchableOpacity>
+        <Text />
+        <PrimaryBtn
+          text="Adicionar"
+          borderRadius={10}
+          paddingHorizontal={'35%'}
+          paddingVertical={5}
+          onPress={() => Alert.alert('Adicionar forma de pagamento')}
+        />
+        <Text />
+        <Text />
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Historico')}
+          style={styles.btn}>
+          <Text style={styles.btnTxt}>Histórico</Text>
+          <BtnSvg width={300} height={131} />
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -132,9 +170,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 30,
+    fontSize: 23,
     fontWeight: 'bold',
+    fontFamily: 'BaiJamjuree-Bold',
+    color: 'black',
     marginBottom: 20,
+    alignSelf: 'flex-start',
+    marginLeft: '5%',
   },
   title2: {
     fontSize: 20,
@@ -166,6 +208,31 @@ const styles = StyleSheet.create({
     height: '50%',
     resizeMode: 'contain',
     marginTop: '-10%',
+  },
+  metodoPag: {
+    width: '90%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 5,
+  },
+  metodoPag2: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  btn: {
+    width: '80%',
+    height: 131,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  btnTxt: {
+    fontSize: 30,
+    color: '#F8F9FA',
+    position: 'absolute',
+    zIndex: 1,
+    fontFamily: 'BaiJamjuree-Bold',
   },
 });
 

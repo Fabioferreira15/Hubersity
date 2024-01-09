@@ -54,7 +54,7 @@ const Home = ({navigation}) => {
         <View style={styles.user}>
           <View style={styles.left}>
             <Image source={{uri: image}} style={styles.imgPerfil} />
-            <Text style={styles.txt}>Olá,{nome}</Text>
+            <Text style={styles.txt}>Olá, {nome}</Text>
           </View>
           <View style={styles.right}>
             <View style={styles.svgCircle}>
