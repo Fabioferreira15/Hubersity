@@ -114,7 +114,7 @@ const Ementas = ({navigation}) => {
                   key={refeicao.IdRefeicao}
                   style={[styles.linha2, {backgroundColor: '#BFC5F9'}]}>
                   <View style={styles.celula}>
-                    <Text style={{fontWeight: 'bold'}}>
+                    <Text style={styles.tipoPratoText}>
                       {refeicao.TipoPrato}
                     </Text>
                   </View>
@@ -146,7 +146,7 @@ const Ementas = ({navigation}) => {
                   key={refeicao.IdRefeicao}
                   style={[styles.linha2, {backgroundColor: '#BFC5F9'}]}>
                   <View style={styles.celula}>
-                    <Text style={{fontWeight: 'bold'}}>
+                    <Text style={styles.tipoPratoText}>
                       {refeicao.TipoPrato}
                     </Text>
                   </View>
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   title2: {
-    marginTop: 20,
+    marginTop: 5,
     marginLeft: '5%',
     fontFamily: 'BaiJamjuree-Bold',
     color: '#212529',
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
   },
   inputButton: {
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: '#212529',
     padding: 10,
     borderRadius: 5,
     width: '90%',
@@ -205,6 +205,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginLeft: '5%',
+    backgroundColor: 'white',
   },
   inputButtonText: {
     fontFamily: 'Tajawal-Regular',
@@ -242,9 +243,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   tituloTabela: {
-    fontSize: 20,
+    fontSize: 18,
     color: 'white',
     padding: 5,
+    fontFamily: 'BaiJamjuree-Bold',
+  },
+  tipoPratoText: {
+    fontSize: 16,
+    color: '#212529',
+    fontFamily: 'BaiJamjuree-Bold',
+    /* direcionar a direita */
+    textAlign: 'right',
   },
   textNoMeal: {
     fontFamily: 'Tajawal-Regular',

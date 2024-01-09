@@ -246,6 +246,11 @@ const styles = StyleSheet.create({
     marginLeft: '5%',
     backgroundColor: 'white',
   },
+  inputButtonText: {
+    fontFamily: 'Tajawal-Regular',
+    color: '#212529',
+    fontSize: 17,
+  },
   dropdown: {
     borderWidth: 1,
     borderColor: '#212529',
@@ -255,6 +260,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     marginLeft: '5%',
     backgroundColor: 'white',
+    fontFamily: 'Tajawal-Regular'
   },
   icon: {
     width: 20,
@@ -287,7 +293,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   tituloTabela: {
-    fontSize: 20,
+    fontSize: 18,
     color: 'white',
     padding: 5,
     fontFamily: 'BaiJamjuree-Bold',
