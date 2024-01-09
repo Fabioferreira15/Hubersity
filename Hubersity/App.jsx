@@ -6,6 +6,7 @@ import AppNavigation from './src/navigation/AppNavigation.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AuthProvider, AuthContext} from './src/context/AuthProvider.js';
 import Toast from 'react-native-toast-message';
+import SplashScreen from './src/screens/SplashScreen.jsx';
 
 const AppNav = () => {
   const {isLoading, userToken} = useContext(AuthContext);
@@ -27,7 +28,7 @@ const App = () => {
           <AppNav />
         </AuthProvider>
       </NavigationContainer>
-      <Toast ref={ref => Toast.setRef(ref)} />
+      <Toast />
     </>
   );
 };

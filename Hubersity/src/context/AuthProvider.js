@@ -8,6 +8,8 @@ const AuthProvider = ({children}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [userToken, setUserToken] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
+  const [emailError, setEmailError] = useState(null);
+  const [passwordError, setPasswordError] = useState(null);
 
   const login = async (email, password) => {
     try {
@@ -33,7 +35,16 @@ const AuthProvider = ({children}) => {
         AsyncStorage.setItem('nome', data.UserInfo.nome);
         AsyncStorage.setItem('image', data.UserInfo.imgPerfil);
       } else {
-        console.log('Falha no login:', data);
+        if (data.errors) {
+          data.errors.forEach(error => {
+            if (error.path === 'email') {
+              setEmailError(error.msg);
+            } else if (error.path === 'password') {
+              setPasswordError(error.msg);
+            }
+          });
+        }
+        console.log('Falha ao fazer login:', data);
       }
     } catch (error) {
       console.error('Erro ao fazer login:', error);
@@ -93,7 +104,7 @@ const AuthProvider = ({children}) => {
 
   return (
     <AuthContext.Provider
-      value={{login, logout, isLoading, userToken, getUserInfo, getPerfilInfo}}>
+      value={{login,logout,emailError,passwordError,isLoading, userToken, getUserInfo, getPerfilInfo}}>
       {children}
     </AuthContext.Provider>
   );

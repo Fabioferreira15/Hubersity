@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {View, Text, StyleSheet, TextInput} from 'react-native';
 import Blob from '../assets/Login/Background-blob.svg';
 import Logo from '../assets/Login/logo.svg';
@@ -11,6 +11,10 @@ const Login = ({navigation}) => {
   const [password, setPassword] = useState('');
   const {login} = useContext(AuthContext);
   const {emailError, passwordError} = useContext(AuthContext);
+
+  useEffect(() => {
+    console.log(emailError);
+  }, [emailError]);
 
   return (
     <View style={styles.container}>
@@ -31,9 +35,12 @@ const Login = ({navigation}) => {
             value={email}
             onChangeText={text => setEmail(text)}
           />
-          {emailError ? (
-            <Text style={styles.errorText}>{emailError}</Text>
-          ) : null}
+          {/* {emailError &&
+            emailError.map((error, index) => (
+              <Text key={index} style={styles.errorText}>
+                {error}
+              </Text>
+            ))} */}
           <TextInput
             style={styles.input}
             placeholder="Password"
@@ -46,6 +53,13 @@ const Login = ({navigation}) => {
             <Text style={styles.errorText}>{passwordError}</Text>
           ) : null}
         </View>
+        <PrimaryBtn
+          onPress={() => {
+            navigation.navigate('Registo');
+          }}
+          text="Register"
+          borderRadius={5}
+        />
         <View style={styles.btn}>
           <PrimaryBtn
             onPress={() => {
