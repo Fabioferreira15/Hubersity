@@ -130,7 +130,7 @@ const Ementas = ({navigation}) => {
               .map(refeicao => (
                 <View
                   key={refeicao.IdRefeicao}
-                  style={[styles.linha, {backgroundColor: '#BFC5F9'}]}>
+                  style={[styles.linha2, {backgroundColor: '#BFC5F9'}]}>
                   <View style={styles.celula}>
                     <Text>{refeicao.Preco}€</Text>
                   </View>
@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
   },
   inputButton: {
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: '#212529',
     padding: 10,
     borderRadius: 5,
     width: '90%',
@@ -244,15 +244,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginLeft: '5%',
+    backgroundColor: 'white',
   },
   dropdown: {
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: '#212529',
     padding: 10,
     borderRadius: 5,
     width: '90%',
     justifyContent: 'flex-end',
     marginLeft: '5%',
+    backgroundColor: 'white',
   },
   icon: {
     width: 20,
@@ -271,6 +273,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderTopLeftRadius:10,
     borderTopRightRadius:10,
+  },
+  linha2: {
+    flexDirection: 'row',
+    borderLeftRadius:10,
+    borderRightRadius:10,
   },
   celula: {
     flex: 1,

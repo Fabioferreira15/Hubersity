@@ -12,6 +12,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import CalendarioSvg from '../../assets/icons/calendário.svg';
 import IP from '../../context/env';
+import HeaderYellow from '../../components/HeaderYellow';
+import Voltar from '../../assets/icons/Voltar_preto.svg';
 
 const Ementas = ({navigation}) => {
   const [ementas, setEmentas] = useState([]);
@@ -75,7 +77,7 @@ const Ementas = ({navigation}) => {
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
-        <Text style={styles.title}>Ementas</Text>
+        <HeaderYellow title="Ementas" iconPosition='left' onPress={()=>navigation.navigate('HomeCantina')} customIcon={<Voltar />}/>
         <Text style={styles.title3}>Data</Text>
         <TouchableOpacity
           style={styles.inputButton}
@@ -110,7 +112,7 @@ const Ementas = ({navigation}) => {
               .map(refeicao => (
                 <View
                   key={refeicao.IdRefeicao}
-                  style={[styles.linha, {backgroundColor: '#BFC5F9'}]}>
+                  style={[styles.linha2, {backgroundColor: '#BFC5F9'}]}>
                   <View style={styles.celula}>
                     <Text style={{fontWeight: 'bold'}}>
                       {refeicao.TipoPrato}
@@ -123,7 +125,7 @@ const Ementas = ({navigation}) => {
               ))}
           </View>
         ) : (
-          <Text>Não há ementas disponíveis.</Text>
+          <Text style={styles.textNoMeal}>Não há ementas disponíveis.</Text>
         )}
         <Text></Text>
         <Text style={styles.title2}>JANTAR</Text>
@@ -142,7 +144,7 @@ const Ementas = ({navigation}) => {
               .map(refeicao => (
                 <View
                   key={refeicao.IdRefeicao}
-                  style={[styles.linha, {backgroundColor: '#BFC5F9'}]}>
+                  style={[styles.linha2, {backgroundColor: '#BFC5F9'}]}>
                   <View style={styles.celula}>
                     <Text style={{fontWeight: 'bold'}}>
                       {refeicao.TipoPrato}
@@ -155,7 +157,7 @@ const Ementas = ({navigation}) => {
               ))}
           </View>
         ) : (
-          <Text>Não há ementas disponíveis.</Text>
+          <Text style={styles.textNoMeal}>Não há ementas disponíveis.</Text>
         )}
       </View>
     </ScrollView>
@@ -169,34 +171,45 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    alignItems: 'center',
+    backgroundColor: '#F8F9FA',
   },
   title: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    marginBottom: 20,
+    fontSize: 27,
+    fontFamily: 'BaiJamjuree-Bold',
+    color: '#212529',
+    textAlign: 'center',
   },
   title2: {
-    fontSize: 20,
-    fontWeight: 'bold',
     marginTop: 20,
+    marginLeft: '5%',
+    fontFamily: 'BaiJamjuree-Bold',
+    color: '#212529',
+    fontSize: 23,
   },
   title3: {
-    fontSize: 16,
-    fontWeight: 'bold',
     alignSelf: 'flex-start',
-    marginLeft: '25%',
+    marginLeft: '5%',
     marginBottom: 5,
+    marginTop: '7%',
+    color: '#212529',
+    fontSize: 16,
+    fontFamily: 'BaiJamjuree-Bold',
   },
   inputButton: {
     borderWidth: 1,
     borderColor: 'gray',
     padding: 10,
     borderRadius: 5,
-    width: 200,
+    width: '90%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginLeft: '5%',
+  },
+  inputButtonText: {
+    fontFamily: 'Tajawal-Regular',
+    color: '#212529',
+    fontSize: 17,
   },
   icon: {
     width: 20,
@@ -207,12 +220,19 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 20,
-    width: '80%',
+    paddingVertical: 5,
+    width: '90%',
+    marginLeft: '5%',
   },
   linha: {
     flexDirection: 'row',
-    borderRadius: 5,
+    borderTopLeftRadius:10,
+    borderTopRightRadius:10,
+  },
+  linha2: {
+    flexDirection: 'row',
+    borderLeftRadius:10,
+    borderRightRadius:10,
   },
   celula: {
     flex: 1,
@@ -226,6 +246,12 @@ const styles = StyleSheet.create({
     color: 'white',
     padding: 5,
   },
+  textNoMeal: {
+    fontFamily: 'Tajawal-Regular',
+    color: '#212529',
+    fontSize: 17,
+    marginLeft: '5%',
+  }
 });
 
 export default Ementas;
