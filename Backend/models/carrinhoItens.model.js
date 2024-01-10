@@ -53,4 +53,3 @@ mysqlDB
 
 exports.CarrinhoItens = CarrinhoItens;
 
-//não esta a criar a tabela

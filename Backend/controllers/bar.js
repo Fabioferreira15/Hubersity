@@ -332,6 +332,7 @@ exports.pagarCarrinho = async function (req, res) {
       where: {
         IdCarrinho: userId,
       },
+      include: [{model: ProdutosBar}],
     });
 
     if (produtosCarrinho.length === 0) {
@@ -339,6 +340,12 @@ exports.pagarCarrinho = async function (req, res) {
         message: "Carrinho vazio.",
       });
     }
+
+    const total = produtosCarrinho.reduce((total, produto) => {
+      const preco = produto.ProdutosBar.Preco;
+      const quantidade = produto.Quantidade;
+      return total + preco * quantidade;
+    }, 0);
 
     const detalhesPagamentoExistente = await DetalhesPagamento.findOne({
       where: {
@@ -369,13 +376,12 @@ exports.pagarCarrinho = async function (req, res) {
     // criar pagamento
     const pagamento = await Pagamento.create({
       UserId: userId,
-      Valor: req.body.Valor,
+      Valor: total,
       Data: new Date(),
       IdDetalhesPagamento: detalhesPagamento.IdDetalhesPagamento,
     });
 
     // adicionar produtos do carrinho ao pedido e decrementar stock e apagar produtos do carrinho
-    
 
     // criar pedido
     const novoPedido = await PedidosBar.create({
@@ -383,7 +389,7 @@ exports.pagarCarrinho = async function (req, res) {
       Data: new Date(),
       Status: "pendente",
       IdPagamento: pagamento.IdPagamento,
-      QRCode: 'teste',
+      QRCode: "teste",
     });
 
     await Promise.all(

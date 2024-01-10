@@ -1,16 +1,12 @@
 const Utilizadores = require("../models/utilizadores.model").Utilizadores;
 const Carrinho = require("../models/carrinho.model").Carrinho;
 const Cursos = require("../models/cursos.model").Cursos;
-const categoriasBar = require("../models/categoriasBar.model").CategoriasBar;
-const ProdutosBar = require("../models/produtosBar.model").ProdutosBar;
-const CarrinhoItens = require("../models/carrinhoItens.model").CarrinhoItens;
-const PedidosBar = require("../models/pedidosBar.model").PedidosBar;
-const PedidosBarProdutos = require("../models/pedidosBarProdutos.model");
-const MarcacaoCantina =
-  require("../models/marcacaoCantina.model").MarcacaoCantina;
 const PagamentoEstacionamento =
   require("../models/pagamentoEstacionamento.model").PagamentoEstacionamento;
 const Pagamento = require("../models/pagamento.model").Pagamento;
+const QRCode = require("qrcode");
+const DetalhesPagamento =
+  require("../models/detalhesPagamento.model").DetalhesPagamento;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const utilities = require("../utilities/utilities");
@@ -213,7 +209,7 @@ exports.obterPagamentoEstacionamento = async function (req, res) {
 };
 
 //Pagar estacionamento
-exports.pagarEstacionamento = async function (req, res) {
+exports.pagarEstacionamento = async (req, res) => {
   try {
     let auth = utilities.verifyToken(req.headers.authorization);
 
@@ -225,28 +221,69 @@ exports.pagarEstacionamento = async function (req, res) {
 
     const userId = parseInt(req.params.id);
 
+    const utilizador = await Utilizadores.findByPk(userId);
+
+    if (!utilizador) {
+      res.status(404).send({
+        message: "Utilizador não encontrado.",
+      });
+    }
+
     const estacionamentoExistente = await PagamentoEstacionamento.findOne({
       where: { UserId: userId },
     });
 
     if (estacionamentoExistente) {
       res.status(400).send({
-        message: "Já efetuou o pagamento do estacionamento!",
+        message: `Já efetuou o pagamento do estacionamento! Proximo pagamento: ${estacionamentoExistente.ProximoPagamento}`,
       });
+    }
+
+    const detalhesPagamentoExistente = await DetalhesPagamento.findOne({
+      where: {
+        UserId: userId,
+      },
+    });
+
+    let detalhesPagamento;
+
+    if (!detalhesPagamentoExistente) {
+      detalhesPagamento = await DetalhesPagamento.create({
+        UserId: userId,
+        NumeroCartao: req.body.NumeroCartao,
+        CVV: req.body.CVV,
+        DataValidade: req.body.DataValidade,
+        NomeTitular: req.body.NomeTitular,
+      });
+    } else {
+      detalhesPagamento = detalhesPagamentoExistente;
     }
 
     const pagamento = await Pagamento.create({
       UserId: userId,
       Valor: 5,
+      IdDetalhesPagamento: detalhesPagamento.IdDetalhesPagamento,
       Data: new Date(),
-      MetodoPagamento: "MBWay",
     });
 
-    if (pagamento) {
+    const proximoPagamento = new Date(pagamento.Data);
+    proximoPagamento.setMonth(proximoPagamento.getMonth() + 1);
+
+    const qrData = {
+      Utilizador: utilizador.nome,
+      status: "Pago",
+      ProximoPagamento: proximoPagamento,
+    };
+
+    utilities.generateQrToken(qrData, async (token) => {
+      qrData.token = token;
+
+      const qrCode = await QRCode.toDataURL(JSON.stringify(qrData));
+
       const estacionamento = await PagamentoEstacionamento.create({
         UserId: userId,
-        ProximoPagamento: new Date().setDate(new Date().getDate() + 30),
-        QRCode: "teste",
+        ProximoPagamento: proximoPagamento,
+        QRCode: qrCode,
         IdPagamento: pagamento.IdPagamento,
       });
 
@@ -255,7 +292,7 @@ exports.pagarEstacionamento = async function (req, res) {
         pagamento: pagamento,
         estacionamento: estacionamento,
       });
-    }
+    });
   } catch (error) {
     res.status(500).send({
       message: error.message || "Ocorreu um erro ao pagar o estacionamento.",
