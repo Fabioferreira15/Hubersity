@@ -10,9 +10,44 @@ import Background from '../assets/Home/backgorund.svg';
 import BtnSvg from '../assets/Home/btn.svg';
 import BtnInvertedSvg from '../assets/Home/btnInverted.svg';
 import Header from '../components/Header';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import CalendarioSvg from '../assets/icons/calendário.svg';
 
 const Historico = ({navigation}) => {
   const [opcao, setOpcao] = useState('Cantina');
+  const [dataDE, setDataDE] = useState(new Date());
+  const [dataATE, setDataATE] = useState(new Date());
+  const [showDatePickerDE, setShowDatePickerDE] = useState(false);
+  const [showDatePickerATE, setShowDatePickerATE] = useState(false);
+
+  const handleDateChangeDE = (event, date) => {
+    if (date !== undefined && event.type === 'set') {
+      const formattedDate = `${date.getFullYear()}-${String(
+        date.getMonth() + 1,
+      ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
+      setDataDE(new Date(formattedDate));
+    }
+    setShowDatePickerDE(false);
+  };
+
+  const handleDateChangeATE = (event, date) => {
+    if (date !== undefined && event.type === 'set') {
+      const formattedDate = `${date.getFullYear()}-${String(
+        date.getMonth() + 1,
+      ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
+      setDataATE(new Date(formattedDate));
+    }
+    setShowDatePickerATE(false);
+  };
+  const showDatePickerDEComponent = () => {
+    setShowDatePickerDE(true);
+  };
+  const showDatePickerATEComponent = () => {
+    setShowDatePickerATE(true);
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
@@ -28,12 +63,14 @@ const Historico = ({navigation}) => {
                   : styles.containerOpcao,
               ]}>
               <TouchableOpacity onPress={() => setOpcao('Cantina')}>
-              <Text
+                <Text
                   style={[
                     opcao === 'Cantina'
                       ? styles.txtOpcaoSelecionada
                       : styles.txtOpcao,
-                  ]}>Cantina</Text>
+                  ]}>
+                  Cantina
+                </Text>
               </TouchableOpacity>
             </View>
             <View
@@ -52,6 +89,46 @@ const Historico = ({navigation}) => {
                   Bar
                 </Text>
               </TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.containerDatas}>
+            <View style={{width: '50%'}}>
+              <Text style={{marginLeft: '5%'}}>De</Text>
+              <TouchableOpacity
+                style={styles.inputButton}
+                onPress={showDatePickerDEComponent}>
+                <Text style={styles.inputButtonText}>
+                  {dataDE && dataDE.toLocaleDateString()}
+                </Text>
+                <CalendarioSvg style={styles.icon} />
+              </TouchableOpacity>
+              {showDatePickerDE && (
+                <DateTimePicker
+                  value={dataDE}
+                  mode="date"
+                  display="default"
+                  onChange={handleDateChangeDE}
+                />
+              )}
+            </View>
+            <View style={{width: '50%'}}>
+              <Text style={{marginLeft: '5%'}}>Até</Text>
+              <TouchableOpacity
+                style={styles.inputButton}
+                onPress={showDatePickerATEComponent}>
+                <Text style={styles.inputButtonText}>
+                  {dataATE && dataATE.toLocaleDateString()}
+                </Text>
+                <CalendarioSvg style={styles.icon} />
+              </TouchableOpacity>
+              {showDatePickerATE && (
+                <DateTimePicker
+                  value={dataATE}
+                  mode="date"
+                  display="default"
+                  onChange={handleDateChangeATE}
+                />
+              )}
             </View>
           </View>
         </View>
@@ -106,7 +183,7 @@ const styles = StyleSheet.create({
   containerOpcaoSelecionada: {
     alignItems: 'center',
     width: '50%',
-    borderRadius: 10,
+    borderRadius: 5,
     backgroundColor: '#5F6EF0',
   },
   txtOpcao: {
@@ -120,6 +197,28 @@ const styles = StyleSheet.create({
     color: '#F8F9FA',
     padding: 5,
     justifyContent: 'center',
+  },
+  inputButton: {
+    borderWidth: 1,
+    borderColor: '#212529',
+    padding: 10,
+    borderRadius: 5,
+    width: '90%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginLeft: '5%',
+    backgroundColor: 'white',
+  },
+  inputButtonText: {
+    fontFamily: 'Tajawal-Regular',
+    color: '#212529',
+    fontSize: 17,
+  },
+  containerDatas: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '90%',
   },
 });
 
