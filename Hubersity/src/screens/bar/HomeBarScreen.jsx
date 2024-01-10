@@ -104,6 +104,12 @@ const HomeBar = ({navigation}) => {
               </ScrollView>
             </View>
           ))}
+          {/* criar botão para com o nome Pedidos por levantar, que vai para a página PedidosBarLevantar */}
+          <TouchableOpacity
+            style={styles.btnPedidosPorLevantar}
+            onPress={() => navigation.navigate('PendingOrdersScreen')}>
+            <Text style={styles.textBtnPedidosPorLevantar}>Pedidos por levantar</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </View>
@@ -168,6 +174,22 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'center',
     padding: 5,
+  },
+  btnPedidosPorLevantar: {
+    alignSelf: 'center',
+    marginTop: 20,
+    marginBottom: '10%',
+    borderRadius: 10,
+    width: '90%',
+    backgroundColor: '#F0D060',
+    verticalAlignText: 'middle',
+    paddingVertical: '2%',
+  },
+  textBtnPedidosPorLevantar: {
+    color: '#151C4D',
+    fontSize: 17,
+    fontFamily: 'BaiJamjuree-Bold',
+    textAlign: 'center',
   },
 });
 

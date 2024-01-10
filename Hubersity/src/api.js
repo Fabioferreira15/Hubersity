@@ -122,3 +122,34 @@ export const addToCart = async (id) => {
     };
   }
 };
+
+// pendingOrders
+export const PendingOrders = async () => {
+  try {
+    const storedToken = await AsyncStorage.getItem('token');
+    if (!storedToken) {
+      console.error('Sem token');
+    }
+
+    const response = await fetch(`http://${IP}:3000/bar/pedidos`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${storedToken}`,
+      },
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      return responseData
+    } else {
+      const responseData = await response.json();
+      console.error(responseData);
+return responseData    }
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: 'Ocorreu um erro a ver o pedidos por levantar.',
+    };
+  }
+};

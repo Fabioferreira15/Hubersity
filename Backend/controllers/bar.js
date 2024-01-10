@@ -343,9 +343,9 @@ exports.verPedidoIndividual = async function (req, res) {
 };
 
 //ver pedidos por levantar
-exports.verPedidoPorLevantar = async function (req, res) {
+exports.verPedidosPorLevantar = async function (req, res) {
     try {
-      let auth = utilities.verifyToken(req.headers.auth_key);
+      let auth = utilities.verifyToken(req.headers.authorization);
   
       if (!auth) {
         return res.status(401).send({
@@ -353,7 +353,7 @@ exports.verPedidoPorLevantar = async function (req, res) {
         });
       }
   
-      const userId = auth.id;
+      const userId = parseInt(auth.id);
   
       const pedidosPorLevantar = await PedidosBar.findAll({
         where: {
@@ -365,7 +365,7 @@ exports.verPedidoPorLevantar = async function (req, res) {
       });
   
       if (pedidosPorLevantar.length === 0) {
-        return res.status(204).send({
+        return res.status(200).send({
           message: "Nenhum pedido por levantar",
         });
       }

@@ -71,7 +71,7 @@ router.get("/pedidos/:idPedido", function (req, res) {
 
 //ver pedidos por levantar
 router.get("/pedidos", function (req, res) {
-  barController.verPedidos(req, res);
+  barController.verPedidosPorLevantar(req, res);
 });
 
 //ver todos os pedidos histórico
