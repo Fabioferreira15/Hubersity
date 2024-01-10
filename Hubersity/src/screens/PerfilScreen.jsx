@@ -8,6 +8,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
+  Dimensions,
 } from 'react-native';
 import PrimaryBtn from '../components/PrimaryBtn';
 import {AuthContext} from '../context/AuthProvider';
@@ -15,6 +16,7 @@ import MastercardLogo from '../assets/icons/Mastercard-Logo.svg';
 import MBWayLogo from '../assets/icons/MBWay-Logo.svg';
 import SetaDireita from '../assets/icons/seta-direita.svg';
 import BtnSvg from '../assets/Home/btn.svg';
+import BtnLogout from '../assets/icons/logout.svg';
 
 const Perfil = ({navigation}) => {
   const {logout, getPerfilInfo, userInfo} = useContext(AuthContext);
@@ -70,25 +72,22 @@ const Perfil = ({navigation}) => {
           style={styles.perfilImage}
         />
         <Text style={[styles.text, styles.title2]}>{perfilInfo.nome}</Text>
-        {/* <Text style={styles.text}>{perfilInfo.email}</Text>
+        <Text style={styles.text}>{perfilInfo.email}</Text>
         <View style={styles.pontosContainer}>
           <Text>{perfilInfo.pontos} pontos</Text>
         </View>
-        <PrimaryBtn
-          text="Logout"
+        <TouchableOpacity
+          style={styles.botaoLogout}
           onPress={() => {
             logout();
-          }}
-        /> */}
-        <View style={styles.botaoLogout}>
-          <PrimaryBtn
-            text="Logout"
-            onPress={() => {
-              logout();
-            }}
-          />
-        </View>
-        {/* <Text style={[styles.title, {textDecorationLine: 'underline'}]}>
+          }}>
+          <BtnLogout width={35} height={35} />
+        </TouchableOpacity>
+        <Text
+          style={[
+            styles.title,
+            {borderBottomColor: 'black', borderBottomWidth: 1, width: '90%'},
+          ]}>
           Parque de Estacionamento
         </Text>
         <Image
@@ -97,7 +96,7 @@ const Perfil = ({navigation}) => {
           }}
           style={styles.qrCode}
         />
-        <Text style={{marginTop: '-10%'}}>Válido até 31/01/2024</Text> */}
+        <Text style={styles.validadeQR}>Válido até 31/01/2024</Text>
         <Text style={styles.title}>Formas de pagamento</Text>
         <TouchableOpacity style={styles.metodoPag}>
           <View style={styles.metodoPag2}>
@@ -199,15 +198,27 @@ const styles = StyleSheet.create({
   },
   botaoLogout: {
     position: 'absolute',
-    top: '-50%',
-    right: 0,
-    marginRight: '5%',
+    top: '-12%',
+    right: '5%',
+    backgroundColor: '#F8F9FA',
+    borderRadius: 50,
+    padding: 5,
   },
+
   qrCode: {
-    width: '50%',
-    height: '50%',
+    width: Dimensions.get('window').width * 0.5,
+    height: Dimensions.get('window').width * 0.5,
     resizeMode: 'contain',
-    marginTop: '-10%',
+    marginTop: '5%',
+  },
+  validadeQR: {
+    fontSize: 16,
+    fontFamily: 'BaiJamjuree-SemiBold',
+    color: '#212529',
+    alignSelf: 'flex-start',
+    marginTop: '5%',
+    marginBottom: '15%',
+    marginLeft: '5%',
   },
   metodoPag: {
     width: '90%',
