@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, TextInput} from 'react-native';
 import Blob from '../assets/Login/Background-blob.svg';
 import Logo from '../assets/Login/logo.svg';
 import PrimaryBtn from '../components/PrimaryBtn.jsx';
+import UnderlineBtn from '../components/UnderlineBtn.jsx';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AuthContext} from '../context/AuthProvider.js';
 
@@ -53,13 +54,13 @@ const Login = ({navigation}) => {
             <Text style={styles.errorText}>{passwordError}</Text>
           ) : null}
         </View>
-        <PrimaryBtn
+        {/*  <PrimaryBtn
           onPress={() => {
             navigation.navigate('Registo');
           }}
           text="Register"
           borderRadius={5}
-        />
+        /> */}
         <View style={styles.btn}>
           <PrimaryBtn
             onPress={() => {
@@ -70,6 +71,17 @@ const Login = ({navigation}) => {
             paddingVertical={10}
             borderRadius={5}
           />
+          <View style={styles.registo}>
+            <Text style={styles.registoTxt}>Ainda não tens conta?</Text>
+            <UnderlineBtn
+              onPress={() => {
+                navigation.navigate('Registo');
+              }}
+              text="Regista-te"
+              color="#F0D060"
+              size={16}
+            />
+          </View>
         </View>
       </View>
     </View>
@@ -108,7 +120,19 @@ const styles = StyleSheet.create({
     color: '#212529',
   },
   btn: {
-    marginTop: '45%',
+    marginTop: '40%',
+    width: '95%',
+    alignSelf: 'center',
+  },
+  registo:{
+    marginTop: '2%',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  registoTxt:{
+    color: '#F8F9FA',
+    fontSize: 16,
+    marginRight: '2%',
   },
 });
 

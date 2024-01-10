@@ -1,13 +1,10 @@
 import React from 'react';
-import {Text, StyleSheet, TouchableOpacity} from 'react-native';
-const UnderlineBtn = ({
-  onPress,
-  text,
-}) => {
+import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 
+const UnderlineBtn = ({ onPress, text, color = '#F8F9FA',size, style }) => {
   return (
     <TouchableOpacity onPress={onPress}>
-      <Text style={styles.Txt}>{text}</Text>
+      <Text style={[styles.Txt, { color: color,fontSize:size }, style]}>{text}</Text>
     </TouchableOpacity>
   );
 };
