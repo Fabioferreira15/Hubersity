@@ -11,12 +11,10 @@ const SplashScreen = ({navigation}) => {
         console.log('Onboarding Seen:', onboardingSeen);
 
         if (onboardingSeen === 'true') {
-          console.log('Navigating to Login');
           setTimeout(() => {
             navigation.navigate('Login');
           }, 5000);
         } else {
-          console.log('Navigating to Onboarding');
           setTimeout(() => {
             navigation.navigate('Onboarding');
           }, 5000);
@@ -28,11 +26,6 @@ const SplashScreen = ({navigation}) => {
     checkOnboardingSeen();
   }, []);
 
-  /*   useEffect(() => {
-    setTimeout(() => {
-      navigation.navigate('Onboarding');
-    }, 5000);
-  }, []); */
 
   return (
     <View style={{flex: 1}}>

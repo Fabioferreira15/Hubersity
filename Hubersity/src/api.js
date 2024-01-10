@@ -140,7 +140,7 @@ export const PendingOrders = async () => {
 
     if (response.ok) {
       const responseData = await response.json();
-      return responseData
+      return responseData;
     } else {
       const responseData = await response.json();
       console.error(responseData);

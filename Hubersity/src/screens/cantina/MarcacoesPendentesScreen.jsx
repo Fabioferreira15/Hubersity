@@ -36,7 +36,7 @@ const MarcacoesPendentes = ({navigation}) => {
           },
         );
         const responseData = await response.json();
-        setMarcacoes(responseData.marcacoes);
+        setMarcacoes(responseData.marcacoes || []);
         console.log(responseData.marcacoes);
       } catch (error) {
         console.error(error);

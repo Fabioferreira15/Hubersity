@@ -201,7 +201,6 @@ const Onboarding = ({navigation}) => {
               <UnderlineBtn
                 onPress={async () => {
                   AsyncStorage.setItem('OnboardingSeen', 'true');
-                  console.log(await AsyncStorage.getItem('OnboardingSeen'));
                   navigation.navigate('Login');
                 }}
                 text="Login"
