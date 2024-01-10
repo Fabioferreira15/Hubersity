@@ -21,6 +21,7 @@ const BarNavigation = () => {
         name="PendingOrdersScreen"
         component={PendingOrdersScreen}
       />
+
     </Stack.Navigator>
   );
 };
