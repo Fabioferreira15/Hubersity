@@ -24,7 +24,7 @@ const PendingOrdersScreen = ({navigation}) => {
           setEmpty(true);
           setLoading(false);
         } else {
-          setOrders(ordersToTake);
+          setOrders(ordersToTake.pedidos || []);
           setEmpty(false);
           setLoading(false);
         }

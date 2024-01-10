@@ -464,12 +464,15 @@ exports.verPedidosPorLevantar = async function (req, res) {
       });
   
       if (pedidosPorLevantar.length === 0) {
-        return res.status(200).send({
+        return res.status(204).send({
           message: "Nenhum pedido por levantar",
         });
       }
   
-      return res.status(200).send(pedidosPorLevantar);
+      return res.status(200).send({
+        mensgaem: "Pedidos por levantar encontrados",
+        pedidos: pedidosPorLevantar,
+      });
     } catch (error) {
       console.error(error);
       return res.status(500).send({
