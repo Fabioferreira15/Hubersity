@@ -181,6 +181,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginTop: 20,
+    color: '#212529',
   },
   title3: {
     fontSize: 16,
@@ -209,14 +210,12 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width * 0.5,
     height: Dimensions.get('window').width * 0.5,
     resizeMode: 'contain',
-    marginTop: '5%',
   },
   validadeQR: {
     fontSize: 16,
     fontFamily: 'BaiJamjuree-SemiBold',
     color: '#212529',
     alignSelf: 'flex-start',
-    marginTop: '5%',
     marginBottom: '15%',
     marginLeft: '5%',
   },
