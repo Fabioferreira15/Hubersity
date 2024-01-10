@@ -38,7 +38,7 @@ PedidosBar.init(
         },
         QRCode: {
             type: DataTypes.STRING(255),
-            allowNull: false,
+            allowNull: true,
         }
     },
     {

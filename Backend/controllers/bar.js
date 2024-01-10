@@ -3,6 +3,8 @@ const CategoriasBar = require("../models/categoriasBar.model").CategoriasBar;
 const Carrinho = require("../models/carrinho.model").Carrinho;
 const CarrinhoItens = require("../models/carrinhoItens.model").CarrinhoItens;
 const PedidosBar = require("../models/pedidosBar.model").PedidosBar;
+const Utilizadores = require("../models/utilizadores.model").Utilizadores;
+const Pagamento = require("../models/pagamento.model").Pagamento;
 const PedidosBarProdutos =
   require("../models/pedidosBarProdutos.model").PedidosBarProdutos;
 const utilities = require("../utilities/utilities");
@@ -285,6 +287,103 @@ exports.apagarProdutoCarrinho = async function (req, res) {
     });
   }
 };
+
+//Pagar carrinho
+exports.pagarCarrinho = async function (req, res) {
+  try {
+    let auth = utilities.verifyToken(req.headers.authorization);
+
+
+    if (!auth || auth.id != req.params.id){
+      return res.status(401).send({
+        message: "Não autorizado.",
+      });
+    }
+
+    const userId = parseInt(req.params.id);
+
+    const utilizador = await Utilizadores.findOne({
+      where: {
+        UserId: userId,
+      },
+    });
+
+    if (!utilizador) {
+      return res.status(404).send({
+        message: "Utilizador não existe.",
+      });
+    }
+
+    const carrinho = await Carrinho.findOne({
+      where: {
+        IdCarrinho: userId,
+      },
+    });
+
+    if (!carrinho) {
+      return res.status(404).send({
+        message: "Carrinho não existe.",
+      });
+    }
+
+    const produtosCarrinho = await CarrinhoItens.findAll({
+      where: {
+        IdCarrinho: userId,
+      },
+    });
+
+    if (produtosCarrinho.length === 0) {
+      return res.status(400).send({
+        message: "Carrinho vazio.",
+      });
+    }
+
+    // criar pagamento
+    const pagamento = await Pagamento.create({
+      UserId: userId,
+      Valor: req.body.Valor,
+      Data: new Date(),
+      IdDetalhesPagamento: req.body.IdDetalhesPagamento,
+    });
+
+    // adicionar produtos do carrinho ao pedido e decrementar stock e apagar produtos do carrinho
+    await Promise.all(
+      produtosCarrinho.map(async (produtoCarrinho) => {
+        await PedidosBarProdutos.create({
+          IdPedido: pagamento.IdPagamento,
+          IdProduto: produtoCarrinho.IdProduto,
+          Quantidade: produtoCarrinho.Quantidade,
+        });
+        await ProdutosBar.decrement(
+          { Stock: produtoCarrinho.Quantidade },
+          { where: { IdProduto: produtoCarrinho.IdProduto } }
+        );
+        await CarrinhoItens.destroy({
+          where: { IdProduto: produtoCarrinho.IdProduto, IdCarrinho: userId },
+        });
+      })
+    );
+
+
+      // criar pedido
+    await PedidosBar.create({
+      UserId: userId,
+      Data: new Date(),
+      Status: "pendente",
+      IdPagamento: pagamento.IdPagamento,
+      QRCode: req.body.QRCode,
+    });
+
+
+  } catch (error) {
+    
+  }
+};
+
+
+
+
+
 
 
 

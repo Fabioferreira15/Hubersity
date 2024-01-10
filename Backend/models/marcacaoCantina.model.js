@@ -3,6 +3,7 @@ const mysqlDB = require("../connections/mysql").sequelize;
 const { Utilizadores } = require("./utilizadores.model");
 const { RefeicaoCantina } = require("./refeicaoCantina.model");
 const { Pagamento } = require("./pagamento.model");
+const { DetalhesPagamento } = require("./detalhesPagamento.model");
 
 
 class MarcacaoCantina extends Model {}

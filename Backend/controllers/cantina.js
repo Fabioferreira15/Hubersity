@@ -7,6 +7,8 @@ const MarcacaoCantina =
 const Pagamento = require("../models/pagamento.model").Pagamento;
 const utilities = require("../utilities/utilities");
 const QrCode = require("qrcode");
+const DetalhesPagamento =
+  require("../models/detalhesPagamento.model").DetalhesPagamento;
 
 //criar refeições na cantina
 exports.criarRefeicaoCantina = async function (req, res) {
@@ -139,7 +141,7 @@ exports.pagamentoMarcacao = async (req, res) => {
       });
     }
 
-    // verificar se já existe a refeição
+    // verificar se existe a refeição
     const refeicaoExistente = await RefeicaoCantina.findOne({
       where: {
         IdRefeicao: IdRefeicao,
@@ -165,11 +167,38 @@ exports.pagamentoMarcacao = async (req, res) => {
       });
     }
 
+    // verificar se existe detalhes de pagamento
+    const detalhesPagamentoExistente = await DetalhesPagamento.findOne({
+      where: {
+        UserId: userId,
+      },
+    });
+
+    let detalhesPagamento;
+
+    if (!detalhesPagamentoExistente) {
+      detalhesPagamento = await DetalhesPagamento.create({
+        UserId: userId,
+        NumeroCartao: req.body.NumeroCartao,
+        CVV: req.body.CVV,
+        DataValidade: req.body.DataValidade,
+        NomeTitular: req.body.NomeTitular,
+      });
+    } else {
+      detalhesPagamento = detalhesPagamentoExistente;
+    }
+
+    if (!detalhesPagamento) {
+      return res.status(400).send({
+        message: "Detalhes de pagamento não disponíveis.",
+      });
+    }
+
     // criar pagamento
     const pagamento = await Pagamento.create({
       UserId: userId,
       Valor: Valor,
-      MetodoPagamento: "MBWay",
+      IdDetalhesPagamento: detalhesPagamento.IdDetalhesPagamento,
       Data: new Date(),
     });
 
@@ -277,7 +306,7 @@ exports.obterMarcacoesPendentes = async (req, res) => {
       });
     }
 
-    const userId = parseInt(req.params.id)
+    const userId = parseInt(req.params.id);
 
     const marcacoes = await MarcacaoCantina.findAll({
       where: {
@@ -356,4 +385,3 @@ exports.obterMarcacoesCantinaHistorico = async (req, res) => {
     });
   }
 };
-

@@ -1,6 +1,7 @@
 const { Model, DataTypes } = require("sequelize");
 const mysqlDB = require("../connections/mysql").sequelize;
 const { Utilizadores } = require("./utilizadores.model");
+const { DetalhesPagamento } = require("./detalhesPagamento.model");
 
 class Pagamento extends Model {}
 
@@ -27,9 +28,13 @@ Pagamento.init(
             type: DataTypes.DATEONLY,
             allowNull: false,
         },
-        MetodoPagamento: {
-            type: DataTypes.ENUM("MBWay", "CartaoDébito"),
+        IdDetalhesPagamento: {
+            type: DataTypes.INTEGER,
             allowNull: false,
+            references: {
+                model: "DetalhesPagamentos",
+                key: "IdDetalhesPagamento",
+            },
         },
     },
     {
@@ -40,6 +45,8 @@ Pagamento.init(
 );
 
 Pagamento.belongsTo(Utilizadores, {foreignKey: 'UserId'});
+Pagamento.belongsTo(DetalhesPagamento, {foreignKey: 'IdDetalhesPagamento'});
+
 
 mysqlDB
     .sync()
