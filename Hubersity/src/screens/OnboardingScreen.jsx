@@ -8,11 +8,10 @@ import {
   Dimensions,
 } from 'react-native';
 import Swiper from 'react-native-swiper';
-import HeroSvg from '../assets/Onboarding/Hero-image.svg';
 import PrimaryBtn from '../components/PrimaryBtn';
 import UnderlineBtn from '../components/UnderlineBtn';
 import Voltar from '../assets/icons/Voltar.svg';
-import LottieView from 'lottie-react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Onboarding = ({navigation}) => {
   const {width, height} = Dimensions.get('window');
@@ -189,7 +188,10 @@ const Onboarding = ({navigation}) => {
             </View>
             <View style={[styles.teste, {height: primaryBtnHeight}]}>
               <PrimaryBtn
-                onPress={() => navigation.navigate('Registo')}
+                onPress={() => {
+                  AsyncStorage.setItem('OnboardingSeen', 'true');
+                  navigation.navigate('Register');
+                }}
                 text="Criar conta"
                 paddingHorizontal={10}
                 paddingVertical={5}
@@ -197,7 +199,11 @@ const Onboarding = ({navigation}) => {
               />
 
               <UnderlineBtn
-                onPress={() => navigation.navigate('Login')}
+                onPress={async () => {
+                  AsyncStorage.setItem('OnboardingSeen', 'true');
+                  console.log(await AsyncStorage.getItem('OnboardingSeen'));
+                  navigation.navigate('Login');
+                }}
                 text="Login"
               />
             </View>

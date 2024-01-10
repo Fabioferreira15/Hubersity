@@ -57,7 +57,14 @@ const AuthProvider = ({children}) => {
     setIsLoading(true);
     setUserToken(null);
     setUserInfo(null);
-    AsyncStorage.clear();
+    try {
+      AsyncStorage.removeItem('token');
+      AsyncStorage.removeItem('id');
+      AsyncStorage.removeItem('nome');
+      AsyncStorage.removeItem('image');
+    } catch (error) {
+      console.error(error);
+    }
     setIsLoading(false);
   };
 
@@ -104,7 +111,16 @@ const AuthProvider = ({children}) => {
 
   return (
     <AuthContext.Provider
-      value={{login,logout,emailError,passwordError,isLoading, userToken, getUserInfo, getPerfilInfo}}>
+      value={{
+        login,
+        logout,
+        emailError,
+        passwordError,
+        isLoading,
+        userToken,
+        getUserInfo,
+        getPerfilInfo,
+      }}>
       {children}
     </AuthContext.Provider>
   );

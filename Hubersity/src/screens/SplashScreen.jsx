@@ -1,17 +1,38 @@
-import { View, Text } from 'react-native'
-import React, {useEffect} from 'react'
-import LottieView from 'lottie-react-native'
-
+import {View, Text} from 'react-native';
+import React, {useEffect} from 'react';
+import LottieView from 'lottie-react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SplashScreen = ({navigation}) => {
+  useEffect(() => {
+    const checkOnboardingSeen = async () => {
+      try {
+        const onboardingSeen = await AsyncStorage.getItem('OnboardingSeen');
+        console.log('Onboarding Seen:', onboardingSeen);
 
-    useEffect(() => {
-        setTimeout(() => {
-            navigation.navigate('Onboarding')
-        }, 5000)
-    }, [])
+        if (onboardingSeen === 'true') {
+          console.log('Navigating to Login');
+          setTimeout(() => {
+            navigation.navigate('Login');
+          }, 5000);
+        } else {
+          console.log('Navigating to Onboarding');
+          setTimeout(() => {
+            navigation.navigate('Onboarding');
+          }, 5000);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    checkOnboardingSeen();
+  }, []);
 
-
+  /*   useEffect(() => {
+    setTimeout(() => {
+      navigation.navigate('Onboarding');
+    }, 5000);
+  }, []); */
 
   return (
     <View style={{flex: 1}}>
@@ -22,7 +43,7 @@ const SplashScreen = ({navigation}) => {
         style={{flex: 1}}
       />
     </View>
-  )
-}
+  );
+};
 
-export default SplashScreen
+export default SplashScreen;
