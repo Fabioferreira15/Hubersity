@@ -18,7 +18,7 @@ import SetaDireita from '../assets/icons/seta-direita.svg';
 import BtnSvg from '../assets/Home/btn.svg';
 import BtnLogout from '../assets/icons/logout.svg';
 
-const Perfil = ({navigation}) => {
+const PerfilScreen = ({navigation}) => {
   const {logout, getPerfilInfo, userInfo} = useContext(AuthContext);
   const [perfilInfo, setPerfilInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -248,4 +248,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Perfil;
+export default PerfilScreen;
