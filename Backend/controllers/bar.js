@@ -7,7 +7,10 @@ const Utilizadores = require("../models/utilizadores.model").Utilizadores;
 const Pagamento = require("../models/pagamento.model").Pagamento;
 const PedidosBarProdutos =
   require("../models/pedidosBarProdutos.model").PedidosBarProdutos;
+const DetalhesPagamento =
+  require("../models/detalhesPagamento.model").DetalhesPagamento;
 const utilities = require("../utilities/utilities");
+const QrCode = require("qrcode");
 
 exports.adicionarProduto = async function (req, res) {
   try {
@@ -293,8 +296,7 @@ exports.pagarCarrinho = async function (req, res) {
   try {
     let auth = utilities.verifyToken(req.headers.authorization);
 
-
-    if (!auth || auth.id != req.params.id){
+    if (!auth || auth.id != req.params.id) {
       return res.status(401).send({
         message: "Não autorizado.",
       });
@@ -338,19 +340,56 @@ exports.pagarCarrinho = async function (req, res) {
       });
     }
 
+    const detalhesPagamentoExistente = await DetalhesPagamento.findOne({
+      where: {
+        UserId: userId,
+      },
+    });
+
+    let detalhesPagamento;
+
+    if (!detalhesPagamentoExistente) {
+      detalhesPagamento = await DetalhesPagamento.create({
+        UserId: userId,
+        NumeroCartao: req.body.NumeroCartao,
+        CVV: req.body.CVV,
+        DataValidade: req.body.DataValidade,
+        NomeTitular: req.body.NomeTitular,
+      });
+    } else {
+      detalhesPagamento = detalhesPagamentoExistente;
+    }
+
+    if (!detalhesPagamento) {
+      return res.status(400).send({
+        message: "Detalhes de pagamento inválidos.",
+      });
+    }
+
     // criar pagamento
     const pagamento = await Pagamento.create({
       UserId: userId,
       Valor: req.body.Valor,
       Data: new Date(),
-      IdDetalhesPagamento: req.body.IdDetalhesPagamento,
+      IdDetalhesPagamento: detalhesPagamento.IdDetalhesPagamento,
     });
 
     // adicionar produtos do carrinho ao pedido e decrementar stock e apagar produtos do carrinho
+    
+
+    // criar pedido
+    const novoPedido = await PedidosBar.create({
+      UserId: userId,
+      Data: new Date(),
+      Status: "pendente",
+      IdPagamento: pagamento.IdPagamento,
+      QRCode: 'teste',
+    });
+
     await Promise.all(
       produtosCarrinho.map(async (produtoCarrinho) => {
         await PedidosBarProdutos.create({
-          IdPedido: pagamento.IdPagamento,
+          IdPedido: novoPedido.IdPedido,
           IdProduto: produtoCarrinho.IdProduto,
           Quantidade: produtoCarrinho.Quantidade,
         });
@@ -363,32 +402,39 @@ exports.pagarCarrinho = async function (req, res) {
         });
       })
     );
-
-
-      // criar pedido
-    await PedidosBar.create({
-      UserId: userId,
-      Data: new Date(),
-      Status: "pendente",
-      IdPagamento: pagamento.IdPagamento,
-      QRCode: req.body.QRCode,
+    const produtosPedido = await PedidosBarProdutos.findAll({
+      where: {
+        IdPedido: novoPedido.IdPedido,
+      },
     });
 
+    const qrData = {
+      utilizador: utilizador.nome,
+      numeroPedido: novoPedido.IdPedido,
+      produtos: produtosPedido,
+    };
 
+    utilities.generateQrToken(qrData, async (token) => {
+      qrData.token = token;
+
+      const qrCode = await QrCode.toDataURL(JSON.stringify(qrData));
+
+      await PedidosBar.update(
+        { QRCode: qrCode },
+        { where: { IdPedido: novoPedido.IdPedido } }
+      );
+    });
+
+    return res.status(200).send({
+      message: "Pagamento e pedido processados com sucesso.",
+    });
   } catch (error) {
-    
+    console.error(error);
+    return res.status(500).send({
+      message: error.message || "Erro interno do servidor.",
+    });
   }
 };
-
-
-
-
-
-
-
-
-
-
 
 //ver pedido individual
 exports.verPedidoIndividual = async function (req, res) {
@@ -404,10 +450,10 @@ exports.verPedidoIndividual = async function (req, res) {
     const userId = auth.id;
 
     const pedido = await PedidosBar.findOne({
-      where: { 
+      where: {
         IdPedido: req.params.IdPedido,
-        UserId: userId
-    },
+        UserId: userId,
+      },
       attributes: ["IdPedido", "UserId", "QRCode"],
       include: [
         {
@@ -434,7 +480,6 @@ exports.verPedidoIndividual = async function (req, res) {
 
     return res.status(200).send(pedido);
   } catch (error) {
-    console.error(error);
     return res.status(500).send({
       message: "Ocorreu um erro ao obter o pedido.",
     });
@@ -443,90 +488,89 @@ exports.verPedidoIndividual = async function (req, res) {
 
 //ver pedidos por levantar
 exports.verPedidosPorLevantar = async function (req, res) {
-    try {
-      let auth = utilities.verifyToken(req.headers.authorization);
-  
-      if (!auth) {
-        return res.status(401).send({
-          message: "Token de autenticação inválido",
-        });
-      }
-  
-      const userId = parseInt(auth.id);
-  
-      const pedidosPorLevantar = await PedidosBar.findAll({
-        where: {
-          UserId: userId,
-          Status: "pendente",
-        },
-        attributes: ["IdPedido", "Data", "Status"],
-        raw: true,
-      });
-  
-      if (pedidosPorLevantar.length === 0) {
-        return res.status(204).send({
-          message: "Nenhum pedido por levantar",
-        });
-      }
-  
-      return res.status(200).send({
-        mensgaem: "Pedidos por levantar encontrados",
-        pedidos: pedidosPorLevantar,
-      });
-    } catch (error) {
-      console.error(error);
-      return res.status(500).send({
-        message: "Algo correu mal, tente novamente mais tarde",
-      });
-    }
-  };
+  try {
+    let auth = utilities.verifyToken(req.headers.authorization);
 
-  //obter todos os pedidos do bar, histórico
-exports.obterPedidosBarHistorico = async function (req, res) {
-    try {
-      let auth = utilities.verifyToken(req.headers.auth_key);
-  
-      if (!auth) {
-        return res.status(401).send({
-          message: "Token de autenticação inválido",
-        });
-      }
-  
-      const userId = auth.id;
-  
-      const pedidos = await PedidosBar.findAll({
-        where: {
-          UserId: userId,
-        },
-        attributes: ["IdPedido", "Data", "Status"],
-        include: [
-            {
-                model: PedidosBarProdutos,
-                attributes: ["IdProduto", "Quantidade"],
-                include: [
-                {
-                    model: ProdutosBar,
-                    attributes: ["IdProduto", "Nome", "Descricao", "Preco", "Stock"],
-                    raw: true,
-                },
-                ],
-                raw: true,
-            },
-            ],
-      });
-  
-      if (pedidos.length === 0) {
-        return res.status(204).send({
-          message: "Nenhum pedido encontrado",
-        });
-      }
-  
-      return res.status(200).send(pedidos);
-    } catch (error) {
-      console.error(error);
-      return res.status(500).send({
-        message: "Algo correu mal, tente novamente mais tarde",
+    if (!auth) {
+      return res.status(401).send({
+        message: "Token de autenticação inválido",
       });
     }
-  };
-  
+
+    const userId = parseInt(auth.id);
+
+    const pedidosPorLevantar = await PedidosBar.findAll({
+      where: {
+        UserId: userId,
+        Status: "pendente",
+      },
+      attributes: ["IdPedido", "Data", "Status"],
+      raw: true,
+    });
+
+    if (pedidosPorLevantar.length === 0) {
+      return res.status(204).send({
+        message: "Nenhum pedido por levantar",
+      });
+    }
+
+    return res.status(200).send({
+      mensgaem: "Pedidos por levantar encontrados",
+      pedidos: pedidosPorLevantar,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({
+      message: "Algo correu mal, tente novamente mais tarde",
+    });
+  }
+};
+
+//obter todos os pedidos do bar, histórico
+exports.obterPedidosBarHistorico = async function (req, res) {
+  try {
+    let auth = utilities.verifyToken(req.headers.auth_key);
+
+    if (!auth) {
+      return res.status(401).send({
+        message: "Token de autenticação inválido",
+      });
+    }
+
+    const userId = auth.id;
+
+    const pedidos = await PedidosBar.findAll({
+      where: {
+        UserId: userId,
+      },
+      attributes: ["IdPedido", "Data", "Status"],
+      include: [
+        {
+          model: PedidosBarProdutos,
+          attributes: ["IdProduto", "Quantidade"],
+          include: [
+            {
+              model: ProdutosBar,
+              attributes: ["IdProduto", "Nome", "Descricao", "Preco", "Stock"],
+              raw: true,
+            },
+          ],
+          raw: true,
+        },
+      ],
+    });
+
+    if (pedidos.length === 0) {
+      return res.status(204).send({
+        message: "Nenhum pedido encontrado",
+      });
+    }
+
+    return res.status(200).send(pedidos);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({
+      message: "Algo correu mal, tente novamente mais tarde",
+    });
+  }
+};

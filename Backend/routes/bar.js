@@ -64,6 +64,11 @@ router.delete("/carrinho/:IdProduto", function (req, res) {
   barController.apagarProdutoCarrinho(req, res);
 });
 
+//pagar carrinho
+router.post("/carrinho/pagar/:id", function (req, res) {
+  barController.pagarCarrinho(req, res);
+});
+
 //ver Pedido individual
 router.get("/pedidos/:idPedido", function (req, res) {
   barController.verPedidoIndividual(req, res);
