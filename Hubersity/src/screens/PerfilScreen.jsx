@@ -102,7 +102,9 @@ const Perfil = ({navigation}) => {
           <View style={styles.metodoPag2}>
             <MastercardLogo width={30} height={30} />
             <Text>{'  '}</Text>
-            <Text style={{fontWeight: 'bold', color: 'black'}}>**** 4536</Text>
+            <Text style={{fontWeight: 'bold', color: 'black', fontSize: 17}}>
+              **** 4536
+            </Text>
           </View>
           <SetaDireita width={20} height={20} />
         </TouchableOpacity>
@@ -110,7 +112,7 @@ const Perfil = ({navigation}) => {
           <View style={styles.metodoPag2}>
             <MBWayLogo width={40} height={30} />
             <Text>{'  '}</Text>
-            <Text style={{fontWeight: 'bold', color: 'black'}}>MB WAY</Text>
+            <Text style={{fontWeight: 'bold', color: 'black', fontSize: 17}}>MB WAY</Text>
           </View>
           <SetaDireita width={20} height={20} />
         </TouchableOpacity>
