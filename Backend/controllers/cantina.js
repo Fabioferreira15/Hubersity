@@ -10,6 +10,8 @@ const QrCode = require("qrcode");
 const DetalhesPagamento =
   require("../models/detalhesPagamento.model").DetalhesPagamento;
 
+const { Op } = require("sequelize");
+
 //criar refeições na cantina
 exports.criarRefeicaoCantina = async function (req, res) {
   try {
@@ -351,10 +353,28 @@ exports.obterMarcacoesCantinaHistorico = async (req, res) => {
     }
 
     const userId = auth.id;
+    const numeroRegistos = req.query.numeroRegistos || 10;
+    const dataDe = req.query.dataDe; // Adiciona o parâmetro dataDe
+    const dataAte = req.query.dataAte; // Adiciona o parâmetro dataAte
+
+    const filtroData = {};
+    if (dataDe) {
+      filtroData.Data = {
+        [Op.gte]: dataDe,
+      };
+    }
+
+    if (dataAte) {
+      filtroData.Data = {
+        ...filtroData.Data,
+        [Op.lte]: dataAte,
+      };
+    }
 
     const marcacoes = await MarcacaoCantina.findAll({
       where: {
         UserId: userId,
+        ...filtroData, // Adiciona o filtro de datas
       },
       attributes: ["IdMarcacao", "Status", "QRCode"],
       include: [
@@ -367,6 +387,7 @@ exports.obterMarcacoesCantinaHistorico = async (req, res) => {
           attributes: ["UserId", "nome", "email"],
         },
       ],
+      limit: Number(numeroRegistos),
     });
 
     if (!marcacoes || marcacoes.length === 0) {
