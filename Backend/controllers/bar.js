@@ -332,7 +332,7 @@ exports.pagarCarrinho = async function (req, res) {
       where: {
         IdCarrinho: userId,
       },
-      include: [{model: ProdutosBar}],
+      include: [{ model: ProdutosBar }],
     });
 
     if (produtosCarrinho.length === 0) {
@@ -373,20 +373,25 @@ exports.pagarCarrinho = async function (req, res) {
       });
     }
 
+    const dataAtual = new Date();
+    const ano = dataAtual.getFullYear();
+    const mes = (dataAtual.getMonth() + 1).toString().padStart(2, "0"); 
+    const dia = dataAtual.getDate().toString().padStart(2, "0"); 
+
+    const dataFormatada = `${ano}/${mes}/${dia}`;
+
     // criar pagamento
     const pagamento = await Pagamento.create({
       UserId: userId,
       Valor: total,
-      Data: new Date(),
+      Data: dataFormatada,
       IdDetalhesPagamento: detalhesPagamento.IdDetalhesPagamento,
     });
-
-    // adicionar produtos do carrinho ao pedido e decrementar stock e apagar produtos do carrinho
 
     // criar pedido
     const novoPedido = await PedidosBar.create({
       UserId: userId,
-      Data: new Date(),
+      Data: dataFormatada,
       Status: "pendente",
       IdPagamento: pagamento.IdPagamento,
       QRCode: "teste",

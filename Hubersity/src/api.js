@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import IP from './context/env';
+import URL from './context/env';
 
 export const fetchBarProducts = async () => {
   try {
@@ -9,22 +9,12 @@ export const fetchBarProducts = async () => {
       return [];
     }
 
-    const response = await fetch(`http://${IP}:3000/bar/produtos`, {
+    const response = await fetch(`${URL}/bar/produtos`, {
       headers: {
         Authorization: `Bearer ${storedToken}`,
       },
     });
     const responseData = await response.json();
-
-    /* const bebidasData = responseData.find(
-      category => category.categoria.nome === 'Bebidas',
-    );
-    const comidaData = responseData.find(
-      category => category.categoria.nome === 'Comida',
-    );
-
-    const bebidas = bebidasData ? bebidasData.produtos : [];
-    const comida = comidaData ? comidaData.produtos : []; */
 
     return responseData;
   } catch (error) {
@@ -41,7 +31,7 @@ export const fetchCart = async () => {
       return [];
     }
 
-    const response = await fetch(`http://${IP}:3000/bar/carrinho`, {
+    const response = await fetch(`${URL}/bar/carrinho`, {
       headers: {
         Authorization: `Bearer ${storedToken}`,
       },
@@ -67,7 +57,7 @@ export const removeFromCart = async (id) => {
       return {success: false, message: 'Sem token'};
     }
 
-    const response = await fetch(`http://${IP}:3000/bar/carrinho/${id}`, {
+    const response = await fetch(`${URL}/bar/carrinho/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${storedToken}`,
@@ -99,7 +89,7 @@ export const addToCart = async (id) => {
       return {success: false, message: 'Sem token'};
     }
 
-    const response = await fetch(`http://${IP}:3000/bar/carrinho/${id}`, {
+    const response = await fetch(`${URL}/bar/carrinho/${id}`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${storedToken}`,
@@ -131,7 +121,7 @@ export const PendingOrders = async () => {
       console.error('Sem token');
     }
 
-    const response = await fetch(`http://${IP}:3000/bar/pedidos`, {
+    const response = await fetch(`${URL}/bar/pedidos`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${storedToken}`,

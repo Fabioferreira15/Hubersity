@@ -1,6 +1,6 @@
 import React, {useState, createContext, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import IP from './env';
+import URL from './env';
 
 const AuthContext = createContext();
 
@@ -14,7 +14,7 @@ const AuthProvider = ({children}) => {
   const login = async (email, password) => {
     try {
       setIsLoading(true);
-      const response = await fetch(`http://${IP}:3000/utilizadores/login`, {
+      const response = await fetch(`${URL}/utilizadores/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -89,7 +89,7 @@ const AuthProvider = ({children}) => {
       const userToken = await AsyncStorage.getItem('token');
       const userId = await AsyncStorage.getItem('id');
 
-      const response = await fetch(`http://${IP}:3000/utilizadores/${userId}`, {
+      const response = await fetch(`${URL}/utilizadores/${userId}`, {
         headers: {
           Authorization: `Bearer ${userToken}`,
         },
