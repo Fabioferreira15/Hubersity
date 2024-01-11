@@ -51,9 +51,6 @@ router.post("/carrinho/:IdProduto", function (req, res) {
 });
 
 
-router.patch("/carrinho/quantidade/:IdProduto", function (req, res) {
-  barController.atualizarQuantidadeCarrinho(req, res);
-});
 
 //obter carrinho
 router.get("/carrinho", function (req, res) {
@@ -83,4 +80,11 @@ router.get("/pedidos", function (req, res) {
 router.get("/historico", function (req, res) {
   barController.obterPedidosBarHistorico(req, res);
 });
+
+//alterar quantidade do produto no carrinho
+router.patch("/carrinho/quantidade/:IdProduto", function (req, res) {
+  barController.alterarQuantidadeProdutoCarrinho(req, res);
+});
+
 module.exports = router;
+

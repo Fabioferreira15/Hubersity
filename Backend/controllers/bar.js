@@ -375,8 +375,8 @@ exports.pagarCarrinho = async function (req, res) {
 
     const dataAtual = new Date();
     const ano = dataAtual.getFullYear();
-    const mes = (dataAtual.getMonth() + 1).toString().padStart(2, "0"); 
-    const dia = dataAtual.getDate().toString().padStart(2, "0"); 
+    const mes = (dataAtual.getMonth() + 1).toString().padStart(2, "0");
+    const dia = dataAtual.getDate().toString().padStart(2, "0");
 
     const dataFormatada = `${ano}/${mes}/${dia}`;
 
@@ -582,6 +582,88 @@ exports.obterPedidosBarHistorico = async function (req, res) {
     console.error(error);
     return res.status(500).send({
       message: "Algo correu mal, tente novamente mais tarde",
+    });
+  }
+};
+
+//alterar quantidade do produto no carrinho
+exports.alterarQuantidadeProdutoCarrinho = async function (req, res) {
+  try {
+    let auth = utilities.verifyToken(req.headers.authorization);
+
+    if (!auth) {
+      return res.status(401).send({
+        message: "Token inválido.",
+      });
+    }
+
+    const userId = auth.id;
+    const idProduto = parseInt(req.params.IdProduto);
+    const operacao = req.query.operacao;
+
+    const quantidade =
+      operacao === "aumentar" ? 1 : operacao === "diminuir" ? -1 : 0;
+
+    if (quantidade === 0) {
+      return res.status(400).send({
+        message: "Operação inválida.",
+      });
+    }
+
+    const produto = await ProdutosBar.findOne({
+      where: { IdProduto: idProduto },
+      raw: true,
+    });
+
+    if (!produto) {
+      return res.status(400).send({
+        message: "Produto não existe.",
+      });
+    }
+
+    const produtoCarrinho = await CarrinhoItens.findOne({
+      where: { IdProduto: idProduto, IdCarrinho: userId },
+      raw: true,
+    });
+
+    if (!produtoCarrinho) {
+      return res.status(400).send({
+        message: "Produto não está no carrinho.",
+      });
+    }
+
+    if (
+      quantidade > 0 &&
+      quantidade + produtoCarrinho.Quantidade > produto.Stock
+    ) {
+      return res.status(400).send({
+        message: "Quantidade superior ao stock.",
+      });
+    }
+
+    const novaQuantidade = produtoCarrinho.Quantidade + quantidade;
+
+    if (novaQuantidade <= 0) {
+      await CarrinhoItens.destroy({
+        where: { IdProduto: idProduto, IdCarrinho: userId },
+      });
+      return res.status(200).send({
+        message: "Produto removido do carrinho.",
+      });
+    }
+
+    await CarrinhoItens.update(
+      { Quantidade: novaQuantidade },
+      { where: { IdProduto: idProduto, IdCarrinho: userId } }
+    );
+
+    return res.status(200).send({
+      message: "Quantidade alterada com sucesso.",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Ocorreu um erro ao alterar a quantidade do produto.",
     });
   }
 };
