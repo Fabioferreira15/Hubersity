@@ -22,6 +22,8 @@ const Historico = ({navigation}) => {
   const [dataATE, setDataATE] = useState(new Date());
   const [showDatePickerDE, setShowDatePickerDE] = useState(false);
   const [showDatePickerATE, setShowDatePickerATE] = useState(false);
+  const [historicoCantina, setHistoricoCantina] = useState([]);
+  const [historicoBar, setHistoricoBar] = useState([]);
 
   const handleDateChangeDE = (event, date) => {
     if (date !== undefined && event.type === 'set') {
@@ -73,107 +75,120 @@ const Historico = ({navigation}) => {
         },
       );
       const json = await response.json();
-      console.log(json);
+      setHistoricoCantina(json.marcacoes);
+      console.log(json.marcacoes);
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <View style={styles.container}>
-        <Background style={styles.Background} />
-        <Header title="Histórico" />
-        <View style={styles.main}>
-          <View style={styles.containerOpcoes}>
-            <View
-              style={[
-                opcao === 'Cantina'
-                  ? styles.containerOpcaoSelecionada
-                  : styles.containerOpcao,
-              ]}>
-              <TouchableOpacity onPress={() => setOpcao('Cantina')}>
-                <Text
-                  style={[
-                    opcao === 'Cantina'
-                      ? styles.txtOpcaoSelecionada
-                      : styles.txtOpcao,
-                  ]}>
-                  Cantina
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <View
-              style={[
-                opcao === 'Bar'
-                  ? styles.containerOpcaoSelecionada
-                  : styles.containerOpcao,
-              ]}>
-              <TouchableOpacity onPress={() => setOpcao('Bar')}>
-                <Text
-                  style={[
-                    opcao === 'Bar'
-                      ? styles.txtOpcaoSelecionada
-                      : styles.txtOpcao,
-                  ]}>
-                  Bar
-                </Text>
-              </TouchableOpacity>
-            </View>
+    <View style={styles.container}>
+      <Background style={styles.Background} />
+      <Header title="Histórico" />
+      <View style={styles.main}>
+        <View style={styles.containerOpcoes}>
+          <View
+            style={[
+              opcao === 'Cantina'
+                ? styles.containerOpcaoSelecionada
+                : styles.containerOpcao,
+            ]}>
+            <TouchableOpacity onPress={() => setOpcao('Cantina')}>
+              <Text
+                style={[
+                  opcao === 'Cantina'
+                    ? styles.txtOpcaoSelecionada
+                    : styles.txtOpcao,
+                ]}>
+                Cantina
+              </Text>
+            </TouchableOpacity>
           </View>
-          <View style={styles.containerDatas}>
-            <View style={{width: '50%'}}>
-              <Text style={{marginLeft: '5%'}}>De</Text>
-              <TouchableOpacity
-                style={styles.inputButton}
-                onPress={showDatePickerDEComponent}>
-                <Text style={styles.inputButtonText}>
-                  {dataDE && dataDE.toLocaleDateString()}
-                </Text>
-                <CalendarioSvg style={styles.icon} />
-              </TouchableOpacity>
-              {showDatePickerDE && (
-                <DateTimePicker
-                  value={dataDE}
-                  mode="date"
-                  display="default"
-                  onChange={handleDateChangeDE}
-                  maximumDate={dataATE}
-                />
-              )}
-            </View>
-            <View style={{width: '50%'}}>
-              <Text style={{marginLeft: '5%'}}>Até</Text>
-              <TouchableOpacity
-                style={styles.inputButton}
-                onPress={showDatePickerATEComponent}>
-                <Text style={styles.inputButtonText}>
-                  {dataATE && dataATE.toLocaleDateString()}
-                </Text>
-                <CalendarioSvg style={styles.icon} />
-              </TouchableOpacity>
-              {showDatePickerATE && (
-                <DateTimePicker
-                  value={dataATE}
-                  mode="date"
-                  display="default"
-                  onChange={handleDateChangeATE}
-                  minimumDate={dataDE}
-                  maximumDate={new Date()}
-                />
-              )}
-            </View>
+          <View
+            style={[
+              opcao === 'Bar'
+                ? styles.containerOpcaoSelecionada
+                : styles.containerOpcao,
+            ]}>
+            <TouchableOpacity onPress={() => setOpcao('Bar')}>
+              <Text
+                style={[
+                  opcao === 'Bar'
+                    ? styles.txtOpcaoSelecionada
+                    : styles.txtOpcao,
+                ]}>
+                Bar
+              </Text>
+            </TouchableOpacity>
           </View>
-          {/* {opcao === 'Cantina' ? (
-            <View>
-              <FlatList></FlatList>
-            </View>
-          ) : (
-            <View></View>
-          )} */}
         </View>
+        <View style={styles.containerDatas}>
+          <View style={{width: '50%'}}>
+            <Text style={{marginLeft: '5%'}}>De</Text>
+            <TouchableOpacity
+              style={styles.inputButton}
+              onPress={showDatePickerDEComponent}>
+              <Text style={styles.inputButtonText}>
+                {dataDE && dataDE.toLocaleDateString()}
+              </Text>
+              <CalendarioSvg style={styles.icon} />
+            </TouchableOpacity>
+            {showDatePickerDE && (
+              <DateTimePicker
+                value={dataDE}
+                mode="date"
+                display="default"
+                onChange={handleDateChangeDE}
+                maximumDate={dataATE}
+              />
+            )}
+          </View>
+          <View style={{width: '50%'}}>
+            <Text style={{marginLeft: '5%'}}>Até</Text>
+            <TouchableOpacity
+              style={styles.inputButton}
+              onPress={showDatePickerATEComponent}>
+              <Text style={styles.inputButtonText}>
+                {dataATE && dataATE.toLocaleDateString()}
+              </Text>
+              <CalendarioSvg style={styles.icon} />
+            </TouchableOpacity>
+            {showDatePickerATE && (
+              <DateTimePicker
+                value={dataATE}
+                mode="date"
+                display="default"
+                onChange={handleDateChangeATE}
+                minimumDate={dataDE}
+                maximumDate={new Date()}
+              />
+            )}
+          </View>
+        </View>
+        <Text></Text>
+        {opcao === 'Cantina' ? (
+          <View style={{width: '100%'}}>
+            <FlatList
+              data={historicoCantina}
+              keyExtractor={item => item.IdMarcacao.toString()}
+              renderItem={({item}) => (
+                <View style={styles.marcacaoContainer}>
+                  <Text style={{color: 'white', fontSize: 19}}>Marcação</Text>
+                  <View style={styles.marcacaoContainer2}>
+                    <Text style={{color: 'black', fontSize: 17}}>
+                      {item.RefeicaoCantina.TipoPrato}
+                    </Text>
+                  </View>
+                </View>
+              )}
+            />
+          </View>
+        ) : (
+          <View></View>
+        )}
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
@@ -263,6 +278,21 @@ const styles = StyleSheet.create({
   icon: {
     width: 24,
     height: 24,
+  },
+  marcacaoContainer: {
+    backgroundColor: '#5F6EF0',
+    width: '90%',
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 10,
+    alignSelf: 'center',
+  },
+  marcacaoContainer2: {
+    backgroundColor: 'white',
+    width: '100%',
+    padding: 10,
+    marginBottom: 10,
+    alignSelf: 'center',
   },
 });
 
