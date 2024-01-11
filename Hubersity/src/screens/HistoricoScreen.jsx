@@ -5,12 +5,14 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
+import {IP} from '../context/env';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import Background from '../assets/Home/backgorund.svg';
 import BtnSvg from '../assets/Home/btn.svg';
 import BtnInvertedSvg from '../assets/Home/btnInverted.svg';
 import Header from '../components/Header';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import CalendarioSvg from '../assets/icons/calendário.svg';
 
 const Historico = ({navigation}) => {
@@ -29,6 +31,7 @@ const Historico = ({navigation}) => {
       setDataDE(new Date(formattedDate));
     }
     setShowDatePickerDE(false);
+    fetchHistoricoCantina();
   };
 
   const handleDateChangeATE = (event, date) => {
@@ -40,20 +43,35 @@ const Historico = ({navigation}) => {
       setDataATE(new Date(formattedDate));
     }
     setShowDatePickerATE(false);
+    fetchHistoricoCantina();
   };
+
   const showDatePickerDEComponent = () => {
     setShowDatePickerDE(true);
   };
+
   const showDatePickerATEComponent = () => {
     setShowDatePickerATE(true);
+  };
+
+  //fetch historico cantina
+  const fetchHistoricoCantina = async () => {
+    try {
+      const response = await fetch(
+        'http://localhost:3000/cantina/historico?numeroRegistos=5&dataDe=2023-12-28&dataAte=2023-12-28',
+      );
+      const json = await response.json();
+      console.log(json);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
-        <View>
-          <Header title="Histórico" />
-        </View>
+        <Background style={styles.Background} />
+        <Header title="Histórico" />
         <View style={styles.main}>
           <View style={styles.containerOpcoes}>
             <View
@@ -108,6 +126,7 @@ const Historico = ({navigation}) => {
                   mode="date"
                   display="default"
                   onChange={handleDateChangeDE}
+                  maximumDate={dataATE}
                 />
               )}
             </View>
@@ -127,10 +146,19 @@ const Historico = ({navigation}) => {
                   mode="date"
                   display="default"
                   onChange={handleDateChangeATE}
+                  minimumDate={dataDE}
+                  maximumDate={new Date()}
                 />
               )}
             </View>
           </View>
+          {opcao === 'Cantina' ? (
+            <View>
+              <FlatList></FlatList>
+            </View>
+          ) : (
+            <View></View>
+          )}
         </View>
       </View>
     </ScrollView>
@@ -219,6 +247,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '90%',
+  },
+  icon: {
+    width: 24,
+    height: 24,
   },
 });
 
