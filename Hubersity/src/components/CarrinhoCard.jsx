@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import UnderlineBtn from './UnderlineBtn';
 import MinusSvg from '../assets/icons/minus.svg';
 import PlusSvg from '../assets/icons/plus.svg';
-import {removeFromCart} from '../api';
+import {removeFromCart, changeCartQuantity} from '../api';
 import Toast from 'react-native-toast-message';
 
 const CarrinhoCard = ({id, nome, preco, quantidade}) => {
@@ -16,6 +16,16 @@ const CarrinhoCard = ({id, nome, preco, quantidade}) => {
         text2: response.message,
         autoHide: true,
         visibilityTime: 3000,
+        text1Style: {
+          fontFamily: 'BaiJamjuree-Bold',
+          fontSize: 16,
+          color: '#04BE0C',
+        },
+        text2Style: {
+          fontFamily: 'BaiJamjuree-SemiBold',
+          fontSize: 14,
+          color: '#212529',
+        },
       });
     } else {
       Toast.show({
@@ -24,6 +34,49 @@ const CarrinhoCard = ({id, nome, preco, quantidade}) => {
         text2: response.message,
         autoHide: true,
         visibilityTime: 3000,
+      });
+    }
+  };
+
+  const handleChangeCartQuantity = async (id, operacao) => {
+    const response = await changeCartQuantity(id, operacao);
+    if (response.success) {
+      Toast.show({
+        type: 'success',
+        text1: 'Sucesso',
+        text2: response.message,
+        autoHide: true,
+        visibilityTime: 3000,
+        text1Style: {
+          fontFamily: 'BaiJamjuree-Bold',
+          fontSize: 16,
+          color: '#04BE0C',
+        },
+        text2Style: {
+          fontFamily: 'BaiJamjuree-SemiBold',
+          fontSize: 14,
+          color: '#212529',
+        },
+             
+      });
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Erro',
+        text2: response.message,
+        autoHide: true,
+        visibilityTime: 3000,
+        text1Style: {
+          fontFamily: 'BaiJamjuree-Bold',
+          fontSize: 16,
+          color: '#C61111',
+        },
+        text2Style: {
+          fontFamily: 'BaiJamjuree-SemiBold',
+          fontSize: 14,
+          color: '#212529',
+        },
+        
       });
     }
   };
@@ -45,7 +98,7 @@ const CarrinhoCard = ({id, nome, preco, quantidade}) => {
       <View style={styles.quantidade}>
         <TouchableOpacity
           onPress={() => {
-            console.log('minus');
+            handleChangeCartQuantity(id, 'diminuir');
           }}>
           <MinusSvg />
         </TouchableOpacity>
@@ -53,7 +106,7 @@ const CarrinhoCard = ({id, nome, preco, quantidade}) => {
         <TouchableOpacity
           underlayColor="#C7AC4D"
           onPress={() => {
-            console.log('plus');
+            handleChangeCartQuantity(id, 'aumentar');
           }}>
           <PlusSvg />
         </TouchableOpacity>
