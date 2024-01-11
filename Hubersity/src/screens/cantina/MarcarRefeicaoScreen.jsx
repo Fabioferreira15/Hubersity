@@ -14,7 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Dropdown} from 'react-native-element-dropdown';
 import CalendarioSvg from '../../assets/icons/calendário.svg';
-import IP from '../../context/env';
+import URL from '../../context/env';
 import HeaderYellow from '../../components/HeaderYellow';
 import Voltar from '../../assets/icons/Voltar_preto.svg';
 
@@ -45,7 +45,7 @@ const Ementas = ({navigation}) => {
         const dataURL = encodeURIComponent(formattedDate);
 
         const response = await fetch(
-          `http://${IP}:3000/cantina/refeicoes?data=${dataURL}`,
+          `${URL}/cantina/refeicoes?data=${dataURL}`,
           {
             headers: {
               Authorization: `Bearer ${storedToken}`,
@@ -81,7 +81,12 @@ const Ementas = ({navigation}) => {
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
-        <HeaderYellow title="Marcar Refeição" iconPosition='left' onPress={()=>navigation.navigate('HomeCantina')} customIcon={<Voltar />}/>
+        <HeaderYellow
+          title="Marcar Refeição"
+          iconPosition="left"
+          onPress={() => navigation.navigate('HomeCantina')}
+          customIcon={<Voltar />}
+        />
         <Text style={styles.title3}>Data</Text>
         <TouchableOpacity
           style={styles.inputButton}
@@ -166,8 +171,8 @@ const Ementas = ({navigation}) => {
             refeicaoSelecionada === null /* && {opacity: 0.7} */,
           ]}
           disabled={refeicaoSelecionada === null}
-          onPress={()=>{
-            Alert.alert(`Marcar refeição ${refeicaoSelecionada.Nome}`)
+          onPress={() => {
+            Alert.alert(`Marcar refeição ${refeicaoSelecionada.Nome}`);
           }}>
           <Text style={styles.tituloTabela}>
             Marcar Refeição
@@ -176,7 +181,7 @@ const Ementas = ({navigation}) => {
         </TouchableOpacity>
         <TouchableWithoutFeedback
           onPress={() => {
-            Alert.alert('Adicionar outro método de pagamento')
+            Alert.alert('Adicionar outro método de pagamento');
           }}>
           <Text style={styles.title2}>
             + Adicionar outro método de pagamento
@@ -190,7 +195,7 @@ const Ementas = ({navigation}) => {
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
-    paddingBottom : '15%',
+    paddingBottom: '15%',
   },
   container: {
     flex: 1,
@@ -260,7 +265,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     marginLeft: '5%',
     backgroundColor: 'white',
-    fontFamily: 'Tajawal-Regular'
+    fontFamily: 'Tajawal-Regular',
   },
   icon: {
     width: 20,
@@ -277,13 +282,13 @@ const styles = StyleSheet.create({
   },
   linha: {
     flexDirection: 'row',
-    borderTopLeftRadius:10,
-    borderTopRightRadius:10,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
   },
   linha2: {
     flexDirection: 'row',
-    borderLeftRadius:10,
-    borderRightRadius:10,
+    borderLeftRadius: 10,
+    borderRightRadius: 10,
   },
   celula: {
     flex: 1,
