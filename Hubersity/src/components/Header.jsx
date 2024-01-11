@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
   txt: {
     fontSize: 27,
     color: '#F8F9FA',
+    fontFamily: 'BaiJamjuree-Bold',
   },
   titleContainer: {
     marginTop: '15%',

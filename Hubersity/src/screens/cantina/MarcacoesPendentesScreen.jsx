@@ -119,7 +119,6 @@ const styles = StyleSheet.create({
   nav: {
     flexDirection: 'row',
     alignItems: 'center',
-
     width: '90%',
     marginLeft: '5%',
     marginTop: '15%',
@@ -130,7 +129,6 @@ const styles = StyleSheet.create({
     fontFamily: 'BaiJamjuree-Bold',
     color: '#212529',
     textAlign: 'center',
-
     marginLeft: '20%',
   },
   main: {
@@ -143,7 +141,7 @@ const styles = StyleSheet.create({
   titulo: {
     color: '#212529',
     fontSize: 23,
-    fontFamily: 'BaiJamjuree-Bold',
+    fontFamily: 'Tajawal-Regular',
   },
   txt: {
     color: '#212529',

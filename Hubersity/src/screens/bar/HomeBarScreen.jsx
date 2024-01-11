@@ -37,7 +37,7 @@ const HomeBar = ({navigation}) => {
     };
 
     fetchData();
-  }, [categorias]);
+  }, []);
 
   const handleAddToCart = async id => {
     const response = await addToCart(id);
