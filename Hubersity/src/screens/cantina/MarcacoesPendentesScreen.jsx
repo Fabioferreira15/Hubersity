@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import IP from '../../context/env';
+import URL from '../../context/env';
 import YellowBackground from '../../assets/Cantina/YellowSvg.svg';
 import Voltar from '../../assets/icons/Voltar_preto.svg';
 import HeaderYellow from '../../components/HeaderYellow';
@@ -28,7 +28,7 @@ const MarcacoesPendentes = ({navigation}) => {
         }
 
         const response = await fetch(
-          `http://${IP}:3000/cantina/marcacao/pendentes/${userId}`,
+          `${URL}/cantina/marcacao/pendentes/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

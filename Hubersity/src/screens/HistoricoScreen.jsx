@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-import {IP} from '../context/env';
+import URL from '../context/env';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Background from '../assets/Home/backgorund.svg';
 import BtnSvg from '../assets/Home/btn.svg';
@@ -54,11 +55,22 @@ const Historico = ({navigation}) => {
     setShowDatePickerATE(true);
   };
 
-  //fetch historico cantina
   const fetchHistoricoCantina = async () => {
     try {
+      const storedToken = await AsyncStorage.getItem('token');
+
+      if (!storedToken) {
+        console.error('Sem token');
+        return;
+      }
+
       const response = await fetch(
-        'http://localhost:3000/cantina/historico?numeroRegistos=5&dataDe=2023-12-28&dataAte=2023-12-28',
+        `${URL}/cantina/historico?numeroRegistos=5&dataDe=2023-12-28&dataAte=2023-12-28`,
+        {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+          },
+        },
       );
       const json = await response.json();
       console.log(json);
@@ -152,13 +164,13 @@ const Historico = ({navigation}) => {
               )}
             </View>
           </View>
-          {opcao === 'Cantina' ? (
+          {/* {opcao === 'Cantina' ? (
             <View>
               <FlatList></FlatList>
             </View>
           ) : (
             <View></View>
-          )}
+          )} */}
         </View>
       </View>
     </ScrollView>

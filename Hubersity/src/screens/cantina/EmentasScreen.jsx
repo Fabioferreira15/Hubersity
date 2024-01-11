@@ -11,7 +11,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import CalendarioSvg from '../../assets/icons/calendário.svg';
-import IP from '../../context/env';
+import URL from '../../context/env';
 import HeaderYellow from '../../components/HeaderYellow';
 import Voltar from '../../assets/icons/Voltar_preto.svg';
 
@@ -40,7 +40,7 @@ const Ementas = ({navigation}) => {
         const dataURL = encodeURIComponent(formattedDate);
 
         const response = await fetch(
-          `http://${IP}:3000/cantina/refeicoes?data=${dataURL}`,
+          `${URL}/cantina/refeicoes?data=${dataURL}`,
           {
             headers: {
               Authorization: `Bearer ${storedToken}`,
