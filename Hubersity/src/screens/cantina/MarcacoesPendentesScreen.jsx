@@ -53,40 +53,49 @@ const MarcacoesPendentes = ({navigation}) => {
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
-        <HeaderYellow title="Marcações pendentes" iconPosition='left' onPress={()=> navigation.navigate('HomeCantina')} customIcon={<Voltar />}/>
+        <HeaderYellow
+          title="Marcações pendentes"
+          iconPosition="left"
+          onPress={() => navigation.navigate('HomeCantina')}
+          customIcon={<Voltar />}
+        />
 
         <View style={styles.main}>
-          {marcacoes.map((marcacao, index) => (
-            <View key={index} style={styles.marcacaoContainer}>
-              <Text style={styles.titulo}>
-                {marcacao.RefeicaoCantina.Periodo}
-              </Text>
-              <View style={styles.card}>
-                <View style={styles.prato}>
-                  <Text style={styles.txtBold}>Prato</Text>
-                  <Text style={styles.txt}>
-                    {marcacao.RefeicaoCantina.Nome}
-                  </Text>
+          {marcacoes.length === 0 ? (
+            <Text style={styles.titulo}>Não tem marcações pendentes</Text>
+          ) : (
+            marcacoes.map((marcacao, index) => (
+              <View key={index} style={styles.marcacaoContainer}>
+                <Text style={styles.titulo}>
+                  {marcacao.RefeicaoCantina.Periodo}
+                </Text>
+                <View style={styles.card}>
+                  <View style={styles.prato}>
+                    <Text style={styles.txtBold}>Prato</Text>
+                    <Text style={styles.txt}>
+                      {marcacao.RefeicaoCantina.Nome}
+                    </Text>
+                  </View>
+                  <View style={styles.data}>
+                    <Text style={styles.txtBold}>Data</Text>
+                    <Text style={styles.txt}>
+                      {marcacao.RefeicaoCantina.Data}
+                    </Text>
+                  </View>
+                  <View style={styles.estado}>
+                    <Text style={styles.txtBold}>Estado</Text>
+                    <Text style={styles.txt}>{marcacao.status}</Text>
+                  </View>
                 </View>
-                <View style={styles.data}>
-                  <Text style={styles.txtBold}>Data</Text>
-                  <Text style={styles.txt}>
-                    {marcacao.RefeicaoCantina.Data}
-                  </Text>
-                </View>
-                <View style={styles.estado}>
-                  <Text style={styles.txtBold}>Estado</Text>
-                  <Text style={styles.txt}>{marcacao.status}</Text>
-                </View>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('QrCode', {marcacao})}>
+                  <View style={styles.btnQr}>
+                    <Text style={styles.txtBtn}>Mostrar Qr Code</Text>
+                  </View>
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('QrCode', {marcacao})}>
-                <View style={styles.btnQr}>
-                  <Text style={styles.txtBtn}>Mostrar Qr Code</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          ))}
+            ))
+          )}
         </View>
       </View>
     </ScrollView>
@@ -110,7 +119,6 @@ const styles = StyleSheet.create({
   nav: {
     flexDirection: 'row',
     alignItems: 'center',
-
     width: '90%',
     marginLeft: '5%',
     marginTop: '15%',
@@ -121,7 +129,6 @@ const styles = StyleSheet.create({
     fontFamily: 'BaiJamjuree-Bold',
     color: '#212529',
     textAlign: 'center',
-
     marginLeft: '20%',
   },
   main: {
@@ -134,7 +141,7 @@ const styles = StyleSheet.create({
   titulo: {
     color: '#212529',
     fontSize: 23,
-    fontFamily: 'BaiJamjuree-Bold',
+    fontFamily: 'Tajawal-Regular',
   },
   txt: {
     color: '#212529',
