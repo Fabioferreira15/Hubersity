@@ -5,20 +5,73 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
+import {IP} from '../context/env';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import Background from '../assets/Home/backgorund.svg';
 import BtnSvg from '../assets/Home/btn.svg';
 import BtnInvertedSvg from '../assets/Home/btnInverted.svg';
 import Header from '../components/Header';
+import CalendarioSvg from '../assets/icons/calendário.svg';
 
 const Historico = ({navigation}) => {
   const [opcao, setOpcao] = useState('Cantina');
+  const [dataDE, setDataDE] = useState(new Date());
+  const [dataATE, setDataATE] = useState(new Date());
+  const [showDatePickerDE, setShowDatePickerDE] = useState(false);
+  const [showDatePickerATE, setShowDatePickerATE] = useState(false);
+
+  const handleDateChangeDE = (event, date) => {
+    if (date !== undefined && event.type === 'set') {
+      const formattedDate = `${date.getFullYear()}-${String(
+        date.getMonth() + 1,
+      ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
+      setDataDE(new Date(formattedDate));
+    }
+    setShowDatePickerDE(false);
+    fetchHistoricoCantina();
+  };
+
+  const handleDateChangeATE = (event, date) => {
+    if (date !== undefined && event.type === 'set') {
+      const formattedDate = `${date.getFullYear()}-${String(
+        date.getMonth() + 1,
+      ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
+      setDataATE(new Date(formattedDate));
+    }
+    setShowDatePickerATE(false);
+    fetchHistoricoCantina();
+  };
+
+  const showDatePickerDEComponent = () => {
+    setShowDatePickerDE(true);
+  };
+
+  const showDatePickerATEComponent = () => {
+    setShowDatePickerATE(true);
+  };
+
+  //fetch historico cantina
+  const fetchHistoricoCantina = async () => {
+    try {
+      const response = await fetch(
+        'http://localhost:3000/cantina/historico?numeroRegistos=5&dataDe=2023-12-28&dataAte=2023-12-28',
+      );
+      const json = await response.json();
+      console.log(json);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
-        <View>
-          <Header title="Histórico" />
-        </View>
+        <Background style={styles.Background} />
+        <Header title="Histórico" />
         <View style={styles.main}>
           <View style={styles.containerOpcoes}>
             <View
@@ -28,12 +81,14 @@ const Historico = ({navigation}) => {
                   : styles.containerOpcao,
               ]}>
               <TouchableOpacity onPress={() => setOpcao('Cantina')}>
-              <Text
+                <Text
                   style={[
                     opcao === 'Cantina'
                       ? styles.txtOpcaoSelecionada
                       : styles.txtOpcao,
-                  ]}>Cantina</Text>
+                  ]}>
+                  Cantina
+                </Text>
               </TouchableOpacity>
             </View>
             <View
@@ -54,6 +109,56 @@ const Historico = ({navigation}) => {
               </TouchableOpacity>
             </View>
           </View>
+          <View style={styles.containerDatas}>
+            <View style={{width: '50%'}}>
+              <Text style={{marginLeft: '5%'}}>De</Text>
+              <TouchableOpacity
+                style={styles.inputButton}
+                onPress={showDatePickerDEComponent}>
+                <Text style={styles.inputButtonText}>
+                  {dataDE && dataDE.toLocaleDateString()}
+                </Text>
+                <CalendarioSvg style={styles.icon} />
+              </TouchableOpacity>
+              {showDatePickerDE && (
+                <DateTimePicker
+                  value={dataDE}
+                  mode="date"
+                  display="default"
+                  onChange={handleDateChangeDE}
+                  maximumDate={dataATE}
+                />
+              )}
+            </View>
+            <View style={{width: '50%'}}>
+              <Text style={{marginLeft: '5%'}}>Até</Text>
+              <TouchableOpacity
+                style={styles.inputButton}
+                onPress={showDatePickerATEComponent}>
+                <Text style={styles.inputButtonText}>
+                  {dataATE && dataATE.toLocaleDateString()}
+                </Text>
+                <CalendarioSvg style={styles.icon} />
+              </TouchableOpacity>
+              {showDatePickerATE && (
+                <DateTimePicker
+                  value={dataATE}
+                  mode="date"
+                  display="default"
+                  onChange={handleDateChangeATE}
+                  minimumDate={dataDE}
+                  maximumDate={new Date()}
+                />
+              )}
+            </View>
+          </View>
+          {opcao === 'Cantina' ? (
+            <View>
+              <FlatList></FlatList>
+            </View>
+          ) : (
+            <View></View>
+          )}
         </View>
       </View>
     </ScrollView>
@@ -106,7 +211,7 @@ const styles = StyleSheet.create({
   containerOpcaoSelecionada: {
     alignItems: 'center',
     width: '50%',
-    borderRadius: 10,
+    borderRadius: 5,
     backgroundColor: '#5F6EF0',
   },
   txtOpcao: {
@@ -120,6 +225,32 @@ const styles = StyleSheet.create({
     color: '#F8F9FA',
     padding: 5,
     justifyContent: 'center',
+  },
+  inputButton: {
+    borderWidth: 1,
+    borderColor: '#212529',
+    padding: 10,
+    borderRadius: 5,
+    width: '90%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginLeft: '5%',
+    backgroundColor: 'white',
+  },
+  inputButtonText: {
+    fontFamily: 'Tajawal-Regular',
+    color: '#212529',
+    fontSize: 17,
+  },
+  containerDatas: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '90%',
+  },
+  icon: {
+    width: 24,
+    height: 24,
   },
 });
 
