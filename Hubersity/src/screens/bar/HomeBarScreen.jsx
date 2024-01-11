@@ -13,10 +13,12 @@ import {fetchBarProducts, addToCart} from '../../api.js';
 import CarrinhoSvg from '../../assets/icons/carrinho.svg';
 import CarrinhoHeader from '../../assets/icons/Carrinho_header.svg';
 import Toast from 'react-native-toast-message';
+import {ActivityIndicator} from 'react-native-paper';
 
 const HomeBar = ({navigation}) => {
   const [categorias, setCategorias] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -29,8 +31,10 @@ const HomeBar = ({navigation}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const data = await fetchBarProducts();
         setCategorias(data);
+        setLoading(false);
       } catch (error) {
         console.error(error);
       }
@@ -48,6 +52,16 @@ const HomeBar = ({navigation}) => {
         text2: response.message,
         autoHide: true,
         visibilityTime: 3000,
+        text1Style: {
+          fontFamily: 'BaiJamjuree-Bold',
+          fontSize: 16,
+          color: '#04BE0C',
+        },
+        text2Style: {
+          fontFamily: 'BaiJamjuree-SemiBold',
+          fontSize: 14,
+          color: '#212529',
+        },
       });
     } else {
       Toast.show({
@@ -56,6 +70,16 @@ const HomeBar = ({navigation}) => {
         text2: response.message,
         autoHide: true,
         visibilityTime: 3000,
+        text1Style: {
+          fontFamily: 'BaiJamjuree-Bold',
+          fontSize: 16,
+          color: '#C61111',
+        },
+        text2Style: {
+          fontFamily: 'BaiJamjuree-SemiBold',
+          fontSize: 14,
+          color: '#212529',
+        },
       });
     }
   };
@@ -74,41 +98,49 @@ const HomeBar = ({navigation}) => {
           onPress={() => navigation.navigate('CartScreen')}
         />
         <View style={styles.main}>
-          {categorias.map(categoria => (
-            <View key={categoria.categoria.idCategoriaBar}>
-              <Text style={styles.title}>{categoria.categoria.nome}</Text>
-              <ScrollView horizontal={true} style={styles.container}>
-                {categoria.produtos.map(item => (
-                  <View key={item.IdProduto} style={styles.card}>
-                    <View style={styles.imagem}>
-                      <Image
-                        source={require('../../assets/Rectangle164.png')}
-                        resizeMode="contain"
-                        style={styles.capaImage}
-                      />
-                    </View>
-                    <View style={styles.cardInfo}>
-                      <View style={styles.info}>
-                        <Text style={styles.textNome}>{item.Nome}</Text>
-                        <Text style={styles.text}>{item.Preco}€</Text>
+          {loading ? (
+            <>
+              <ActivityIndicator animating={true} color="red" size="large" />
+              <Text style={styles.loadingTxt}>Loading...</Text>
+            </>
+          ) : (
+            categorias.map(categoria => (
+              <View key={categoria.categoria.idCategoriaBar}>
+                <Text style={styles.title}>{categoria.categoria.nome}</Text>
+                <ScrollView horizontal={true} style={styles.container}>
+                  {categoria.produtos.map(item => (
+                    <View key={item.IdProduto} style={styles.card}>
+                      <View style={styles.imagem}>
+                        <Image
+                          source={require('../../assets/Rectangle164.png')}
+                          resizeMode="contain"
+                          style={styles.capaImage}
+                        />
                       </View>
-                      <View style={styles.btn}>
-                        <TouchableOpacity
-                          onPress={() => handleAddToCart(item.IdProduto)}>
-                          <CarrinhoSvg />
-                        </TouchableOpacity>
+                      <View style={styles.cardInfo}>
+                        <View style={styles.info}>
+                          <Text style={styles.textNome}>{item.Nome}</Text>
+                          <Text style={styles.text}>{item.Preco}€</Text>
+                        </View>
+                        <View style={styles.btn}>
+                          <TouchableOpacity
+                            onPress={() => handleAddToCart(item.IdProduto)}>
+                            <CarrinhoSvg />
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     </View>
-                  </View>
-                ))}
-              </ScrollView>
-            </View>
-          ))}
-          {/* criar botão para com o nome Pedidos por levantar, que vai para a página PedidosBarLevantar */}
+                  ))}
+                </ScrollView>
+              </View>
+            ))
+          )}
           <TouchableOpacity
             style={styles.btnPedidosPorLevantar}
             onPress={() => navigation.navigate('PendingOrdersScreen')}>
-            <Text style={styles.textBtnPedidosPorLevantar}>Pedidos por levantar</Text>
+            <Text style={styles.textBtnPedidosPorLevantar}>
+              Pedidos por levantar
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -189,6 +221,12 @@ const styles = StyleSheet.create({
     color: '#151C4D',
     fontSize: 17,
     fontFamily: 'BaiJamjuree-Bold',
+    textAlign: 'center',
+  },
+  loadingTxt: {
+    fontFamily: 'BaiJamjuree-Bold',
+    fontSize: 20,
+    color: '#212529',
     textAlign: 'center',
   },
 });
