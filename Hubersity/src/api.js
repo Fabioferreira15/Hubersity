@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import URL from './context/env';
+import { log } from 'console';
 
 export const fetchBarProducts = async () => {
   try {
@@ -130,7 +131,7 @@ export const PendingOrders = async () => {
 
     if (response.ok) {
       const responseData = await response.json();
-      return responseData;
+      return responseData.pedidos;
     } else {
       const responseData = await response.json();
       console.error(responseData);

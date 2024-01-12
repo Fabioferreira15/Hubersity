@@ -24,7 +24,7 @@ const PendingOrdersScreen = ({navigation}) => {
           setEmpty(true);
           setLoading(false);
         } else {
-          setOrders(ordersToTake.pedidos || []);
+          setOrders(ordersToTake || []);
           setEmpty(false);
           setLoading(false);
         }
@@ -36,7 +36,7 @@ const PendingOrdersScreen = ({navigation}) => {
   }, []);
 
   useEffect(() => {
-    console.log('Estado de orders atualizado:', orders);
+   /*  console.log('Estado de orders atualizado:', orders); */
   }, [orders])
 
   return (
