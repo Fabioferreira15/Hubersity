@@ -90,7 +90,7 @@ const CartScreen = ({navigation}) => {
           <View style={[styles.totalInfo, {marginBottom: height - 350}]}>
             <View style={styles.total}>
               <Text style={styles.totalTitle}>Total: </Text>
-              <Text style={styles.totaltxt}>{total.toFixed()}€</Text>
+              <Text style={styles.totaltxt}>{total.toFixed(2)}€</Text>
             </View>
             <View style={styles.Btn}>
               <PrimaryBtn
