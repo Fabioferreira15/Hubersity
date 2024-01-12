@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
+  Image,
 } from 'react-native';
 import URL from '../context/env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -25,6 +26,41 @@ const Historico = ({navigation}) => {
   const [historicoCantina, setHistoricoCantina] = useState([]);
   const [historicoBar, setHistoricoBar] = useState([]);
 
+  useEffect(() => {
+    fetchHistoricoCantina();
+  }, [dataDE, dataATE]);
+
+  const fetchHistoricoCantina = async () => {
+    try {
+      const storedToken = await AsyncStorage.getItem('token');
+      if (!storedToken) {
+        console.error('Sem token');
+        return;
+      }
+
+      const response = await fetch(
+        `${URL}/cantina/historico?numeroRegistos=5&dataDe=${dataDE}&dataAte=${dataATE}`,
+        {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+          },
+        },
+      );
+
+      const json = await response.json();
+      if (
+        json.message === 'Marcações encontradas!' &&
+        json.marcacoes.length > 0
+      ) {
+        setHistoricoCantina(json.marcacoes);
+      } else {
+        setHistoricoCantina([]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleDateChangeDE = (event, date) => {
     if (date !== undefined && event.type === 'set') {
       const formattedDate = `${date.getFullYear()}-${String(
@@ -34,7 +70,6 @@ const Historico = ({navigation}) => {
       setDataDE(new Date(formattedDate));
     }
     setShowDatePickerDE(false);
-    fetchHistoricoCantina();
   };
 
   const handleDateChangeATE = (event, date) => {
@@ -46,7 +81,6 @@ const Historico = ({navigation}) => {
       setDataATE(new Date(formattedDate));
     }
     setShowDatePickerATE(false);
-    fetchHistoricoCantina();
   };
 
   const showDatePickerDEComponent = () => {
@@ -55,31 +89,6 @@ const Historico = ({navigation}) => {
 
   const showDatePickerATEComponent = () => {
     setShowDatePickerATE(true);
-  };
-
-  const fetchHistoricoCantina = async () => {
-    try {
-      const storedToken = await AsyncStorage.getItem('token');
-
-      if (!storedToken) {
-        console.error('Sem token');
-        return;
-      }
-
-      const response = await fetch(
-        `${URL}/cantina/historico?numeroRegistos=5&dataDe=2023-12-28&dataAte=2023-12-28`,
-        {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-          },
-        },
-      );
-      const json = await response.json();
-      setHistoricoCantina(json.marcacoes);
-      console.log(json.marcacoes);
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   return (
@@ -127,7 +136,10 @@ const Historico = ({navigation}) => {
           <View style={{width: '50%'}}>
             <Text style={{marginLeft: '5%'}}>De</Text>
             <TouchableOpacity
-              style={styles.inputButton}
+              style={[
+                styles.inputButton,
+                {backgroundColor: '#DFE2FC', borderWidth: 0},
+              ]}
               onPress={showDatePickerDEComponent}>
               <Text style={styles.inputButtonText}>
                 {dataDE && dataDE.toLocaleDateString()}
@@ -141,13 +153,17 @@ const Historico = ({navigation}) => {
                 display="default"
                 onChange={handleDateChangeDE}
                 maximumDate={dataATE}
+                displayFormat={'DD MMM YYYY'}
               />
             )}
           </View>
           <View style={{width: '50%'}}>
             <Text style={{marginLeft: '5%'}}>Até</Text>
             <TouchableOpacity
-              style={styles.inputButton}
+              style={[
+                styles.inputButton,
+                {backgroundColor: '#DFE2FC', borderWidth: 0},
+              ]}
               onPress={showDatePickerATEComponent}>
               <Text style={styles.inputButtonText}>
                 {dataATE && dataATE.toLocaleDateString()}
@@ -162,6 +178,7 @@ const Historico = ({navigation}) => {
                 onChange={handleDateChangeATE}
                 minimumDate={dataDE}
                 maximumDate={new Date()}
+                displayFormat={'DD MMM YYYY'}
               />
             )}
           </View>
@@ -169,20 +186,57 @@ const Historico = ({navigation}) => {
         <Text></Text>
         {opcao === 'Cantina' ? (
           <View style={{width: '100%'}}>
-            <FlatList
-              data={historicoCantina}
-              keyExtractor={item => item.IdMarcacao.toString()}
-              renderItem={({item}) => (
-                <View style={styles.marcacaoContainer}>
-                  <Text style={{color: 'white', fontSize: 19}}>Marcação</Text>
-                  <View style={styles.marcacaoContainer2}>
-                    <Text style={{color: 'black', fontSize: 17}}>
-                      {item.RefeicaoCantina.TipoPrato}
-                    </Text>
+            {historicoCantina.length > 0 ? (
+              <FlatList
+                data={historicoCantina}
+                keyExtractor={item => item.IdMarcacao.toString()}
+                renderItem={({item}) => (
+                  <View style={styles.marcacaoContainer}>
+                    <Text style={{color: 'white', fontSize: 19}}>Marcação</Text>
+                    <View style={styles.marcacaoContainer2}>
+                      <View style={{width: '50%'}}>
+                        <Text
+                          style={{
+                            color: 'black',
+                            fontSize: 17,
+                            fontWeight: 'bold',
+                          }}>
+                          {item.RefeicaoCantina.TipoPrato} |{' '}
+                          {item.RefeicaoCantina.Nome}
+                        </Text>
+                        <Text style={{color: 'black', fontSize: 12}}>
+                          {item.RefeicaoCantina.Periodo}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          width: '50%',
+                          justifyContent: 'center',
+                          alignItems: 'flex-end',
+                        }}>
+                        <Image
+                          source={{
+                            uri: item.QRCode,
+                          }}
+                          style={{
+                            width: '70%',
+                            height: '70%',
+                            resizeMode: 'contain',
+                          }}
+                        />
+                        <Text style={{color: 'black', fontSize: 12}}>
+                          {item.RefeicaoCantina.Data}
+                        </Text>
+                      </View>
+                    </View>
                   </View>
-                </View>
-              )}
-            />
+                )}
+              />
+            ) : (
+              <Text style={{fontSize: 17, marginLeft: '5%'}}>
+                Não existem registos de marcações durante o período de tempo selecionado.
+              </Text>
+            )}
           </View>
         ) : (
           <View></View>
@@ -246,12 +300,14 @@ const styles = StyleSheet.create({
     color: '#212529',
     padding: 5,
     justifyContent: 'center',
+    fontWeight: 'bold',
   },
   txtOpcaoSelecionada: {
     fontSize: 17,
     color: '#F8F9FA',
     padding: 5,
     justifyContent: 'center',
+    fontWeight: 'bold',
   },
   inputButton: {
     borderWidth: 1,
@@ -266,9 +322,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   inputButtonText: {
-    fontFamily: 'Tajawal-Regular',
+    fontFamily: 'BaiJamjuree-SemiBold',
     color: '#212529',
-    fontSize: 17,
+    fontSize: 14,
   },
   containerDatas: {
     flexDirection: 'row',
@@ -293,6 +349,8 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
     alignSelf: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
 
