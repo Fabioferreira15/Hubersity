@@ -35,7 +35,8 @@
     "react-native-svg-transformer": "^1.2.0",
     "react-native-swipe-gestures": "^1.0.5",
     "react-native-swiper": "^1.6.0-rc.3",
-    "react-native-toast-message": "^2.2.0"
+    "react-native-toast-message": "^2.2.0",
+    "socket.io-client": "^4.7.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
