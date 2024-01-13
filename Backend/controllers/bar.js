@@ -516,7 +516,16 @@ exports.verPedidosPorLevantar = async function (req, res) {
         Status: "pendente",
       },
       attributes: ["IdPedido", "Data", "Status", "QRCode"],
-      raw: true,
+      include: [{
+        model: PedidosBarProdutos,
+        attributes: ["IdProduto", "Quantidade"],
+        include: [{
+          model: ProdutosBar,
+          attributes: ["IdProduto", "Nome"],
+          raw: true,
+        }],
+        raw: true,
+      }]
     });
 
     if (pedidosPorLevantar.length === 0) {
