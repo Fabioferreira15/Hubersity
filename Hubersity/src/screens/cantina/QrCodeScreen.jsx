@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#151C4D',
   },
   title: {
-    marginTop: 20,
+    marginTop: '25%',
     alignItems: 'center',
   },
   titleTxt: {
