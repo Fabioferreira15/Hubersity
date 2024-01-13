@@ -89,7 +89,7 @@ exports.adicionarCategoria = async function (req, res) {
 
     // Verificar se a categoria já existe
     const categoria = await CategoriasBar.findOne({
-      where: { Nome: req.body.Nome },
+      where: { nome: req.body.Nome },
     });
 
     if (categoria) {
@@ -100,7 +100,7 @@ exports.adicionarCategoria = async function (req, res) {
 
     // Adicionar categoria ao bar
     const novaCategoria = await CategoriasBar.create({
-      Nome: req.body.Nome,
+      nome: req.body.Nome,
     });
 
     return res.status(201).send({
