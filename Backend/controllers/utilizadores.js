@@ -116,6 +116,7 @@ exports.login = function (req, res) {
                 UserId: user.UserId,
                 nome: user.nome,
                 imgPerfil: user.imgPerfil,
+                tipo: user.tipo_utilizador,
               },
             });
           });
