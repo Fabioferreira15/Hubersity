@@ -7,6 +7,8 @@ const Pagamento = require("../models/pagamento.model").Pagamento;
 const QRCode = require("qrcode");
 const DetalhesPagamento =
   require("../models/detalhesPagamento.model").DetalhesPagamento;
+const Marcacoes = require("../models/marcacaoCantina.model").MarcacaoCantina;
+const Pedidos = require("../models/pedidosBar.model").PedidosBar;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const utilities = require("../utilities/utilities");
@@ -427,6 +429,26 @@ exports.apagarUtilizador = async function (req, res) {
         }
 
         await pagamento.destroy();
+      }
+    }
+
+    const marcacoes = await Marcacoes.findAll({
+      where: { UserId: userId },
+    });
+
+    if (marcacoes) {
+      for (const marcacao of marcacoes) {
+        await marcacao.destroy();
+      }
+    }
+
+    const pedidos = await Pedidos.findAll({
+      where: { UserId: userId },
+    });
+
+    if (pedidos) {
+      for (const pedido of pedidos) {
+        await pedido.destroy();
       }
     }
 

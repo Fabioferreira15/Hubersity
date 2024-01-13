@@ -61,5 +61,3 @@ mysqlDB
     });
 
 exports.PedidosBar = PedidosBar;
-
-//não esta a criar a tabela
