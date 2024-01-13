@@ -375,3 +375,36 @@ exports.obterUtilizadores = async function (req, res) {
   }
 };
 
+//apagar utilizador
+exports.apagarUtilizador = async function (req, res) {
+  try {
+    let auth = utilities.verifyToken(req.headers.authorization);
+
+    if (!auth || auth.tipo != "admin") {
+      return res.status(401).send({
+        message: "Não autorizado.",
+      });
+    }
+
+    const userId = parseInt(req.params.id);
+
+    const utilizador = await Utilizadores.findByPk(userId);
+
+    if (!utilizador) {
+      res.status(404).send({
+        message: "Utilizador não encontrado.",
+      });
+      return;
+    }
+
+    await utilizador.destroy();
+
+    res.status(200).send({
+      message: "Utilizador apagado com sucesso!",
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: error.message || "Ocorreu um erro ao apagar o utilizador.",
+    });
+  }
+};
