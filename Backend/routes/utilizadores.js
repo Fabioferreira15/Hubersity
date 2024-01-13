@@ -73,9 +73,10 @@ router.patch("/:id", function (req, res) {
   utilizadores.editarPerfil(req, res);
 });
 
-//rota editar imagem perfil
-router.patch("/imagem/:id", function (req, res) {
-  utilizadores.editarImagemPerfil(req, res);
+
+//admin routes
+router.get("/", function (req, res) {
+  utilizadores.obterUtilizadores(req, res);
 });
 
 module.exports = router;

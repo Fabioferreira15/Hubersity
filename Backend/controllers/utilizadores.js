@@ -343,3 +343,35 @@ exports.editarPerfil = async function (req, res) {
     });
   }
 };
+
+
+//admin
+
+//obter todos os utilizadores
+exports.obterUtilizadores = async function (req, res) {
+  try {
+    let auth = utilities.verifyToken(req.headers.authorization);
+
+    if (!auth || auth.tipo != "admin") {
+      return res.status(401).send({
+        message: "Não autorizado.",
+      });
+    }
+
+    const utilizadores = await Utilizadores.findAll({
+      attributes: {
+        exclude: ["password"],
+      },
+    });
+
+    res.status(200).send({
+      message: "Utilizadores encontrados!",
+      utilizadores: utilizadores,
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: error.message || "Ocorreu um erro ao buscar os utilizadores.",
+    });
+  }
+};
+
