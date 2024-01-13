@@ -515,7 +515,7 @@ exports.verPedidosPorLevantar = async function (req, res) {
         UserId: userId,
         Status: "pendente",
       },
-      attributes: ["IdPedido", "Data", "Status"],
+      attributes: ["IdPedido", "Data", "Status", "QRCode"],
       raw: true,
     });
 

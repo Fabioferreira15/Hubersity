@@ -102,6 +102,7 @@ const Ementas = ({navigation}) => {
             mode="date"
             display="default"
             onChange={handleDateChange}
+            displayFormat={"DD MMM YYYY"}
           />
         )}
         <Text></Text>
