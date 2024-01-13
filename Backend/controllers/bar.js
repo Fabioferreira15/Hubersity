@@ -16,7 +16,7 @@ exports.adicionarProduto = async function (req, res) {
   try {
     let auth = utilities.verifyToken(req.headers.authorization);
 
-    if (!auth) {
+    if (!auth ) {
       return res.status(401).send({
         message: "Token inválido.",
       });
@@ -516,16 +516,8 @@ exports.verPedidosPorLevantar = async function (req, res) {
         Status: "pendente",
       },
       attributes: ["IdPedido", "Data", "Status", "QRCode"],
-      include: [{
-        model: PedidosBarProdutos,
-        attributes: ["IdProduto", "Quantidade"],
-        include: [{
-          model: ProdutosBar,
-          attributes: ["IdProduto", "Nome"],
-          raw: true,
-        }],
-        raw: true,
-      }]
+      raw: true,
+      
     });
 
     if (pedidosPorLevantar.length === 0) {
