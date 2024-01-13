@@ -10,6 +10,7 @@ const AuthProvider = ({children}) => {
   const [userInfo, setUserInfo] = useState(null);
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const login = async (email, password) => {
     try {
@@ -30,10 +31,13 @@ const AuthProvider = ({children}) => {
       if (response.ok) {
         setUserInfo(data.UserInfo);
         setUserToken(data.token);
+        setIsAdmin(data.UserInfo.tipo === 'admin');
+        console.log('isAdmin:', data);
         AsyncStorage.setItem('token', data.token);
         AsyncStorage.setItem('id', data.UserInfo.UserId.toString());
         AsyncStorage.setItem('nome', data.UserInfo.nome);
         AsyncStorage.setItem('image', data.UserInfo.imgPerfil);
+        AsyncStorage.setItem('tipo', data.UserInfo.tipo);
       } else {
         if (data.errors) {
           data.errors.forEach(error => {
@@ -57,20 +61,18 @@ const AuthProvider = ({children}) => {
     setIsLoading(true);
     setUserToken(null);
     setUserInfo(null);
+    setIsAdmin(false);
     try {
       AsyncStorage.removeItem('token');
       AsyncStorage.removeItem('id');
       AsyncStorage.removeItem('nome');
       AsyncStorage.removeItem('image');
+      AsyncStorage.removeItem('tipo');
     } catch (error) {
       console.error(error);
     }
     setIsLoading(false);
   };
-
-  const isAdmin = async () => {
-    
-
 
   const isAuthenticated = async () => {
     try {
@@ -124,6 +126,7 @@ const AuthProvider = ({children}) => {
         userToken,
         getUserInfo,
         getPerfilInfo,
+        isAdmin,
       }}>
       {children}
     </AuthContext.Provider>

@@ -8,7 +8,7 @@ import HeroImgCurso from '../assets/Registo/Hero-image-curso.svg';
 import DropDownPicker from 'react-native-dropdown-picker';
 import PrimaryBtn from '../components/PrimaryBtn';
 import { AuthContext } from '../context/AuthProvider';
-import IP from '../context/env';
+import URL from '../context/env';
 
 const Registo = ({navigation}) => {
   const [open, setOpen] = useState(false);
@@ -30,7 +30,7 @@ const Registo = ({navigation}) => {
   const registar = async () => {
     try {
       const response = await fetch(
-        `http:/${IP}:3000/utilizadores/register`,
+        `${URL}/utilizadores/register`,
         {
           method: 'POST',
           headers: {
@@ -80,7 +80,7 @@ const Registo = ({navigation}) => {
   useEffect(() => {
     const getCursos = async () => {
       try {
-        const response = await fetch(`http:/${IP}:3000/cursos`);
+        const response = await fetch(`${URL}/cursos`);
         const data = await response.json();
         const cursos = data.map(curso => ({
           label: curso.nomeCurso,

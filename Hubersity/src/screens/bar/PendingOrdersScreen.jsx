@@ -36,7 +36,6 @@ const PendingOrdersScreen = ({navigation}) => {
   }, []);
 
   useEffect(() => {
-   /*  console.log('Estado de orders atualizado:', orders); */
   }, [orders])
 
   return (

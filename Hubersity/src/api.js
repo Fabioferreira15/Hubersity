@@ -146,6 +146,39 @@ export const PendingOrders = async () => {
   }
 };
 
+export const fetchUsers = async () => {
+  try {
+    const storedToken = await AsyncStorage.getItem('token');
+    if (!storedToken) {
+      console.error('Sem token');
+    }
+
+    const response = await fetch(`${URL}/utilizadores`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${storedToken}`,
+      },
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      return responseData.utilizadores;
+    } else {
+      const responseData = await response.json();
+      console.error(responseData);
+      return responseData;
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: 'Ocorreu um erro a ver o pedidos por levantar.',
+    };
+  }
+};
+
+
+
 export const changeCartQuantity = async (id, operacao) => {
   const storedToken = await AsyncStorage.getItem('token');
   try {
