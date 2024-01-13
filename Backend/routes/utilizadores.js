@@ -79,4 +79,8 @@ router.get("/", function (req, res) {
   utilizadores.obterUtilizadores(req, res);
 });
 
+router.delete("/:id", function (req, res) {
+  utilizadores.apagarUtilizador(req, res);
+});
+
 module.exports = router;
