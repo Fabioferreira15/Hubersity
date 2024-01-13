@@ -68,6 +68,10 @@ const AuthProvider = ({children}) => {
     setIsLoading(false);
   };
 
+  const isAdmin = async () => {
+    
+
+
   const isAuthenticated = async () => {
     try {
       setIsLoading(true);

@@ -105,7 +105,13 @@ const PerfilScreen = ({navigation}) => {
 
         <View>
           {estacionamentoInfo.length === 0 ? (
-            <Text style={styles.title3}>Não tem parque de estacionamento</Text>
+            <>
+              <Text style={styles.title}>Não efetuou o pagamento</Text>
+              <TouchableOpacity
+                style={styles.btn}>
+                <Text style={styles.btn}>Efetuar pagamento</Text>
+              </TouchableOpacity>
+            </>
           ) : (
             <>
               <Text
