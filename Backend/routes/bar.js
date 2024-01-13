@@ -40,6 +40,20 @@ router.post(
   }
 );
 
+//adicionar nova categoria
+router.post(
+  "/categorias",
+  [
+    body("Nome")
+      .not()
+      .isEmpty()
+      .withMessage("O nome da categoria é obrigatório"),
+  ],
+  function (req, res) {
+    barController.adicionarCategoria(req, res);
+  }
+);
+
 //ver produtos
 router.get("/produtos", function (req, res) {
   barController.obterProdutos(req, res);
@@ -49,8 +63,6 @@ router.get("/produtos", function (req, res) {
 router.post("/carrinho/:IdProduto", function (req, res) {
   barController.adicionarProdutoCarrinho(req, res);
 });
-
-
 
 //obter carrinho
 router.get("/carrinho", function (req, res) {
@@ -87,4 +99,3 @@ router.patch("/carrinho/quantidade/:IdProduto", function (req, res) {
 });
 
 module.exports = router;
-

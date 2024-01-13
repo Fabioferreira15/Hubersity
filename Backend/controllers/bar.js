@@ -70,6 +70,52 @@ exports.adicionarProduto = async function (req, res) {
   }
 };
 
+//adicionar nova categoria
+exports.adicionarCategoria = async function (req, res) {
+  try {
+    let auth = utilities.verifyToken(req.headers.authorization);
+
+    if (!auth) {
+      return res.status(401).send({
+        message: "Token inválido.",
+      });
+    }
+
+    if (auth.tipo !== "admin") {
+      return res.status(401).send({
+        message: "Não tem permissões de administrador.",
+      });
+    }
+
+    // Verificar se a categoria já existe
+    const categoria = await CategoriasBar.findOne({
+      where: { Nome: req.body.Nome },
+    });
+
+    if (categoria) {
+      return res.status(400).send({
+        message: "Categoria já existe.",
+      });
+    }
+
+    // Adicionar categoria ao bar
+    const novaCategoria = await CategoriasBar.create({
+      Nome: req.body.Nome,
+    });
+
+    return res.status(201).send({
+      message: "Categoria adicionada com sucesso.",
+      categoria: novaCategoria,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({
+      message: "Ocorreu um erro ao adicionar a categoria.",
+    });
+  }
+}
+
+
 //obter produtos do bar
 exports.obterProdutos = async function (req, res) {
   // Verificar autenticação
