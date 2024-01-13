@@ -344,7 +344,6 @@ exports.editarPerfil = async function (req, res) {
   }
 };
 
-
 //admin
 
 //obter todos os utilizadores
@@ -395,6 +394,40 @@ exports.apagarUtilizador = async function (req, res) {
         message: "Utilizador não encontrado.",
       });
       return;
+    }
+
+    const pagamentoEstacionamento = await PagamentoEstacionamento.findOne({
+      where: { UserId: userId },
+    });
+
+    if (pagamentoEstacionamento) {
+      await pagamentoEstacionamento.destroy();
+    }
+
+    const carrinho = await Carrinho.findOne({
+      where: { UserId: userId },
+    });
+
+    if (carrinho) {
+      await carrinho.destroy();
+    }
+
+    const pagamentos = await Pagamento.findAll({
+      where: { UserId: userId },
+    });
+
+    if (pagamentos) {
+      for (const pagamento of pagamentos) {
+        const detalhesPagamento = await DetalhesPagamento.findByPk(
+          pagamento.IdDetalhesPagamento
+        );
+
+        if (detalhesPagamento) {
+          await detalhesPagamento.destroy();
+        }
+
+        await pagamento.destroy();
+      }
     }
 
     await utilizador.destroy();
