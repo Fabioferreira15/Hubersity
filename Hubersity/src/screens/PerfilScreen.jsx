@@ -17,11 +17,14 @@ import MBWayLogo from '../assets/icons/MBWay-Logo.svg';
 import SetaDireita from '../assets/icons/seta-direita.svg';
 import BtnSvg from '../assets/Home/btn.svg';
 import BtnLogout from '../assets/icons/logout.svg';
+import {fetchEstacionamento} from '../api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const PerfilScreen = ({navigation}) => {
   const {logout, getPerfilInfo, userInfo} = useContext(AuthContext);
   const [perfilInfo, setPerfilInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [estacionamentoInfo, setEstacionamentoInfo] = useState([]);
 
   useEffect(() => {
     const fetchPerfilInfo = async () => {
@@ -36,7 +39,23 @@ const PerfilScreen = ({navigation}) => {
       }
     };
 
+    const fetchEstacionamentoInfo = async () => {
+      try {
+        const id = await AsyncStorage.getItem('id');
+        const idInt = parseInt(id, 10);
+
+        const estacionamentoData = await fetchEstacionamento(idInt);
+
+        if (estacionamentoData) {
+          setEstacionamentoInfo(estacionamentoData.estacionamento || []);
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     fetchPerfilInfo();
+    fetchEstacionamentoInfo();
   }, [getPerfilInfo]);
 
   if (isLoading) {
@@ -83,20 +102,36 @@ const PerfilScreen = ({navigation}) => {
           }}>
           <BtnLogout width={35} height={35} />
         </TouchableOpacity>
-        <Text
-          style={[
-            styles.title,
-            {borderBottomColor: 'black', borderBottomWidth: 1, width: '90%'},
-          ]}>
-          Parque de Estacionamento
-        </Text>
-        <Image
-          source={{
-            uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Link_pra_pagina_principal_da_Wikipedia-PT_em_codigo_QR_b.svg/420px-Link_pra_pagina_principal_da_Wikipedia-PT_em_codigo_QR_b.svg.png',
-          }}
-          style={styles.qrCode}
-        />
-        <Text style={styles.validadeQR}>Válido até 31/01/2024</Text>
+
+        <View>
+          {estacionamentoInfo.length === 0 ? (
+            <Text style={styles.title3}>Não tem parque de estacionamento</Text>
+          ) : (
+            <>
+              <Text
+                style={[
+                  styles.title,
+                  {
+                    borderBottomColor: 'black',
+                    borderBottomWidth: 1,
+                    width: '90%',
+                  },
+                ]}>
+                Parque de Estacionamento
+              </Text>
+              <Image
+                source={{
+                  uri: estacionamentoInfo.QRCode,
+                }}
+                style={styles.qrCode}
+              />
+              <Text style={styles.validadeQR}>
+                Válido até: {estacionamentoInfo.ProximoPagamento}
+              </Text>
+            </>
+          )}
+        </View>
+
         <Text style={styles.title}>Formas de pagamento</Text>
         <TouchableOpacity style={styles.metodoPag}>
           <View style={styles.metodoPag2}>
@@ -112,7 +147,9 @@ const PerfilScreen = ({navigation}) => {
           <View style={styles.metodoPag2}>
             <MBWayLogo width={40} height={30} />
             <Text>{'  '}</Text>
-            <Text style={{fontWeight: 'bold', color: 'black', fontSize: 17}}>MB WAY</Text>
+            <Text style={{fontWeight: 'bold', color: 'black', fontSize: 17}}>
+              MB WAY
+            </Text>
           </View>
           <SetaDireita width={20} height={20} />
         </TouchableOpacity>
@@ -209,9 +246,10 @@ const styles = StyleSheet.create({
   },
 
   qrCode: {
-    width: Dimensions.get('window').width * 0.5,
-    height: Dimensions.get('window').width * 0.5,
+    width: 200,
+    height: 200,
     resizeMode: 'contain',
+    borderRadius: 10,
   },
   validadeQR: {
     fontSize: 16,

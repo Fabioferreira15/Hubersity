@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import URL from './context/env';
-import { log } from 'console';
+import {log} from 'console';
 
 export const fetchBarProducts = async () => {
   try {
@@ -50,7 +50,7 @@ export const fetchCart = async () => {
   }
 };
 
-export const removeFromCart = async (id) => {
+export const removeFromCart = async id => {
   const storedToken = await AsyncStorage.getItem('token');
   try {
     if (!storedToken) {
@@ -82,7 +82,7 @@ export const removeFromCart = async (id) => {
   }
 };
 
-export const addToCart = async (id) => {
+export const addToCart = async id => {
   const storedToken = await AsyncStorage.getItem('token');
   try {
     if (!storedToken) {
@@ -135,7 +135,8 @@ export const PendingOrders = async () => {
     } else {
       const responseData = await response.json();
       console.error(responseData);
-return responseData    }
+      return responseData;
+    }
   } catch (error) {
     console.error(error);
     return {
@@ -145,7 +146,7 @@ return responseData    }
   }
 };
 
-export const changeCartQuantity = async (id,operacao) => {
+export const changeCartQuantity = async (id, operacao) => {
   const storedToken = await AsyncStorage.getItem('token');
   try {
     if (!storedToken) {
@@ -153,12 +154,15 @@ export const changeCartQuantity = async (id,operacao) => {
       return {success: false, message: 'Sem token'};
     }
 
-    const response = await fetch(`${URL}/bar/carrinho/quantidade/${id}?operacao=${operacao}`, {
-      method: 'PATCH',
-      headers: {
-        Authorization: `Bearer ${storedToken}`,
+    const response = await fetch(
+      `${URL}/bar/carrinho/quantidade/${id}?operacao=${operacao}`,
+      {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+        },
       },
-    });
+    );
 
     if (response.ok) {
       const responseData = await response.json();
@@ -175,5 +179,38 @@ export const changeCartQuantity = async (id,operacao) => {
       message: 'Ocorreu um erro ao adicionar o produto ao carrinho.',
     };
   }
+};
 
+export const fetchEstacionamento = async (id) => {
+  try {
+    const storedToken = await AsyncStorage.getItem('token');
+    if (!storedToken) {
+      console.error('Sem token');
+    }
+
+    const response = await fetch(
+      `${URL}/utilizadores/parqueestacionamento/${id}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+        },
+      },
+    );
+
+    if (response.ok) {
+      const responseData = await response.json();
+      return responseData;
+    } else {
+      const responseData = await response.json();
+      console.error(responseData);
+      return responseData;
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: 'Ocorreu um erro a ver o pedidos por levantar.',
+    };
+  }
 };

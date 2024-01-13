@@ -195,7 +195,7 @@ exports.obterPagamentoEstacionamento = async function (req, res) {
         estacionamento: estacionamento,
       });
     } else {
-      res.status(404).send({
+      res.status(200).send({
         message: "Ainda não efetuou o pagamento do estacionamento!",
       });
     }
