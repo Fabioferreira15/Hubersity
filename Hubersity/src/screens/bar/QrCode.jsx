@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#151C4D',
     },
     title: {
-        marginTop: 20,
+        marginTop: '25%',
         alignItems: 'center',
     },
     titleTxt: {
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     info: {
-        marginTop: 20,
+        marginTop: '10%',
         alignItems: 'center',
     },
     infoTxtTitle: {
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
         fontFamily: 'BaiJamjuree-Regular',
     },
     btn: {
-        marginTop: 20,
+        marginTop: '45%',
         alignItems: 'center',
     },
 });
