@@ -318,3 +318,39 @@ export const AddProdutosBar = async (nome, preco, categoria, descricao,Stock) =>
     };
   }
 };
+
+export const AddCategoriaBar = async (nome) => {
+  const storedToken = await AsyncStorage.getItem('token');
+  try {
+    if (!storedToken) {
+      console.error('Sem token');
+      return {success: false, message: 'Sem token'};
+    }
+
+    const response = await fetch(`${URL}/bar/categorias`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${storedToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        Nome: nome,
+      }),
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      return {success: true, message: responseData.message};
+    } else {
+      const responseData = await response.json();
+      console.error(responseData);
+      return {success: false, message: responseData.message};
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: 'Ocorreu um erro ao adicionar o produto ao carrinho.',
+    };
+  }
+};

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView, StyleSheet, RefreshControl,ActivityIndicator,TouchableOpacity,Image} from 'react-native';
 import StockCard from '../../components/StockCard';
-import {fetchBarProducts} from '../../api';
+import {fetchBarProducts,changeCartQuantity} from '../../api';
 import CarrinhoSvg from '../../assets/icons/carrinho.svg';
 import PlusSvg from '../../assets/icons/plus.svg';
 
@@ -33,9 +33,36 @@ const BarManageStock = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    console.log(categorias);
-  }, [categorias]);
+  const changeCartQuantity = async (id, operacao) => {
+    const response = await changeCartQuantity(id, operacao);
+    if (response.success) {
+      Toast.show({
+        type: 'success',
+        text1: 'Sucesso',
+        text2: response.message,
+        autoHide: true,
+        visibilityTime: 3000,
+        text1Style: {
+          fontFamily: 'BaiJamjuree-Bold',
+          fontSize: 16,
+          color: '#04BE0C',
+        },
+        text2Style: {
+          fontFamily: 'BaiJamjuree-SemiBold',
+          fontSize: 14,
+          color: '#212529',
+        },
+      });
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Erro',
+        text2: response.message,
+        autoHide: true,
+        visibilityTime: 3000,
+      });
+    }
+  }
 
   return (
     <View>
@@ -71,7 +98,7 @@ const BarManageStock = () => {
                         </View>
                         <View style={styles.btn}>
                           <TouchableOpacity
-                            onPress={() => handleAddToCart(item.IdProduto)}>
+                            onPress={() => changeCartQuantity(item.IdProduto,'aumentar')}>
                             <PlusSvg />
                           </TouchableOpacity>
                         </View>
