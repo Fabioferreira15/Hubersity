@@ -57,4 +57,4 @@ mysqlDB
     });
 
 exports.PagamentoEstacionamento = PagamentoEstacionamento;
-//não esta a criar a tabela
+

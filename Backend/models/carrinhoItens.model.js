@@ -32,11 +32,23 @@ CarrinhoItens.init(
             type: DataTypes.INTEGER,
             allowNull: false,
         },
+        createdAt: {
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW,
+            allowNull: false,
+        },
+        updatedAt: {
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW,
+            allowNull: false,
+        },
     },
     {
         sequelize: mysqlDB,
         modelName: "CarrinhoItens",
-        timestamps: false,
+        timestamps: true,
+        updatedAt: 'updated_at',
+        createdAt: 'created_at',
     }
 );
 CarrinhoItens.belongsTo(Carrinho, { foreignKey: "IdCarrinho" });
@@ -52,4 +64,3 @@ mysqlDB
     });
 
 exports.CarrinhoItens = CarrinhoItens;
-
