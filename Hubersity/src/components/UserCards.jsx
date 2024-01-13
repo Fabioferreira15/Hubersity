@@ -19,26 +19,27 @@ const UserCard = ({nome,email,tipo, onDeletePress}) => {
 
 const styles = StyleSheet.create({
   cardContainer: {
-    borderWidth: 1,
-    borderColor: '#ccc',
     borderRadius: 8,
     padding: 16,
     margin: 8,
+    backgroundColor: '#DFE2FC',
   },
   userInfo: {
     fontSize: 16,
+    fontFamily: 'Tajawal-Regular',
     marginBottom: 8,
+    color: '#212529',
   },
   deleteButton: {
-    backgroundColor: 'red',
+    backgroundColor: '#C61111',
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
     marginTop: 8,
   },
   deleteButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: '#F8F9FA',
+    fontFamily: 'BaiJamjuree-Bold',
   },
 });
 

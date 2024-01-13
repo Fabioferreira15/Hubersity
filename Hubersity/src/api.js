@@ -177,7 +177,36 @@ export const fetchUsers = async () => {
   }
 };
 
+export const deleteUser = async (id) => {
+  try {
+    const storedToken = await AsyncStorage.getItem('token');
+    if (!storedToken) {
+      console.error('Sem token');
+    }
 
+    const response = await fetch(`${URL}/utilizadores/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${storedToken}`,
+      },
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      return {success: true, message: responseData.message};
+    } else {
+      const responseData = await response.json();
+
+      return responseData.message;
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: 'Ocorreu um erro a ver o pedidos por levantar.',
+    };
+  }
+};
 
 export const changeCartQuantity = async (id, operacao) => {
   const storedToken = await AsyncStorage.getItem('token');
@@ -214,7 +243,7 @@ export const changeCartQuantity = async (id, operacao) => {
   }
 };
 
-export const fetchEstacionamento = async (id) => {
+export const fetchEstacionamento = async id => {
   try {
     const storedToken = await AsyncStorage.getItem('token');
     if (!storedToken) {
@@ -244,6 +273,48 @@ export const fetchEstacionamento = async (id) => {
     return {
       success: false,
       message: 'Ocorreu um erro a ver o pedidos por levantar.',
+    };
+  }
+};
+
+
+export const AddProdutosBar = async (nome, preco, categoria, descricao,Stock) => {
+  const storedToken = await AsyncStorage.getItem('token');
+  try {
+    if (!storedToken) {
+      console.error('Sem token');
+      return {success: false, message: 'Sem token'};
+    }
+
+    const response = await fetch(`${URL}/bar/produtos`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${storedToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        Nome: nome,
+        Preco: preco,
+        Categoria: categoria,
+        Descricao: descricao,
+        Stock: Stock,
+
+      }),
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      return {success: true, message: responseData.message};
+    } else {
+      const responseData = await response.json();
+      console.error(responseData);
+      return {success: false, message: responseData.message};
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: 'Ocorreu um erro ao adicionar o produto ao carrinho.',
     };
   }
 };

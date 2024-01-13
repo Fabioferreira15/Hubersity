@@ -1,15 +1,10 @@
 import { View, Text } from 'react-native'
-import React,{useEffect,useState} from 'react'
+import React from 'react'
+import BarAdminNavigation from '../../navigation/BarAdminNavigation'
 
 const Bar = () => {
-  
-
-
-
   return (
-    <View>
-      <Text>Bar</Text>
-    </View>
+    <BarAdminNavigation />
   )
 }
 
