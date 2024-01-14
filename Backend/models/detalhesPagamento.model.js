@@ -35,6 +35,11 @@ DetalhesPagamento.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    Excluido: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
   },
   {
     sequelize: mysqlDB,

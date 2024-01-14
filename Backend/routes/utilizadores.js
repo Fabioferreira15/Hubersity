@@ -83,6 +83,11 @@ router.get("/detalhesPagamento/:id", function (req, res) {
   utilizadores.obterDetalhesPagamento(req, res);
 });
 
+//apagar detalhes Pagamento
+router.delete("/detalhesPagamento/:id", function (req, res) {
+  utilizadores.apagarDetalhesPagamento(req, res);
+});
+
 //admin routes
 router.get("/", function (req, res) {
   utilizadores.obterUtilizadores(req, res);

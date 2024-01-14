@@ -538,7 +538,7 @@ exports.obterDetalhesPagamento = async function (req, res) {
     }
 
     const detalhesPagamentoExistente = await DetalhesPagamento.findOne({
-      where: { UserId: userId },
+      where: { UserId: userId,Excluido: false },
     });
 
     if (!detalhesPagamentoExistente) {
@@ -554,6 +554,42 @@ exports.obterDetalhesPagamento = async function (req, res) {
   } catch (error) {
     res.status(500).send({
       message: error.message || "Ocorreu um erro ao apagar o utilizador.",
+    });
+  }
+};
+
+//apagar detalhes pagamento
+exports.apagarDetalhesPagamento = async function (req, res) {
+  try {
+    let auth = utilities.verifyToken(req.headers.authorization);
+    if (!auth || auth.id != req.params.id) {
+      return res.status(401).send({
+        message: "Não autorizado",
+      });
+    }
+    const userId = parseInt(req.params.id);
+
+    const detalhesPagamentoExistente = await DetalhesPagamento.findOne({
+      where: { UserId: userId, Excluido: false },
+    });
+
+    if (!detalhesPagamentoExistente) {
+      return res.status(404).send({
+        message: "Não tem nenhum cartão associado",
+      });
+    }
+
+    await detalhesPagamentoExistente.update({
+      Excluido: true,
+    });
+
+    return res.status(200).send({
+      message: "Cartão apagado com sucesso",
+    });
+  } catch (error) {
+    console.error("Error deleting payment details:", error);
+    return res.status(500).send({
+      message: "Ocorreu um erro ao apagar detalhes de pagamento",
     });
   }
 };
