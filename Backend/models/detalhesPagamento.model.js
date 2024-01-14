@@ -12,7 +12,7 @@ DetalhesPagamento.init(
       autoIncrement: true,
     },
     UserId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
       references: {
         model: "Utilizadores",
