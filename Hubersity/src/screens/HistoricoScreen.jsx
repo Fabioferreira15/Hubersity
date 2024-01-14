@@ -224,7 +224,7 @@ const Historico = ({navigation}) => {
                             resizeMode: 'contain',
                           }}
                         />
-                        <Text style={{color: 'black', fontSize: 12}}>
+                        <Text style={{color: 'black', fontSize: 12,marginEnd:'15%'}}>
                           {item.RefeicaoCantina.Data}
                         </Text>
                       </View>
@@ -342,6 +342,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
     alignSelf: 'center',
+    height: '95%',
   },
   marcacaoContainer2: {
     backgroundColor: 'white',
