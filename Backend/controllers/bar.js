@@ -16,7 +16,7 @@ exports.adicionarProduto = async function (req, res) {
   try {
     let auth = utilities.verifyToken(req.headers.authorization);
 
-    if (!auth ) {
+    if (!auth) {
       return res.status(401).send({
         message: "Token inválido.",
       });
@@ -113,8 +113,7 @@ exports.adicionarCategoria = async function (req, res) {
       message: "Ocorreu um erro ao adicionar a categoria.",
     });
   }
-}
-
+};
 
 //obter produtos do bar
 exports.obterProdutos = async function (req, res) {
@@ -396,26 +395,13 @@ exports.pagarCarrinho = async function (req, res) {
     const detalhesPagamentoExistente = await DetalhesPagamento.findOne({
       where: {
         UserId: userId,
+        Excluido: false,
       },
     });
 
-    let detalhesPagamento;
-
     if (!detalhesPagamentoExistente) {
-      detalhesPagamento = await DetalhesPagamento.create({
-        UserId: userId,
-        NumeroCartao: req.body.NumeroCartao,
-        CVV: req.body.CVV,
-        DataValidade: req.body.DataValidade,
-        NomeTitular: req.body.NomeTitular,
-      });
-    } else {
-      detalhesPagamento = detalhesPagamentoExistente;
-    }
-
-    if (!detalhesPagamento) {
       return res.status(400).send({
-        message: "Detalhes de pagamento inválidos.",
+        message: "Não tem nenhum cartão associado",
       });
     }
 
@@ -431,7 +417,7 @@ exports.pagarCarrinho = async function (req, res) {
       UserId: userId,
       Valor: total,
       Data: dataFormatada,
-      IdDetalhesPagamento: detalhesPagamento.IdDetalhesPagamento,
+      IdDetalhesPagamento: detalhesPagamentoExistente.IdDetalhesPagamento,
     });
 
     // criar pedido
@@ -563,7 +549,6 @@ exports.verPedidosPorLevantar = async function (req, res) {
       },
       attributes: ["IdPedido", "Data", "Status", "QRCode"],
       raw: true,
-      
     });
 
     if (pedidosPorLevantar.length === 0) {
