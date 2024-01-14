@@ -557,9 +557,32 @@ exports.verPedidosPorLevantar = async function (req, res) {
       });
     }
 
+    const pedidosComProdutos = await Promise.all(
+      pedidosPorLevantar.map(async (pedido) => {
+        const produtosPedido = await PedidosBarProdutos.findAll({
+          where: {
+            IdPedido: pedido.IdPedido,
+          },
+          include: [
+            {
+              model: ProdutosBar,
+              attributes: ["IdProduto", "Nome", "Descricao", "Preco", "Stock"],
+              raw: true,
+            },
+          ],
+          raw: true,
+        });
+        return {
+          ...pedido,
+          produtos: produtosPedido,
+        };
+      })
+    );
+
     return res.status(200).send({
       mensgaem: "Pedidos por levantar encontrados",
-      pedidos: pedidosPorLevantar,
+      pedidos: pedidosComProdutos,
+
     });
   } catch (error) {
     console.error(error);
