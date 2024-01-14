@@ -146,6 +146,38 @@ export const PendingOrders = async () => {
   }
 };
 
+//ver pedido individual
+export const fetchOrder = async id => {
+  try {
+    const storedToken = await AsyncStorage.getItem('token');
+    if (!storedToken) {
+      console.error('Sem token');
+    }
+    const response = await fetch(`${URL}/bar/pedidos/${id}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${storedToken}`,
+      },
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+
+      return responseData;
+    } else {
+      const responseData = await response.json();
+      console.error(responseData);
+      return responseData;
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: 'Ocorreu um erro a ver o pedido.',
+    };
+  }
+};
+
 export const fetchUsers = async () => {
   try {
     const storedToken = await AsyncStorage.getItem('token');
