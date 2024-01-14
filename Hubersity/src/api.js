@@ -172,7 +172,7 @@ export const fetchUsers = async () => {
     console.error(error);
     return {
       success: false,
-      message: 'Ocorreu um erro a ver o pedidos por levantar.',
+      message: 'Ocorreu um erro a obter os utilizadores.',
     };
   }
 };
@@ -203,7 +203,7 @@ export const deleteUser = async (id) => {
     console.error(error);
     return {
       success: false,
-      message: 'Ocorreu um erro a ver o pedidos por levantar.',
+      message: 'Ocorreu um erro a apagar o utilizador.',
     };
   }
 };
@@ -238,7 +238,7 @@ export const changeCartQuantity = async (id, operacao) => {
     console.error(error);
     return {
       success: false,
-      message: 'Ocorreu um erro ao adicionar o produto ao carrinho.',
+      message: 'Ocorreu um erro ao mudar a quantidade.',
     };
   }
 };
@@ -272,7 +272,7 @@ export const fetchEstacionamento = async id => {
     console.error(error);
     return {
       success: false,
-      message: 'Ocorreu um erro a ver o pedidos por levantar.',
+      message: 'Ocorreu um erro a obter estacionamento.',
     };
   }
 };
@@ -314,7 +314,7 @@ export const AddProdutosBar = async (nome, preco, categoria, descricao,Stock) =>
     console.error(error);
     return {
       success: false,
-      message: 'Ocorreu um erro ao adicionar o produto ao carrinho.',
+      message: 'Ocorreu um erro ao adicionar novo produto.',
     };
   }
 };
@@ -350,7 +350,7 @@ export const AddCategoriaBar = async (nome) => {
     console.error(error);
     return {
       success: false,
-      message: 'Ocorreu um erro ao adicionar o produto ao carrinho.',
+      message: 'Ocorreu um erro ao adicionar nova categoria.',
     };
   }
 };
@@ -416,7 +416,7 @@ export const deletePaymentDetails =async (id) =>{
     console.error(error);
     return {
       success: false,
-      message: 'Ocorreu um erro a obter os detalhes de pagamento.',
+      message: 'Ocorreu um erro a apagar os detalhes de pagamento.',
     };
   }
 }  
@@ -450,7 +450,7 @@ export const AddPaymentDetails = async (userId, detalhesPagamento) => {
     console.error(error);
     return {
       success: false,
-      message: 'Ocorreu um erro ao adicionar o produto ao carrinho.',
+      message: 'Ocorreu um erro ao adicionar cartão.',
     };
   }
 };
@@ -469,6 +469,7 @@ export const PagarEstacionamento = async (id) => {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${storedToken}`,
+        'Content-Type': 'application/json',
       },
     });
 
@@ -486,5 +487,42 @@ export const PagarEstacionamento = async (id) => {
       success: false,
       message: 'Ocorreu um erro ao adicionar o produto ao carrinho.',
     };
+  }
+};
+
+
+export const PayCanteenReservation = async (idUser,detalhes) => {
+  const storedToken = await AsyncStorage.getItem('token');
+  try {
+    if (!storedToken) {
+      console.error('Sem token');
+      return {success: false, message: 'Sem token'};
+    }
+
+    const response = await fetch(`${URL}/cantina/marcacao/${idUser}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${storedToken}`,
+        'Content-Type': 'application/json',
+
+      },
+      body: JSON.stringify(detalhes)
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      return {success: true, message: responseData.message};
+    } else {
+      const responseData = await response.json();
+      console.error(responseData);
+      return {success: false, message: responseData.message};
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: 'Ocorreu um erro a fazer a marcacao.',
+    };
+    
   }
 };

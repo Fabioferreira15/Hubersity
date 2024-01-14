@@ -17,6 +17,8 @@ import CalendarioSvg from '../../assets/icons/calendário.svg';
 import URL from '../../context/env';
 import HeaderYellow from '../../components/HeaderYellow';
 import Voltar from '../../assets/icons/Voltar_preto.svg';
+import {PayCanteenReservation} from '../../api';
+import Toast from 'react-native-toast-message';
 
 const Ementas = ({navigation}) => {
   const [ementas, setEmentas] = useState([]);
@@ -62,6 +64,45 @@ const Ementas = ({navigation}) => {
     fetchData();
   }, [data, token]);
 
+  const handlePay = async () => {
+    try {
+      const id = await AsyncStorage.getItem('id');
+      const userIdInt = parseInt(id, 10);
+
+      const detalhes={
+        IdRefeicao: refeicaoSelecionada.IdRefeicao,
+      }
+      const response = await PayCanteenReservation(
+        userIdInt,
+        detalhes,
+      );
+
+      if (response.success) {
+        Toast.show({
+          type: 'success',
+          position: 'bottom',
+          text1: response.message,
+          visibilityTime: 2000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+      } else {
+        Toast.show({
+          type: 'error',
+          position: 'bottom',
+          text1: response.message,
+          visibilityTime: 2000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleDateChange = (event, date) => {
     if (date !== undefined && event.type === 'set') {
       const formattedDate = `${date.getFullYear()}-${String(
@@ -102,7 +143,7 @@ const Ementas = ({navigation}) => {
             mode="date"
             display="default"
             onChange={handleDateChange}
-            displayFormat={"DD MMM YYYY"}
+            displayFormat={'DD MMM YYYY'}
           />
         )}
         <Text></Text>
@@ -172,9 +213,7 @@ const Ementas = ({navigation}) => {
             refeicaoSelecionada === null /* && {opacity: 0.7} */,
           ]}
           disabled={refeicaoSelecionada === null}
-          onPress={() => {
-            Alert.alert(`Marcar refeição ${refeicaoSelecionada.Nome}`);
-          }}>
+          onPress={handlePay}>
           <Text style={styles.tituloTabela}>
             Marcar Refeição
             {refeicaoSelecionada ? ` | ${refeicaoSelecionada.Preco}€` : ''}
