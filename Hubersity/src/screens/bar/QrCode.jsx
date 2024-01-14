@@ -1,28 +1,10 @@
 import {View, Text, StyleSheet,Image} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import PrimaryBtn from '../../components/PrimaryBtn';
-import {fetchOrder} from '../../api';
 
 const QrCode = ({navigation,route}) => {
     const pedido = route.params.order;
     console.log('Pedido:', pedido);
-    const [order, setOrder] = useState([]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const infoOrder = await fetchOrder(pedido.IdPedido);
-                setOrder(infoOrder || []);
-            } catch (err) {
-                console.log(err);
-            }
-        };
-        fetchData();
-    }, []);
-
-    useEffect(() => {
-        console.log(order);
-    }, [order])
 
     return (
         <View style={styles.container}>
@@ -41,12 +23,11 @@ const QrCode = ({navigation,route}) => {
             </View>
             <View style={styles.info}>
                 <Text style={styles.infoTxtTitle}>Produtos</Text>
-                <Text style={styles.infoTxt}>
-                   Panike Misto - 1x
-                </Text>
-                <Text style={styles.infoTxt}>
-                    Coca-Cola - 1x
-                </Text>
+                {pedido.produtos.map((produto)=> (
+                    <Text style={styles.infoTxt}>
+                        {produto["ProdutosBar.Nome"]} - {produto.Quantidade}x
+                    </Text> 
+                ))}
             </View>
             <View style={styles.btn}>
                 <PrimaryBtn
