@@ -9,7 +9,9 @@ import {
   TouchableOpacity,
   Alert,
   Dimensions,
+  Modal,
 } from 'react-native';
+
 import PrimaryBtn from '../components/PrimaryBtn';
 import {AuthContext} from '../context/AuthProvider';
 import MastercardLogo from '../assets/icons/Mastercard-Logo.svg';
@@ -25,7 +27,7 @@ const PerfilScreen = ({navigation}) => {
   const [perfilInfo, setPerfilInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [estacionamentoInfo, setEstacionamentoInfo] = useState([]);
-
+  const [modalVisible, setModalVisible] = useState(false);
   useEffect(() => {
     const fetchPerfilInfo = async () => {
       try {
@@ -107,8 +109,7 @@ const PerfilScreen = ({navigation}) => {
           {estacionamentoInfo.length === 0 ? (
             <>
               <Text style={styles.title}>Não efetuou o pagamento</Text>
-              <TouchableOpacity
-                style={styles.btn}>
+              <TouchableOpacity style={styles.btn}>
                 <Text style={styles.btn}>Efetuar pagamento</Text>
               </TouchableOpacity>
             </>
@@ -139,6 +140,24 @@ const PerfilScreen = ({navigation}) => {
         </View>
 
         <Text style={styles.title}>Formas de pagamento</Text>
+        <Modal visible={modalVisible} animationType="slide">
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: '#f8f',
+            }}>
+            <Text>Adicionar Cartão</Text>
+            <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+              <Text>Fechar</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+
+        <TouchableOpacity onPress={() => setModalVisible(true)}>
+          <Text>Adicionar Cartão</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.metodoPag}>
           <View style={styles.metodoPag2}>
             <MastercardLogo width={30} height={30} />
