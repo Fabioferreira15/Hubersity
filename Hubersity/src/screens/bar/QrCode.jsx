@@ -1,10 +1,28 @@
 import {View, Text, StyleSheet,Image} from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PrimaryBtn from '../../components/PrimaryBtn';
+import {fetchOrder} from '../../api';
 
 const QrCode = ({navigation,route}) => {
     const pedido = route.params.order;
     console.log('Pedido:', pedido);
+    const [order, setOrder] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const infoOrder = await fetchOrder(pedido.IdPedido);
+                setOrder(infoOrder || []);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        console.log(order);
+    }, [order])
 
     return (
         <View style={styles.container}>
@@ -24,7 +42,10 @@ const QrCode = ({navigation,route}) => {
             <View style={styles.info}>
                 <Text style={styles.infoTxtTitle}>Produtos</Text>
                 <Text style={styles.infoTxt}>
-                    {pedido.Nome}
+                   Panike Misto - 1x
+                </Text>
+                <Text style={styles.infoTxt}>
+                    Coca-Cola - 1x
                 </Text>
             </View>
             <View style={styles.btn}>
@@ -71,7 +92,7 @@ const styles = StyleSheet.create({
     },
     infoTxt: {
         color: '#F8F9FA',
-        fontSize: 20,
+        fontSize: 17,
         fontFamily: 'BaiJamjuree-Regular',
     },
     btn: {
