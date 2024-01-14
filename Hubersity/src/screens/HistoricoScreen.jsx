@@ -92,106 +92,106 @@ const Historico = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Background style={styles.Background} />
-      <Header title="Histórico" />
-      <View style={styles.main}>
-        <View style={styles.containerOpcoes}>
-          <View
-            style={[
-              opcao === 'Cantina'
-                ? styles.containerOpcaoSelecionada
-                : styles.containerOpcao,
-            ]}>
-            <TouchableOpacity onPress={() => setOpcao('Cantina')}>
-              <Text
-                style={[
-                  opcao === 'Cantina'
-                    ? styles.txtOpcaoSelecionada
-                    : styles.txtOpcao,
-                ]}>
-                Cantina
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View
-            style={[
-              opcao === 'Bar'
-                ? styles.containerOpcaoSelecionada
-                : styles.containerOpcao,
-            ]}>
-            <TouchableOpacity onPress={() => setOpcao('Bar')}>
-              <Text
-                style={[
-                  opcao === 'Bar'
-                    ? styles.txtOpcaoSelecionada
-                    : styles.txtOpcao,
-                ]}>
-                Bar
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={styles.containerDatas}>
-          <View style={{width: '50%'}}>
-            <Text style={{marginLeft: '5%'}}>De</Text>
-            <TouchableOpacity
+    <ScrollView
+      contentContainerStyle={styles.scrollContainer}
+      /* style={{flex: 1, flexGrow: 1}} */>
+      <View style={styles.container}>
+        <Background style={styles.Background} />
+        <Header title="Histórico" />
+        <View style={styles.main}>
+          <View style={styles.containerOpcoes}>
+            <View
               style={[
-                styles.inputButton,
-                {backgroundColor: '#DFE2FC', borderWidth: 0},
-              ]}
-              onPress={showDatePickerDEComponent}>
-              <Text style={styles.inputButtonText}>
-                {dataDE && dataDE.toLocaleDateString()}
-              </Text>
-              <CalendarioSvg style={styles.icon} />
-            </TouchableOpacity>
-            {showDatePickerDE && (
-              <DateTimePicker
-                value={dataDE}
-                mode="date"
-                display="default"
-                onChange={handleDateChangeDE}
-                maximumDate={dataATE}
-                displayFormat={'DD MMM YYYY'}
-              />
-            )}
-          </View>
-          <View style={{width: '50%'}}>
-            <Text style={{marginLeft: '5%'}}>Até</Text>
-            <TouchableOpacity
+                opcao === 'Cantina'
+                  ? styles.containerOpcaoSelecionada
+                  : styles.containerOpcao,
+              ]}>
+              <TouchableOpacity onPress={() => setOpcao('Cantina')}>
+                <Text
+                  style={[
+                    opcao === 'Cantina'
+                      ? styles.txtOpcaoSelecionada
+                      : styles.txtOpcao,
+                  ]}>
+                  Cantina
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View
               style={[
-                styles.inputButton,
-                {backgroundColor: '#DFE2FC', borderWidth: 0},
-              ]}
-              onPress={showDatePickerATEComponent}>
-              <Text style={styles.inputButtonText}>
-                {dataATE && dataATE.toLocaleDateString()}
-              </Text>
-              <CalendarioSvg style={styles.icon} />
-            </TouchableOpacity>
-            {showDatePickerATE && (
-              <DateTimePicker
-                value={dataATE}
-                mode="date"
-                display="default"
-                onChange={handleDateChangeATE}
-                minimumDate={dataDE}
-                maximumDate={new Date()}
-                displayFormat={'DD MMM YYYY'}
-              />
-            )}
+                opcao === 'Bar'
+                  ? styles.containerOpcaoSelecionada
+                  : styles.containerOpcao,
+              ]}>
+              <TouchableOpacity onPress={() => setOpcao('Bar')}>
+                <Text
+                  style={[
+                    opcao === 'Bar'
+                      ? styles.txtOpcaoSelecionada
+                      : styles.txtOpcao,
+                  ]}>
+                  Bar
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-        <Text></Text>
-        {opcao === 'Cantina' ? (
-          <View style={{width: '100%'}}>
-            {historicoCantina.length > 0 ? (
-              <FlatList
-                data={historicoCantina}
-                keyExtractor={item => item.IdMarcacao.toString()}
-                renderItem={({item}) => (
-                  <View style={styles.marcacaoContainer}>
+          <View style={styles.containerDatas}>
+            <View style={{width: '50%'}}>
+              <Text style={{marginLeft: '5%'}}>De</Text>
+              <TouchableOpacity
+                style={[
+                  styles.inputButton,
+                  {backgroundColor: '#DFE2FC', borderWidth: 0},
+                ]}
+                onPress={showDatePickerDEComponent}>
+                <Text style={styles.inputButtonText}>
+                  {dataDE && dataDE.toLocaleDateString()}
+                </Text>
+                <CalendarioSvg style={styles.icon} />
+              </TouchableOpacity>
+              {showDatePickerDE && (
+                <DateTimePicker
+                  value={dataDE}
+                  mode="date"
+                  display="default"
+                  onChange={handleDateChangeDE}
+                  maximumDate={dataATE}
+                  displayFormat={'DD MMM YYYY'}
+                />
+              )}
+            </View>
+            <View style={{width: '50%'}}>
+              <Text style={{marginLeft: '5%'}}>Até</Text>
+              <TouchableOpacity
+                style={[
+                  styles.inputButton,
+                  {backgroundColor: '#DFE2FC', borderWidth: 0},
+                ]}
+                onPress={showDatePickerATEComponent}>
+                <Text style={styles.inputButtonText}>
+                  {dataATE && dataATE.toLocaleDateString()}
+                </Text>
+                <CalendarioSvg style={styles.icon} />
+              </TouchableOpacity>
+              {showDatePickerATE && (
+                <DateTimePicker
+                  value={dataATE}
+                  mode="date"
+                  display="default"
+                  onChange={handleDateChangeATE}
+                  minimumDate={dataDE}
+                  maximumDate={new Date()}
+                  displayFormat={'DD MMM YYYY'}
+                />
+              )}
+            </View>
+          </View>
+          <Text></Text>
+          {opcao === 'Cantina' ? (
+            <View style={{width: '100%'}}>
+              {historicoCantina.length > 0 ? (
+                historicoCantina.map(item => (
+                  <View key={item.IdMarcacao} style={styles.marcacaoContainer}>
                     <Text style={{color: 'white', fontSize: 19}}>Marcação</Text>
                     <View style={styles.marcacaoContainer2}>
                       <View style={{width: '50%'}}>
@@ -224,32 +224,39 @@ const Historico = ({navigation}) => {
                             resizeMode: 'contain',
                           }}
                         />
-                        <Text style={{color: 'black', fontSize: 12,marginEnd:'15%'}}>
+                        <Text
+                          style={{
+                            color: 'black',
+                            fontSize: 12,
+                            marginEnd: '15%',
+                          }}>
                           {item.RefeicaoCantina.Data}
                         </Text>
                       </View>
                     </View>
                   </View>
-                )}
-              />
-            ) : (
-              <Text style={{fontSize: 17, marginLeft: '5%'}}>
-                Não existem registos de marcações durante o período de tempo selecionado.
-              </Text>
-            )}
-          </View>
-        ) : (
-          <View></View>
-        )}
+                ))
+              ) : (
+                <Text style={{fontSize: 17, marginLeft: '5%'}}>
+                  Não existem registos de marcações durante o período de tempo
+                  selecionado.
+                </Text>
+              )}
+            </View>
+          ) : (
+            <View></View>
+          )}
+          <Text></Text>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
-    paddingBottom: '15%',
+    paddingBottom: '35%',
   },
   container: {
     flex: 1,
@@ -342,7 +349,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
     alignSelf: 'center',
-    height: '95%',
+    maxHeight: '20%',
   },
   marcacaoContainer2: {
     backgroundColor: 'white',
