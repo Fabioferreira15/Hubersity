@@ -10,6 +10,7 @@ const DetalhesPagamento =
 const Marcacoes = require("../models/marcacaoCantina.model").MarcacaoCantina;
 const Pedidos = require("../models/pedidosBar.model").PedidosBar;
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const utilities = require("../utilities/utilities");
 const cloudinary = require("cloudinary").v2;
@@ -245,22 +246,25 @@ exports.pagarEstacionamento = async (req, res) => {
     const detalhesPagamentoExistente = await DetalhesPagamento.findOne({
       where: {
         UserId: userId,
+        Excluido: false,
       },
     });
 
-    let detalhesPagamento;
 
     if (!detalhesPagamentoExistente) {
-      detalhesPagamento = await DetalhesPagamento.create({
-        UserId: userId,
-        NumeroCartao: req.body.NumeroCartao,
-        CVV: req.body.CVV,
-        DataValidade: req.body.DataValidade,
-        NomeTitular: req.body.NomeTitular,
+      res.status(400).send({
+        message: "Não tem nenhum cartão associado",
       });
-    } else {
-      detalhesPagamento = detalhesPagamentoExistente;
-    }
+    } 
+
+    const detalhesPagamento = await DetalhesPagamento.findOne({
+      where: {
+        UserId: userId,
+        Excluido: false,
+      },
+    });
+
+
 
     const pagamento = await Pagamento.create({
       UserId: userId,
@@ -460,6 +464,135 @@ exports.apagarUtilizador = async function (req, res) {
   } catch (error) {
     res.status(500).send({
       message: error.message || "Ocorreu um erro ao apagar o utilizador.",
+    });
+  }
+};
+
+//adicionar detalhes pagamento
+exports.adicionarDetalhesPagamento = async function (req, res) {
+  try {
+    let auth = utilities.verifyToken(req.headers.authorization);
+    if (!auth || auth.id != req.params.id) {
+      return res.status(401).send({
+        message: "Não autorizado",
+      });
+    }
+    const userId = parseInt(req.params.id);
+
+    const detalhesPagamentoExistente = await DetalhesPagamento.findOne({
+      where: { UserId: userId, Excluido: false },
+    });
+
+    if (detalhesPagamentoExistente) {
+      return res.status(400).send({
+        message: "Já tem um cartão associado",
+      });
+    }
+
+    const numeroCartao = req.body.NumeroCartao;
+    const CVV = req.body.CVV;
+    const DataValidade = req.body.DataValidade;
+    const NomeTitular = req.body.NomeTitular;
+
+    if (!numeroCartao || !CVV || !DataValidade || !NomeTitular) {
+      return res.status(400).send({
+        message: "Dados em falta",
+      });
+    }
+
+    const novoDetalhesPagamento = await DetalhesPagamento.create({
+      UserId: userId,
+      NumeroCartao: numeroCartao,
+      CVV: CVV,
+      DataValidade: DataValidade,
+      NomeTitular: NomeTitular,
+    });
+
+    return res.status(201).send({
+      message: "Cartão adicionado com sucesso",
+    });
+  } catch (error) {
+    console.error("Error adding payment details:", error);
+    return res.status(500).send({
+      message: "Ocorreu um erro ao adicionar detalhes de pagamento",
+    });
+  }
+};
+
+//obter detalhes pagamento
+exports.obterDetalhesPagamento = async function (req, res) {
+  try {
+    let auth = utilities.verifyToken(req.headers.authorization);
+
+    if (!auth || auth.id != req.params.id) {
+      return res.status(401).send({
+        message: "Não autorizado.",
+      });
+    }
+
+    const userId = parseInt(req.params.id);
+
+    const utilizador = await Utilizadores.findByPk(userId);
+    if (!utilizador) {
+      res.status(404).send({
+        message: "Utilizador não encontrado.",
+      });
+      return;
+    }
+
+    const detalhesPagamentoExistente = await DetalhesPagamento.findOne({
+      where: { UserId: userId,Excluido: false },
+    });
+
+    if (!detalhesPagamentoExistente) {
+      res.status(404).send({
+        message: "Ainda não tem nenhum cartão associado",
+      });
+    } else {
+      res.status(200).send({
+        message: "Cartão encontrado",
+        data: detalhesPagamentoExistente,
+      });
+    }
+  } catch (error) {
+    res.status(500).send({
+      message: error.message || "Ocorreu um erro ao apagar o utilizador.",
+    });
+  }
+};
+
+//apagar detalhes pagamento
+exports.apagarDetalhesPagamento = async function (req, res) {
+  try {
+    let auth = utilities.verifyToken(req.headers.authorization);
+    if (!auth || auth.id != req.params.id) {
+      return res.status(401).send({
+        message: "Não autorizado",
+      });
+    }
+    const userId = parseInt(req.params.id);
+
+    const detalhesPagamentoExistente = await DetalhesPagamento.findOne({
+      where: { UserId: userId, Excluido: false },
+    });
+
+    if (!detalhesPagamentoExistente) {
+      return res.status(404).send({
+        message: "Não tem nenhum cartão associado",
+      });
+    }
+
+    await detalhesPagamentoExistente.update({
+      Excluido: true,
+    });
+
+    return res.status(200).send({
+      message: "Cartão apagado com sucesso",
+    });
+  } catch (error) {
+    console.error("Error deleting payment details:", error);
+    return res.status(500).send({
+      message: "Ocorreu um erro ao apagar detalhes de pagamento",
     });
   }
 };

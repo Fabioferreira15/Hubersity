@@ -135,9 +135,9 @@ exports.pagamentoMarcacao = async (req, res) => {
       },
     });
 
-    const { IdRefeicao, Valor } = req.body;
+    const { IdRefeicao } = req.body;
 
-    if (!IdRefeicao || !Valor) {
+    if (!IdRefeicao) {
       return res.status(400).send({
         message: "Dados em falta!",
       });
@@ -173,34 +173,24 @@ exports.pagamentoMarcacao = async (req, res) => {
     const detalhesPagamentoExistente = await DetalhesPagamento.findOne({
       where: {
         UserId: userId,
+        Excluido: false,
       },
     });
 
-    let detalhesPagamento;
+   
 
     if (!detalhesPagamentoExistente) {
-      detalhesPagamento = await DetalhesPagamento.create({
-        UserId: userId,
-        NumeroCartao: req.body.NumeroCartao,
-        CVV: req.body.CVV,
-        DataValidade: req.body.DataValidade,
-        NomeTitular: req.body.NomeTitular,
-      });
-    } else {
-      detalhesPagamento = detalhesPagamentoExistente;
-    }
-
-    if (!detalhesPagamento) {
       return res.status(400).send({
-        message: "Detalhes de pagamento não disponíveis.",
+        message: "Não tem nenhum cartão associado",
       });
     }
 
+   
     // criar pagamento
     const pagamento = await Pagamento.create({
       UserId: userId,
-      Valor: Valor,
-      IdDetalhesPagamento: detalhesPagamento.IdDetalhesPagamento,
+      Valor: refeicaoExistente.Preco,
+      IdDetalhesPagamento: detalhesPagamentoExistente.IdDetalhesPagamento,
       Data: new Date(),
     });
 

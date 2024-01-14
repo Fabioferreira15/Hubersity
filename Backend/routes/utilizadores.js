@@ -73,6 +73,20 @@ router.patch("/:id", function (req, res) {
   utilizadores.editarPerfil(req, res);
 });
 
+//adicionar detalhes Pagamento
+router.post("/detalhesPagamento/:id", function (req, res) {
+  utilizadores.adicionarDetalhesPagamento(req, res);
+});
+
+//obter detalhes Pagamento
+router.get("/detalhesPagamento/:id", function (req, res) {
+  utilizadores.obterDetalhesPagamento(req, res);
+});
+
+//apagar detalhes Pagamento
+router.delete("/detalhesPagamento/:id", function (req, res) {
+  utilizadores.apagarDetalhesPagamento(req, res);
+});
 
 //admin routes
 router.get("/", function (req, res) {

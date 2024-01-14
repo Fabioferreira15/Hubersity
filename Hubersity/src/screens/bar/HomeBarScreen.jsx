@@ -121,6 +121,11 @@ const HomeBar = ({navigation}) => {
                         <View style={styles.info}>
                           <Text style={styles.textNome}>{item.Nome}</Text>
                           <Text style={styles.text}>{item.Preco}€</Text>
+                          {item.Stock == 0 ? (
+                            <Text style={styles.textRed}>Indisponível</Text>
+                          ) : (
+                            <Text style={styles.textGreen}>Disponível</Text>
+                          )}
                         </View>
                         <View style={styles.btn}>
                           <TouchableOpacity
@@ -172,6 +177,21 @@ const styles = StyleSheet.create({
     fontFamily: 'BaiJamjuree-Regular',
     color: '#F8F9FA',
     paddingHorizontal: 10,
+
+  },
+  textRed:{
+    fontSize: 12,
+    fontFamily: 'BaiJamjuree-Regular',
+    color: '#C61111',
+    paddingHorizontal: 10,
+
+  },
+  textGreen:{
+    fontSize: 12,
+    fontFamily: 'BaiJamjuree-Bold',
+    color: '#04BE0C',
+    paddingHorizontal: 10,
+
   },
   container: {
     padding: 8,
@@ -179,7 +199,7 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     width: 250,
-    height: 200,
+    height: 230,
     backgroundColor: '#DFE2FC',
     borderRadius: 10,
     margin: 5,
