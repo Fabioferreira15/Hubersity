@@ -189,7 +189,7 @@ exports.pagamentoMarcacao = async (req, res) => {
     // criar pagamento
     const pagamento = await Pagamento.create({
       UserId: userId,
-      Valor: Valor,
+      Valor: refeicaoExistente.Preco,
       IdDetalhesPagamento: detalhesPagamentoExistente.IdDetalhesPagamento,
       Data: new Date(),
     });
