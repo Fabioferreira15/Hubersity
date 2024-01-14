@@ -250,19 +250,21 @@ exports.pagarEstacionamento = async (req, res) => {
       },
     });
 
-    let detalhesPagamento;
 
     if (!detalhesPagamentoExistente) {
-      detalhesPagamento = await DetalhesPagamento.create({
-        UserId: userId,
-        NumeroCartao: req.body.NumeroCartao,
-        CVV: req.body.CVV,
-        DataValidade: req.body.DataValidade,
-        NomeTitular: req.body.NomeTitular,
+      res.status(400).send({
+        message: "Não tem nenhum cartão associado",
       });
-    } else {
-      detalhesPagamento = detalhesPagamentoExistente;
-    }
+    } 
+
+    const detalhesPagamento = await DetalhesPagamento.findOne({
+      where: {
+        UserId: userId,
+        Excluido: false,
+      },
+    });
+
+
 
     const pagamento = await Pagamento.create({
       UserId: userId,
