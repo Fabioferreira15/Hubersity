@@ -477,7 +477,7 @@ exports.adicionarDetalhesPagamento = async function (req, res) {
     const userId = parseInt(req.params.id);
 
     const detalhesPagamentoExistente = await DetalhesPagamento.findOne({
-      where: { UserId: userId },
+      where: { UserId: userId, Excluido: false },
     });
 
     if (detalhesPagamentoExistente) {
