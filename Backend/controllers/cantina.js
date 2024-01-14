@@ -344,8 +344,8 @@ exports.obterMarcacoesCantinaHistorico = async (req, res) => {
 
     const userId = auth.id;
     const numeroRegistos = req.query.numeroRegistos || 10;
-    const dataDe = req.query.dataDe; // Adiciona o parâmetro dataDe
-    const dataAte = req.query.dataAte; // Adiciona o parâmetro dataAte
+    const dataDe = req.query.dataDe;
+    const dataAte = req.query.dataAte;
 
     const filtroData = {};
     if (dataDe) {
@@ -364,7 +364,7 @@ exports.obterMarcacoesCantinaHistorico = async (req, res) => {
     const marcacoes = await MarcacaoCantina.findAll({
       where: {
         UserId: userId,
-        ...filtroData, // Adiciona o filtro de datas
+        ...filtroData,
       },
       attributes: ["IdMarcacao", "Status", "QRCode"],
       include: [

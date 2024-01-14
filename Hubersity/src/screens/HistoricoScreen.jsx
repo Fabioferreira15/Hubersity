@@ -28,6 +28,7 @@ const Historico = ({navigation}) => {
 
   useEffect(() => {
     fetchHistoricoCantina();
+    fetchHistoricoBar();
   }, [dataDE, dataATE]);
 
   const fetchHistoricoCantina = async () => {
@@ -55,6 +56,37 @@ const Historico = ({navigation}) => {
         setHistoricoCantina(json.marcacoes);
       } else {
         setHistoricoCantina([]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchHistoricoBar = async () => {
+    try {
+      const storedToken = await AsyncStorage.getItem('token');
+      if (!storedToken) {
+        console.error('Sem token');
+        return;
+      }
+
+      const response = await fetch(
+        `${URL}/bar/historico?numeroRegistos=5&dataDe=${dataDE}&dataAte=${dataATE}`,
+        {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+          },
+        },
+      );
+
+      const json = await response.json();
+      if (
+        json.message === 'Marcações encontradas!' &&
+        json.marcacoes.length > 0
+      ) {
+        setHistoricoBar(json.marcacoes);
+      } else {
+        setHistoricoBar([]);
       }
     } catch (error) {
       console.log(error);
@@ -94,7 +126,8 @@ const Historico = ({navigation}) => {
   return (
     <ScrollView
       contentContainerStyle={styles.scrollContainer}
-      /* style={{flex: 1, flexGrow: 1}} */>
+      /* style={{flex: 1, flexGrow: 1}} */
+    >
       <View style={styles.container}>
         <Background style={styles.Background} />
         <Header title="Histórico" />

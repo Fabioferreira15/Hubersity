@@ -582,7 +582,6 @@ exports.verPedidosPorLevantar = async function (req, res) {
     return res.status(200).send({
       mensgaem: "Pedidos por levantar encontrados",
       pedidos: pedidosComProdutos,
-
     });
   } catch (error) {
     console.error(error);
@@ -604,10 +603,28 @@ exports.obterPedidosBarHistorico = async function (req, res) {
     }
 
     const userId = auth.id;
+    const numeroRegistos = req.query.numeroRegistos || 10;
+    const dataDe = req.query.dataDe;
+    const dataAte = req.query.dataAte;
+
+    const filtroData = {};
+    if (dataDe) {
+      filtroData.Data = {
+        [Op.gte]: dataDe,
+      };
+    }
+
+    if (dataAte) {
+      filtroData.Data = {
+        ...filtroData.Data,
+        [Op.lte]: dataAte,
+      };
+    }
 
     const pedidos = await PedidosBar.findAll({
       where: {
         UserId: userId,
+        ...filtroData,
       },
       attributes: ["IdPedido", "Data", "Status"],
       include: [
@@ -624,6 +641,7 @@ exports.obterPedidosBarHistorico = async function (req, res) {
           raw: true,
         },
       ],
+      limit: Number(numeroRegistos),
     });
 
     if (pedidos.length === 0) {
