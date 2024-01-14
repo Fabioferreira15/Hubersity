@@ -135,9 +135,9 @@ exports.pagamentoMarcacao = async (req, res) => {
       },
     });
 
-    const { IdRefeicao, Valor } = req.body;
+    const { IdRefeicao } = req.body;
 
-    if (!IdRefeicao || !Valor) {
+    if (!IdRefeicao) {
       return res.status(400).send({
         message: "Dados em falta!",
       });
