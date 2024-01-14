@@ -354,3 +354,137 @@ export const AddCategoriaBar = async (nome) => {
     };
   }
 };
+
+export const fetcPaymentDetails =async (id) =>{
+  const storedToken = await AsyncStorage.getItem('token');
+
+  try {
+    if (!storedToken) {
+      console.error('Sem token');
+    }
+
+    const response = await fetch(`${URL}/utilizadores/detalhesPagamento/${id}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${storedToken}`,
+      },
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      return responseData;
+    } else {
+      const responseData = await response.json();
+      console.error(responseData);
+      return responseData;
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: 'Ocorreu um erro a obter os detalhes de pagamento.',
+    };
+  }
+
+}
+
+
+export const deletePaymentDetails =async (id) =>{
+  const storedToken = await AsyncStorage.getItem('token');
+
+  try {
+    if (!storedToken) {
+      console.error('Sem token');
+    }
+
+    const response = await fetch(`${URL}/utilizadores/detalhesPagamento/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${storedToken}`,
+      },
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      return responseData;
+    } else {
+      const responseData = await response.json();
+      console.error(responseData);
+      return responseData;
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: 'Ocorreu um erro a obter os detalhes de pagamento.',
+    };
+  }
+}  
+
+export const AddPaymentDetails = async (userId, detalhesPagamento) => {
+  const storedToken = await AsyncStorage.getItem('token');
+  try {
+    if (!storedToken) {
+      console.error('Sem token');
+      return {success: false, message: 'Sem token'};
+    }
+
+    const response = await fetch(`${URL}/utilizadores/detalhesPagamento/${userId}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${storedToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(detalhesPagamento),
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      return {success: true, message: responseData.message};
+    } else {
+      const responseData = await response.json();
+      console.error(responseData);
+      return {success: false, message: responseData.message};
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: 'Ocorreu um erro ao adicionar o produto ao carrinho.',
+    };
+  }
+};
+
+
+//Pagar estacionamento
+export const PagarEstacionamento = async (id) => {
+  const storedToken = await AsyncStorage.getItem('token');
+  try {
+    if (!storedToken) {
+      console.error('Sem token');
+      return {success: false, message: 'Sem token'};
+    }
+
+    const response = await fetch(`${URL}/utilizadores/pagamentoestacionamento/${id}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${storedToken}`,
+      },
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      return {success: true, message: responseData.message};
+    } else {
+      const responseData = await response.json();
+      console.error(responseData);
+      return {success: false, message: responseData.message};
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: 'Ocorreu um erro ao adicionar o produto ao carrinho.',
+    };
+  }
+};
