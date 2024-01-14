@@ -246,6 +246,7 @@ exports.pagarEstacionamento = async (req, res) => {
     const detalhesPagamentoExistente = await DetalhesPagamento.findOne({
       where: {
         UserId: userId,
+        Excluido: false,
       },
     });
 
