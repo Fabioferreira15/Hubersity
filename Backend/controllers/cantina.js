@@ -173,7 +173,7 @@ exports.pagamentoMarcacao = async (req, res) => {
     const detalhesPagamentoExistente = await DetalhesPagamento.findOne({
       where: {
         UserId: userId,
-        Exvluido: false,
+        Excluido: false,
       },
     });
 
