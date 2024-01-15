@@ -5,18 +5,22 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import URL from '../../context/env';
 import YellowBackground from '../../assets/Cantina/YellowSvg.svg';
 import Voltar from '../../assets/icons/Voltar_preto.svg';
 import HeaderYellow from '../../components/HeaderYellow';
+import EmptyStateScreenCantina from '../cantina/EmptyStateScreenCantina';
 
 const MarcacoesPendentes = ({navigation}) => {
   const [marcacoes, setMarcacoes] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const token = await AsyncStorage.getItem('token');
         let userId = await AsyncStorage.getItem('id');
@@ -37,6 +41,7 @@ const MarcacoesPendentes = ({navigation}) => {
         );
         const responseData = await response.json();
         setMarcacoes(responseData.marcacoes || []);
+        setLoading(false);
         console.log(responseData.marcacoes);
       } catch (error) {
         console.error(error);
@@ -51,54 +56,68 @@ const MarcacoesPendentes = ({navigation}) => {
   }, [marcacoes]);
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <View style={styles.container}>
-        <HeaderYellow
-          title="Marcações pendentes"
-          iconPosition="left"
-          onPress={() => navigation.navigate('HomeCantina')}
-          customIcon={<Voltar />}
+    <>
+      {loading ? (
+        <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}>
+        <ActivityIndicator 
+          animating = {true}
+          color = '#5F6EF0'
+          size = "large"
         />
-
-        <View style={styles.main}>
-          {marcacoes.length === 0 ? (
-            <Text style={styles.titulo}>Não tem marcações pendentes</Text>
-          ) : (
-            marcacoes.map((marcacao, index) => (
-              <View key={index} style={styles.marcacaoContainer}>
-                <Text style={styles.titulo}>
-                  {marcacao.RefeicaoCantina.Periodo}
-                </Text>
-                <View style={styles.card}>
-                  <View style={styles.prato}>
-                    <Text style={styles.txtBold}>Prato</Text>
-                    <Text style={styles.txt}>
-                      {marcacao.RefeicaoCantina.Nome}
-                    </Text>
-                  </View>
-                  <View style={styles.data}>
-                    <Text style={styles.txtBold}>Data</Text>
-                    <Text style={styles.txt}>
-                      {marcacao.RefeicaoCantina.Data}
-                    </Text>
-                  </View>
-                  <View style={styles.estado}>
-                    <Text style={styles.txtBold}>Estado</Text>
-                    <Text style={styles.txt}>{marcacao.status}</Text>
-                  </View>
-                </View>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('QrCode', {marcacao})}>
-                  <View style={styles.btnQr}>
-                    <Text style={styles.txtBtn}>Mostrar Qr Code</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            ))
-          )}
         </View>
-      </View>
-    </ScrollView>
+      ) : marcacoes.length === 0 ? (
+        <EmptyStateScreenCantina navigation={navigation} />
+      ) : (
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.container}>
+          <HeaderYellow
+            title="Marcações pendentes"
+            iconPosition="left"
+            onPress={() => navigation.navigate('HomeCantina')}
+            customIcon={<Voltar />}
+          />
+
+          <View style={styles.main}>
+            {marcacoes.length === 0 ? (
+              <Text style={styles.titulo}>Não tem marcações pendentes</Text>
+            ) : (
+              marcacoes.map((marcacao, index) => (
+                <View key={index} style={styles.marcacaoContainer}>
+                  <Text style={styles.titulo}>
+                    {marcacao.RefeicaoCantina.Periodo}
+                  </Text>
+                  <View style={styles.card}>
+                    <View style={styles.prato}>
+                      <Text style={styles.txtBold}>Prato</Text>
+                      <Text style={styles.txt}>
+                        {marcacao.RefeicaoCantina.Nome}
+                      </Text>
+                    </View>
+                    <View style={styles.data}>
+                      <Text style={styles.txtBold}>Data</Text>
+                      <Text style={styles.txt}>
+                        {marcacao.RefeicaoCantina.Data}
+                      </Text>
+                    </View>
+                    <View style={styles.estado}>
+                      <Text style={styles.txtBold}>Estado</Text>
+                      <Text style={styles.txt}>{marcacao.status}</Text>
+                    </View>
+                  </View>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('QrCode', {marcacao})}>
+                    <View style={styles.btnQr}>
+                      <Text style={styles.txtBtn}>Mostrar Qr Code</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              ))
+            )}
+          </View>
+        </View>
+      </ScrollView>
+      )}
+    </>
   );
 };
 

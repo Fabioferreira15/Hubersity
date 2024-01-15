@@ -22,7 +22,7 @@ const EmptyStateScreen = ({navigation}) => {
           <EmptyStateSvg />
         </View>
         <View style={styles.txtContainer}>
-          <Text style={styles.txt}>Ops, tens o teu carrinho vazio</Text>
+          <Text style={styles.txt}>Ups, tens o teu carrinho vazio</Text>
         </View>
       </View>
     </View>
