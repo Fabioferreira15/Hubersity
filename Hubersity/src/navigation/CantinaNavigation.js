@@ -5,6 +5,7 @@ import Ementas from '../screens/cantina/EmentasScreen';
 import Marcacoes from '../screens/cantina/MarcarRefeicaoScreen';
 import MarcacoesPendentes from '../screens/cantina/MarcacoesPendentesScreen';
 import QrCode from '../screens/cantina/QrCodeScreen';
+import EmptyStateScreenCantina from '../screens/cantina/EmptyStateScreenCantina';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ const CantinaNavigation = () => {
       <Stack.Screen name="HomeCantina" component={HomeCantina} />
       <Stack.Screen name="Ementas" component={Ementas} />
       <Stack.Screen name="Marcacoes" component={Marcacoes} />
+      <Stack.Screen name="EmptyStateScreenCantina" component={EmptyStateScreenCantina} />
       <Stack.Screen name="MarcacoesPendentes" component={MarcacoesPendentes} />
       <Stack.Screen
         name="QrCode"
