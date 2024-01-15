@@ -1,6 +1,7 @@
 let jwt = require("jsonwebtoken");
+require("dotenv").config();
 
-let secret = "aB&5*pRq#7";
+let secret = process.env.SECRET;
 
 const generateToken = (user, callback) => {
   let token = jwt.sign(
@@ -33,8 +34,7 @@ const generateQrToken = (qrData, callback) => {
     {
       qrData: qrData,
     },
-    secret,
-    { expiresIn: "24h" }
+    secret
   );
   return callback(qrToken);
 };
@@ -51,8 +51,6 @@ const verifyQrToken = (qrToken) => {
     return null;
   }
 };
-
-
 
 exports.generateToken = generateToken;
 exports.verifyToken = verifyToken;

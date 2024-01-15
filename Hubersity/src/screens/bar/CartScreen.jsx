@@ -7,14 +7,15 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
-import {fetchCart} from '../../api';
+import {fetchCart, payBarOrder} from '../../api';
 import EmptyStateScreen from './EmptyStateScreen';
 import CarrinhoCard from '../../components/CarrinhoCard';
 import Header from '../../components/Header';
 import Voltar from '../../assets/icons/Voltar.svg';
 import PrimaryBtn from '../../components/PrimaryBtn';
-import { LoadingModal } from "react-native-loading-modal";
-
+import {LoadingModal} from 'react-native-loading-modal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 
 const CartScreen = ({navigation}) => {
   const [cart, setCart] = useState([]);
@@ -24,8 +25,6 @@ const CartScreen = ({navigation}) => {
   const total = cart.reduce((total, item) => {
     return total + item['ProdutosBar.Preco'] * item['Quantidade'];
   }, 0);
-
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,20 +46,47 @@ const CartScreen = ({navigation}) => {
     fetchData();
   }, [cart]);
 
+  const handlePay = async () => {
+    try {
+      const id = await AsyncStorage.getItem('id');
+      const userIdInt = parseInt(id);
+
+      const response = await payBarOrder(userIdInt);
+      if (response.success) {
+        Toast.show({
+          text1: 'Sucesso',
+          text2: response.message,
+          type: 'success',
+          visibilityTime: 2000,
+          autoHide: true,
+        });
+      } else {
+        Toast.show({
+          text1: 'Erro',
+          text2: response.message,
+          type: 'error',
+          visibilityTime: 2000,
+          autoHide: true,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <View>
       {loading ? (
         <View>
-          <LoadingModal 
+          <LoadingModal
             visible={true}
             color="white"
             size="large"
             loadingMessage="Loading..."
-            
           />
         </View>
       ) : empty ? (
-        <EmptyStateScreen navigation={navigation}/>
+        <EmptyStateScreen navigation={navigation} />
       ) : (
         <View style={styles.container}>
           <View>
@@ -98,6 +124,7 @@ const CartScreen = ({navigation}) => {
                 paddingVertical={5}
                 borderRadius={10}
                 width={'90%'}
+                onPress={handlePay}
               />
             </View>
           </View>

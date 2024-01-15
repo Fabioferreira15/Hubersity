@@ -1,9 +1,10 @@
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
+import {View, Text, TouchableOpacity,StyleSheet} from 'react-native';
+import {Badge} from 'react-native-paper'; // Import Badge from react-native-paper
 import Background from '../assets/Home/backgorund.svg';
 
 const Header = props => {
-  const {title, onPress, iconPosition,customIcon} = props;
+  const {title, onPress, iconPosition, customIcon, totalCartQuantity} = props;
 
   const renderLeftContent = () => {
     if (iconPosition === 'left') {
@@ -21,6 +22,9 @@ const Header = props => {
       return (
         <TouchableOpacity style={styles.btnRight} onPress={onPress}>
           {customIcon}
+          {totalCartQuantity > 0 && (
+            <Badge style={styles.badge}>{totalCartQuantity}</Badge>
+          )}
         </TouchableOpacity>
       );
     }
@@ -64,6 +68,11 @@ const styles = StyleSheet.create({
   btnRight: {
     position: 'absolute',
     right: 10,
+  },
+  badge: {
+    position: 'absolute',
+    top: -4,
+    right: -4,
   },
 });
 

@@ -9,23 +9,28 @@ import {
   RefreshControl,
 } from 'react-native';
 import Header from '../../components/Header';
-import {fetchBarProducts, addToCart} from '../../api.js';
+import {fetchBarProducts, addToCart, fetchCart} from '../../api.js';
 import CarrinhoSvg from '../../assets/icons/carrinho.svg';
 import CarrinhoHeader from '../../assets/icons/Carrinho_header.svg';
 import Toast from 'react-native-toast-message';
 import {ActivityIndicator} from 'react-native-paper';
+import {Badge} from 'react-native-paper';
 
 const HomeBar = ({navigation}) => {
   const [categorias, setCategorias] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [cart, setCart] = useState([]);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     fetchBarProducts().then(data => {
       setCategorias(data);
-      setRefreshing(false);
     });
+    fetchCart().then(data => {
+      setCart(data);
+    });
+    setRefreshing(false);
   }, []);
 
   useEffect(() => {
@@ -40,12 +45,41 @@ const HomeBar = ({navigation}) => {
       }
     };
 
+    const fetchCartData = async () => {
+      try {
+        const cartProducts = await fetchCart();
+
+        if (cartProducts.status == 404) {
+          setEmpty(true);
+          setLoading(false);
+        } else {
+          setCart(cartProducts);
+          setEmpty(false);
+          setLoading(false);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
     fetchData();
+    fetchCartData();
   }, []);
 
+  useEffect(() => {
+    console.log(cart);
+  }, [cart]);
+
+  const totalCartQuantity =
+    cart.length > 0
+      ? cart.reduce((total, item) => total + item.Quantidade, 0)
+      : 0;
   const handleAddToCart = async id => {
     const response = await addToCart(id);
     if (response.success) {
+      fetchCart().then(data => {
+        setCart(data);
+      });
       Toast.show({
         type: 'success',
         text1: 'Sucesso',
@@ -91,12 +125,16 @@ const HomeBar = ({navigation}) => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
-        <Header
-          iconPosition="right"
-          title="Bar"
-          customIcon={<CarrinhoHeader />}
-          onPress={() => navigation.navigate('CartScreen')}
-        />
+        <View>
+          <Header
+            iconPosition="right"
+            title="Bar"
+            customIcon={<CarrinhoHeader />}
+            onPress={() => navigation.navigate('CartScreen')}
+            totalCartQuantity={totalCartQuantity}
+          />
+        </View>
+
         <View style={styles.main}>
           {loading ? (
             <>
@@ -158,7 +196,7 @@ const styles = StyleSheet.create({
     marginBottom: '15%',
   },
   main: {
-    marginTop: '55%',
+    marginTop:"50%",
   },
   title: {
     fontSize: 27,
@@ -177,21 +215,18 @@ const styles = StyleSheet.create({
     fontFamily: 'BaiJamjuree-Regular',
     color: '#F8F9FA',
     paddingHorizontal: 10,
-
   },
-  textRed:{
+  textRed: {
     fontSize: 12,
     fontFamily: 'BaiJamjuree-Regular',
     color: '#C61111',
     paddingHorizontal: 10,
-
   },
-  textGreen:{
+  textGreen: {
     fontSize: 12,
     fontFamily: 'BaiJamjuree-Bold',
     color: '#04BE0C',
     paddingHorizontal: 10,
-
   },
   container: {
     padding: 8,

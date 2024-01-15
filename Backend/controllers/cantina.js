@@ -11,6 +11,7 @@ const DetalhesPagamento =
   require("../models/detalhesPagamento.model").DetalhesPagamento;
 
 const { Op } = require("sequelize");
+const cron = require("node-cron");
 
 //criar refeições na cantina
 exports.criarRefeicaoCantina = async function (req, res) {
@@ -115,6 +116,62 @@ exports.obterRefeicoesCantina = (req, res, next) => {
   }
 };
 
+//verificar marcaçoes se já passaram da data e alterar o status para expirada usando o cron nao precisa auth
+exports.verificarMarcacoes = async () => {
+  try {
+    const currentDate = new Date();
+
+    const marcacoes = await MarcacaoCantina.findAll({
+      where: {
+        status: "Pendente",
+        Data: {
+          [Op.lt]: currentDate,
+        },
+      },
+    });
+
+    if (!marcacoes || marcacoes.length === 0) {
+      console.log("Não existem marcações pendentes expiradas!");
+      return;
+    }
+
+    const updatePromises = marcacoes.map(marcacao => {
+      if (marcacao && marcacao.status) {
+        // Adicionando verificação para evitar erro
+        return MarcacaoCantina.update(
+          {
+            status: "Expirada",
+          },
+          {
+            where: {
+              IdMarcacao: marcacao.IdMarcacao,
+            },
+          }
+        );
+      }
+    });
+
+    await Promise.all(updatePromises);
+
+    console.log("Marcações expiradas verificadas!");
+  } catch (error) {
+    console.error(
+      "Ocorreu um erro ao verificar as marcações expiradas.",
+      error
+    );
+  }
+};
+
+cron.schedule("0 0 * * *", async () => {
+  try {
+    // Call your function here
+    await exports.verificarMarcacoes(); 
+    console.log("Cron job executed: verificarMarcacoes");
+  } catch (error) {
+    console.error("Error in cron job: verificarMarcacoes", error);
+  }
+});
+
 // marcar refeições
 exports.pagamentoMarcacao = async (req, res) => {
   try {
@@ -168,6 +225,15 @@ exports.pagamentoMarcacao = async (req, res) => {
         message: "Já tem uma marcação para esta refeição!",
       });
     }
+    const currentDate = new Date();
+    const refeicaoDate = new Date(refeicaoExistente.Data);
+    refeicaoDate.setHours(0, 0, 0, 0);
+
+    if (refeicaoDate < currentDate) {
+      return res.status(400).send({
+        message: "Não pode marcar uma refeição passada!",
+      });
+    }
 
     // verificar se existe detalhes de pagamento
     const detalhesPagamentoExistente = await DetalhesPagamento.findOne({
@@ -177,15 +243,12 @@ exports.pagamentoMarcacao = async (req, res) => {
       },
     });
 
-   
-
     if (!detalhesPagamentoExistente) {
       return res.status(400).send({
         message: "Não tem nenhum cartão associado",
       });
     }
 
-   
     // criar pagamento
     const pagamento = await Pagamento.create({
       UserId: userId,

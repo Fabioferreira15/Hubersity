@@ -1,4 +1,4 @@
-import React, {useState, useEffect,useContext} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {View, Text, StyleSheet, TextInput} from 'react-native';
 import Swiper from 'react-native-swiper';
 import HeroSvg from '../assets/Registo/Herro-background.svg';
@@ -7,8 +7,9 @@ import HeroImgPassword from '../assets/Registo/Hero-image-password.svg';
 import HeroImgCurso from '../assets/Registo/Hero-image-curso.svg';
 import DropDownPicker from 'react-native-dropdown-picker';
 import PrimaryBtn from '../components/PrimaryBtn';
-import { AuthContext } from '../context/AuthProvider';
+import {AuthContext} from '../context/AuthProvider';
 import URL from '../context/env';
+
 
 const Registo = ({navigation}) => {
   const [open, setOpen] = useState(false);
@@ -29,25 +30,22 @@ const Registo = ({navigation}) => {
 
   const registar = async () => {
     try {
-      const response = await fetch(
-        `${URL}/utilizadores/register`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            nome: nome,
-            email: email,
-            password: password,
-            confirmarPassword: ConfirmarPassword,
-            nomeCurso: value,
-          }),
+      const response = await fetch(`${URL}/utilizadores/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
+        body: JSON.stringify({
+          nome: nome,
+          email: email,
+          password: password,
+          confirmarPassword: ConfirmarPassword,
+          nomeCurso: value,
+        }),
+      });
       const data = await response.json();
       if (response.ok) {
-        login(email,password);
+        login(email, password);
       } else {
         const errors = data.errors || [];
         errors.forEach(error => {
@@ -223,12 +221,20 @@ const Registo = ({navigation}) => {
             {cursoError ? (
               <Text style={styles.errorText}>{cursoError}</Text>
             ) : null}
-            <PrimaryBtn
-              text="Registar"
-              onPress={() => {
-                registar();
-              }}
-            />
+          </View>
+          <View style={{alignItems:'center',flex:1}}>
+            <View style={styles.btnContainer}>
+              <PrimaryBtn
+                style={styles.btn}
+                text="Registar"
+                borderRadius={5}
+                paddingVertical={5}
+
+                onPress={() => {
+                  registar();
+                }}
+              />
+            </View>
           </View>
         </View>
       </Swiper>
@@ -298,6 +304,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginLeft: '5%',
   },
+
+  btnContainer: {
+    width: '95%',
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: '5%',
+  },
+  
 });
 
 export default Registo;

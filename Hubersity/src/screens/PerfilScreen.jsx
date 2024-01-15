@@ -284,17 +284,20 @@ const PerfilScreen = ({navigation}) => {
             </>
           ) : (
             <>
-              <Text
-                style={[
-                  styles.title,
-                  {
-                    borderBottomColor: 'black',
-                    borderBottomWidth: 1,
-                    width: '90%',
-                  },
-                ]}>
-                Parque de Estacionamento
-              </Text>
+              <View>
+                <Text
+                  style={[
+                    styles.title,
+                    {
+                      borderBottomColor: 'black',
+                      borderBottomWidth: 1,
+                      width: '90%',
+                    },
+                  ]}>
+                  Parque de Estacionamento
+                </Text>
+              </View>
+
               <View style={styles.qrContainer}>
                 <Image
                   source={{
@@ -518,6 +521,9 @@ const styles = StyleSheet.create({
   },
   text: {
     marginVertical: 5,
+    fontFamily: 'Tajawal-Regular',
+    fontSize: 16,
+    color: '#212529',
   },
   loadingContainer: {
     flex: 1,
@@ -547,7 +553,7 @@ const styles = StyleSheet.create({
   },
   title2: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'BaiJamjuree-Bold',
     marginTop: 20,
     color: '#212529',
   },
