@@ -594,7 +594,7 @@ exports.verPedidosPorLevantar = async function (req, res) {
 //obter todos os pedidos do bar, histórico
 exports.obterPedidosBarHistorico = async function (req, res) {
   try {
-    let auth = utilities.verifyToken(req.headers.auth_key);
+    let auth = utilities.verifyToken(req.headers.authorization);
 
     if (!auth) {
       return res.status(401).send({

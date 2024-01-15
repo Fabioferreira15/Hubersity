@@ -277,7 +277,60 @@ const Historico = ({navigation}) => {
               )}
             </View>
           ) : (
-            <View></View>
+            <View>
+              {historicoBar.length > 0 ? (
+                historicoBar.map(item => (
+                  <View key={item.IdMarcacao} style={styles.marcacaoContainer}>
+                    <Text style={{color: 'white', fontSize: 19}}>Marcação</Text>
+                    <View style={styles.marcacaoContainer2}>
+                      <View style={{width: '50%'}}>
+                        <Text
+                          style={{
+                            color: 'black',
+                            fontSize: 17,
+                            fontWeight: 'bold',
+                          }}>
+                          {item.Bebida.Nome}
+                        </Text>
+                        <Text style={{color: 'black', fontSize: 12}}>
+                          {item.Bebida.Tipo}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          width: '50%',
+                          justifyContent: 'center',
+                          alignItems: 'flex-end',
+                        }}>
+                        <Image
+                          source={{
+                            uri: item.QRCode,
+                          }}
+                          style={{
+                            width: '70%',
+                            height: '70%',
+                            resizeMode: 'contain',
+                          }}
+                        />
+                        <Text
+                          style={{
+                            color: 'black',
+                            fontSize: 12,
+                            marginEnd: '15%',
+                          }}>
+                          {item.Data}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                ))
+              ) : (
+                <Text style={{fontSize: 17, marginLeft: '5%'}}>
+                  Não existem registos de marcações durante o período de tempo
+                  selecionado.
+                </Text>
+              )}
+            </View>
           )}
           <Text></Text>
         </View>
