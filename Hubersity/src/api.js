@@ -598,3 +598,33 @@ export const payBarOrder = async (userId) => {
     };
   }
 };
+
+export const payBarOrderPoints = async (userId) => {
+  const storedToken = await AsyncStorage.getItem('token');
+  try {
+    if (!storedToken) {
+      console.error('Sem token');
+    }
+
+    const response = await fetch(`${URL}/bar/carrinho/pagar/${userId}?tipoPagamento=pontos`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${storedToken}`,
+      },
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      return {success: true, message: responseData.message, id: responseData.id};
+    } else {
+      const responseData = await response.json();
+      return {success: false, message: responseData.message, id: responseData.id};
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: 'Ocorreu um erro a pagar o pedido.',
+    };
+  }
+};
