@@ -190,7 +190,7 @@ const Onboarding = ({navigation}) => {
               <PrimaryBtn
                 onPress={() => {
                   AsyncStorage.setItem('OnboardingSeen', 'true');
-                  navigation.navigate('Register');
+                  navigation.navigate('Registo');
                 }}
                 text="Criar conta"
                 paddingHorizontal={10}

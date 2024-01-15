@@ -54,13 +54,6 @@ const Login = ({navigation}) => {
             <Text style={styles.errorText}>{passwordError}</Text>
           ) : null}
         </View>
-        {/*  <PrimaryBtn
-          onPress={() => {
-            navigation.navigate('Registo');
-          }}
-          text="Register"
-          borderRadius={5}
-        /> */}
         <View style={styles.btn}>
           <PrimaryBtn
             onPress={() => {

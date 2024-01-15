@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
   title: {
     marginTop: '25%',
     alignItems: 'center',
+    borderWidth:1
   },
   titleTxt: {
     color: '#F8F9FA',
@@ -61,11 +62,12 @@ const styles = StyleSheet.create({
   qrCode: {
     marginTop: '20%',
     alignItems: 'center',
-
+    borderWidth:1
   },
   info: {
     marginTop: '20%',
     alignItems: 'center',
+    borderWidth:1
   },
   infoTxtTitle: {
     color: '#F8F9FA',
@@ -78,8 +80,11 @@ const styles = StyleSheet.create({
     fontFamily: 'BaiJamjuree-Regular',
   },
   btn: {
-    marginTop: '45%',
     alignItems: 'center',
+    borderWidth:1,
+    flex:1,
+    justifyContent:'flex-end',
+    marginBottom:"20%"
   },
 });
 

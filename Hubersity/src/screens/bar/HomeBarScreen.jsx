@@ -125,13 +125,16 @@ const HomeBar = ({navigation}) => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
-        <Header
-          iconPosition="right"
-          title="Bar"
-          customIcon={<CarrinhoHeader />}
-          onPress={() => navigation.navigate('CartScreen')}
-          totalCartQuantity={totalCartQuantity}
-        />
+        <View>
+          <Header
+            iconPosition="right"
+            title="Bar"
+            customIcon={<CarrinhoHeader />}
+            onPress={() => navigation.navigate('CartScreen')}
+            totalCartQuantity={totalCartQuantity}
+          />
+        </View>
+
         <View style={styles.main}>
           {loading ? (
             <>
@@ -193,7 +196,7 @@ const styles = StyleSheet.create({
     marginBottom: '15%',
   },
   main: {
-    marginTop: '55%',
+    marginTop:"50%",
   },
   title: {
     fontSize: 27,

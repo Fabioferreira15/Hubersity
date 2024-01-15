@@ -1,16 +1,14 @@
 import {React, useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import Background from '../assets/Home/backgorund.svg';
 import Notificacoes from '../assets/icons/notificações.svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BtnSvg from '../assets/Home/btn.svg';
 import BtnInvertedSvg from '../assets/Home/btnInverted.svg';
+import CantinaWhiteSvg from '../assets/icons/cantina_white.svg';
+import BarWhiteSvg from '../assets/icons/bar_white.svg';
+import RoletaWhiteSvg from '../assets/icons/roleta_white.svg';
+import CustomButton from '../components/CustomBtns';
 
 const Home = ({navigation}) => {
   const [token, setToken] = useState('');
@@ -64,24 +62,59 @@ const Home = ({navigation}) => {
         </View>
       </View>
       <View style={styles.main}>
-        <TouchableOpacity
+        <CustomButton
           onPress={() => navigation.navigate('Cantina')}
-          style={styles.btn}>
-          <Text style={styles.btnTxt}>Cantina</Text>
-          <BtnSvg width={300} height={131} />
-        </TouchableOpacity>
-        <TouchableOpacity
+          text="Cantina"
+          backgroundSvg={<BtnSvg width={300} height={131} />}
+          svgComponent={<CantinaWhiteSvg />}
+          svgContainerStyle={{
+            borderRadius: 50,
+            backgroundColor: '#3A459E',
+            height: 35,
+            width: 35,
+            position: 'absolute',
+            right: 0,
+            top: 11,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        />
+        <CustomButton
           onPress={() => navigation.navigate('Bar')}
-          style={styles.btn}>
-          <Text style={styles.btnTxt}>Bar</Text>
-          <BtnInvertedSvg width={300} height={131} />
-        </TouchableOpacity>
-        <TouchableOpacity
+          text="Bar"
+          backgroundSvg={<BtnInvertedSvg width={300} height={131} />}
+          svgComponent={<BarWhiteSvg />}
+          svgContainerStyle={{
+            borderRadius: 50,
+            backgroundColor: '#3A459E',
+            height: 35,
+            width: 35,
+            position: 'absolute',
+            left: 7,
+            top: 11,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        />
+
+        <CustomButton
           onPress={() => navigation.navigate('Roleta')}
-          style={styles.btn}>
-          <Text style={styles.btnTxt}>Roleta</Text>
-          <BtnSvg width={300} height={131} />
-        </TouchableOpacity>
+          text="Roleta"
+          backgroundSvg={<BtnSvg width={300} height={131} />}
+          svgComponent={<RoletaWhiteSvg />}
+          svgContainerStyle={{
+            borderRadius: 50,
+            backgroundColor: '#3A459E',
+            height: 35,
+            width: 35,
+            position: 'absolute',
+            right: 7,
+            top: 11,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        />
+
       </View>
     </View>
   );
