@@ -19,6 +19,7 @@ import HeaderYellow from '../../components/HeaderYellow';
 import Voltar from '../../assets/icons/Voltar_preto.svg';
 import {PayCanteenReservation} from '../../api';
 import Toast from 'react-native-toast-message';
+import Info from '../../assets/icons/info-circle.svg'
 
 const Ementas = ({navigation}) => {
   const [ementas, setEmentas] = useState([]);
@@ -182,6 +183,12 @@ const Ementas = ({navigation}) => {
                     <Text>{refeicao.Preco}€</Text>
                   </View>
                   <View style={[styles.celula, styles.selectContainer]}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        Alert.alert(refeicao.Descricao);
+                      }}>
+                      <Info />
+                    </TouchableOpacity>
                     <Text>{refeicao.Nome}</Text>
                     <TouchableOpacity
                       onPress={() => {
