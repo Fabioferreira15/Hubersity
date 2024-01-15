@@ -7,6 +7,7 @@ import {
   Image,
   FlatList,
   ScrollView,
+  Alert,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -14,6 +15,7 @@ import CalendarioSvg from '../../assets/icons/calendário.svg';
 import URL from '../../context/env';
 import HeaderYellow from '../../components/HeaderYellow';
 import Voltar from '../../assets/icons/Voltar_preto.svg';
+import Info from '../../assets/icons/info-circle.svg'
 
 const Ementas = ({navigation}) => {
   const [ementas, setEmentas] = useState([]);
@@ -120,6 +122,12 @@ const Ementas = ({navigation}) => {
                     </Text>
                   </View>
                   <View style={styles.celula}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        Alert.alert(refeicao.Descricao);
+                      }}>
+                      <Info />
+                    </TouchableOpacity>
                     <Text>{refeicao.Nome}</Text>
                   </View>
                 </View>
@@ -152,6 +160,12 @@ const Ementas = ({navigation}) => {
                     </Text>
                   </View>
                   <View style={styles.celula}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        Alert.alert(refeicao.Descricao);
+                      }}>
+                      <Info />
+                    </TouchableOpacity>
                     <Text>{refeicao.Nome}</Text>
                   </View>
                 </View>
@@ -242,6 +256,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'row',
   },
   tituloTabela: {
     fontSize: 18,
