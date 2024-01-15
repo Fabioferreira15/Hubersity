@@ -1,12 +1,9 @@
-import {View, Text, StyleSheet,Image} from 'react-native';
+import {View, Text, StyleSheet, Image} from 'react-native';
 import React, {useEffect} from 'react';
 import PrimaryBtn from '../../components/PrimaryBtn';
 
-
-
-const QrCode = ({navigation,route}) => {
+const QrCode = ({navigation, route}) => {
   const marcacao = route.params.marcacao;
-
 
   return (
     <View style={styles.container}>
@@ -20,7 +17,12 @@ const QrCode = ({navigation,route}) => {
           source={{
             uri: marcacao.QRCode,
           }}
-          style={{width: 200, height: 200, resizeMode: 'contain',borderRadius:10}}
+          style={{
+            width: 200,
+            height: 200,
+            resizeMode: 'contain',
+            borderRadius: 10,
+          }}
         />
       </View>
       <View style={styles.info}>
@@ -52,7 +54,6 @@ const styles = StyleSheet.create({
   title: {
     marginTop: '25%',
     alignItems: 'center',
-    borderWidth:1
   },
   titleTxt: {
     color: '#F8F9FA',
@@ -62,12 +63,10 @@ const styles = StyleSheet.create({
   qrCode: {
     marginTop: '20%',
     alignItems: 'center',
-    borderWidth:1
   },
   info: {
     marginTop: '20%',
     alignItems: 'center',
-    borderWidth:1
   },
   infoTxtTitle: {
     color: '#F8F9FA',
@@ -81,10 +80,10 @@ const styles = StyleSheet.create({
   },
   btn: {
     alignItems: 'center',
-    borderWidth:1,
-    flex:1,
-    justifyContent:'flex-end',
-    marginBottom:"20%"
+
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: '20%',
   },
 });
 

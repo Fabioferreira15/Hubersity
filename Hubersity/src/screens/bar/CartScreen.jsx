@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
-import {fetchCart, payBarOrder} from '../../api';
+import {fetchCart, payBarOrder,payBarOrderPoints} from '../../api';
 import EmptyStateScreen from './EmptyStateScreen';
 import CarrinhoCard from '../../components/CarrinhoCard';
 import Header from '../../components/Header';
@@ -25,6 +25,8 @@ const CartScreen = ({navigation}) => {
   const total = cart.reduce((total, item) => {
     return total + item['ProdutosBar.Preco'] * item['Quantidade'];
   }, 0);
+
+  const totalPontos = total * 10;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,6 +76,34 @@ const CartScreen = ({navigation}) => {
     }
   };
 
+  const handlePayPoints = async () => {
+    try {
+      const id = await AsyncStorage.getItem('id');
+      const userIdInt = parseInt(id);
+
+      const response = await payBarOrderPoints(userIdInt);
+      if (response.success) {
+        Toast.show({
+          text1: 'Sucesso',
+          text2: response.message,
+          type: 'success',
+          visibilityTime: 2000,
+          autoHide: true,
+        });
+      } else {
+        Toast.show({
+          text1: 'Erro',
+          text2: response.message,
+          type: 'error',
+          visibilityTime: 2000,
+          autoHide: true,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <View>
       {loading ? (
@@ -116,15 +146,26 @@ const CartScreen = ({navigation}) => {
           <View style={[styles.totalInfo, {marginBottom: height - 350}]}>
             <View style={styles.total}>
               <Text style={styles.totalTitle}>Total: </Text>
-              <Text style={styles.totaltxt}>{total.toFixed(2)}€</Text>
+              <Text style={styles.totaltxt}>
+                {total.toFixed(2)}€ - {totalPontos} pontos
+              </Text>
             </View>
+
             <View style={styles.Btn}>
               <PrimaryBtn
                 text="Finalizar"
                 paddingVertical={5}
                 borderRadius={10}
-                width={'90%'}
+                width={"45%"}
                 onPress={handlePay}
+              />
+
+              <PrimaryBtn
+                text="Pagar com pontos"
+                paddingVertical={5}
+                borderRadius={10}
+                width={"45%"}
+                onPress={handlePayPoints}
               />
             </View>
           </View>
@@ -158,7 +199,8 @@ const styles = StyleSheet.create({
     color: '#212529',
   },
   Btn: {
-    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
   totalInfo: {
     backgroundColor: '#F8F9FA',

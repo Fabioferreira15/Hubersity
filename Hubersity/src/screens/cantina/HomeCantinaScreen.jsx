@@ -10,6 +10,7 @@ import Background from '../../assets/Home/backgorund.svg';
 import BtnSvg from '../../assets/Home/btn.svg';
 import BtnInvertedSvg from '../../assets/Home/btnInverted.svg';
 import  Header  from '../../components/Header';
+import CustomButton from '../../components/CustomBtns';
 
 const HomeCantina = ({navigation}) => {
   return (
@@ -41,12 +42,7 @@ const HomeCantina = ({navigation}) => {
             </Text>
             <BtnSvg width={300} height={131} />
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('MarcacoesPendentes')}
-            style={styles.btn}>
-            <Text style={[styles.btnTxt, styles.historicoTxt]}>Histórico</Text>
-            <BtnSvg width={300} height={131} />
-          </TouchableOpacity>
+
         </View>
       </View>
     </ScrollView>

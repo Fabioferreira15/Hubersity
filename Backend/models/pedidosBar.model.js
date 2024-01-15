@@ -25,7 +25,7 @@ PedidosBar.init(
             allowNull: false,
         },
         Status: {
-            type: DataTypes.ENUM("pendente", "aceite", "recusado"),
+            type: DataTypes.ENUM("pendente", "aceite", "recusado","expirada"),
             defaultValue: "pendente",
         },
         IdPagamento: {

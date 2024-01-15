@@ -413,6 +413,77 @@ exports.pagarCarrinho = async function (req, res) {
 
     const dataFormatada = `${ano}/${mes}/${dia}`;
 
+    const tipoPagamento = req.query.tipoPagamento;
+
+    if (tipoPagamento === "pontos") {
+      const pontosNecessarios = Math.ceil(total * 10);
+
+      if (utilizador.pontos >= pontosNecessarios) {
+        await Utilizadores.decrement(
+          { pontos: pontosNecessarios },
+          { where: { UserId: userId } }
+        );
+
+        const novoPedido = await PedidosBar.create({
+          UserId: userId,
+          Data: dataFormatada,
+          Status: "pendente",
+          QRCode: "exemplo",
+        });
+
+        await Promise.all(
+          produtosCarrinho.map(async (produtoCarrinho) => {
+            await PedidosBarProdutos.create({
+              IdPedido: novoPedido.IdPedido,
+              IdProduto: produtoCarrinho.IdProduto,
+              Quantidade: produtoCarrinho.Quantidade,
+            });
+            await ProdutosBar.decrement(
+              { Stock: produtoCarrinho.Quantidade },
+              { where: { IdProduto: produtoCarrinho.IdProduto } }
+            );
+            await CarrinhoItens.destroy({
+              where: {
+                IdProduto: produtoCarrinho.IdProduto,
+                IdCarrinho: userId,
+              },
+            });
+          })
+        );
+        const produtosPedido = await PedidosBarProdutos.findAll({
+          where: {
+            IdPedido: novoPedido.IdPedido,
+          },
+        });
+
+        const qrData = {
+          utilizador: utilizador.nome,
+          numeroPedido: novoPedido.IdPedido,
+          produtos: produtosPedido,
+        };
+
+        utilities.generateQrToken(qrData, async (token) => {
+          qrData.token = token;
+
+          const qrCode = await QrCode.toDataURL(JSON.stringify(qrData));
+
+          await PedidosBar.update(
+            { QRCode: qrCode },
+            { where: { IdPedido: novoPedido.IdPedido } }
+          );
+        });
+
+        return res.status(200).send({
+          message: "Pagamento processado com sucesso.",
+          pontos: pontosNecessarios,
+        });
+      } else {
+        return res.status(400).send({
+          message: "Pontos insuficientes.",
+        });
+      }
+    }
+
     // criar pagamento
     const pagamento = await Pagamento.create({
       UserId: userId,
@@ -427,7 +498,7 @@ exports.pagarCarrinho = async function (req, res) {
       Data: dataFormatada,
       Status: "pendente",
       IdPagamento: pagamento.IdPagamento,
-      QRCode: "teste",
+      QRCode: "exemplo",
     });
 
     await Promise.all(
@@ -469,8 +540,15 @@ exports.pagarCarrinho = async function (req, res) {
       );
     });
 
+    const pontos = Math.ceil(total);
+    await Utilizadores.increment(
+      { pontos: pontos },
+      { where: { UserId: userId } }
+    );
+
     return res.status(200).send({
       message: "Pagamento e pedido processados com sucesso.",
+      pontos: pontos,
     });
   } catch (error) {
     console.error(error);
