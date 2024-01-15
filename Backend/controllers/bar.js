@@ -387,6 +387,18 @@ exports.pagarCarrinho = async function (req, res) {
       });
     }
 
+    //verificar stock dos produtos no carrinho
+    const produtosSemStock = produtosCarrinho.filter(
+      (produto) => produto.ProdutosBar.Stock < produto.Quantidade
+    );
+
+    if (produtosSemStock.length > 0) {
+      return res.status(400).send({
+        message: "Produtos fora de stock.",
+      });
+    }
+    
+
     const total = produtosCarrinho.reduce((total, produto) => {
       const preco = produto.ProdutosBar.Preco;
       const quantidade = produto.Quantidade;
