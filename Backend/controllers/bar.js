@@ -197,7 +197,7 @@ exports.adicionarProdutoCarrinho = async function (req, res) {
     }
 
     // Verificar se o produto está em stock
-    if (produto.Stock <= 0) {
+    if (produto.Stock < 0) {
       return res.status(400).send({
         message: "Produto fora de stock.",
       });
@@ -829,7 +829,6 @@ exports.alterarQuantidadeProdutoCarrinho = async function (req, res) {
     });
   }
 };
-
 
 //gerir stock produto
 exports.gerirStockProduto = async function (req, res) {
