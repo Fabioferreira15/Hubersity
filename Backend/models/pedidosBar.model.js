@@ -21,7 +21,7 @@ PedidosBar.init(
             },
         },
         Data: {
-            type: DataTypes.DATEONLY,
+            type: DataTypes.DATE,
             allowNull: false,
         },
         Status: {
