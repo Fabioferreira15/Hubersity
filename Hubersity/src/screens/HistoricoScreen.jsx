@@ -300,7 +300,8 @@ const Historico = ({navigation}) => {
                         }}>
                         <Image
                           style={{
-                            width: '70%',
+                            width: 100,
+                            height: 100,
                             aspectRatio: 1,
                           }}
                           source={{uri: item.dataValues.QRCode}}
