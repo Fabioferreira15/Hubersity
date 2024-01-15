@@ -81,6 +81,7 @@ exports.obterRefeicoesCantina = (req, res, next) => {
         "Data",
         "Preco",
         "Periodo",
+        "Descricao",
       ],
     };
 
