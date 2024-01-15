@@ -5,6 +5,7 @@ import CartScreen from '../screens/bar/CartScreen';
 import EmptyStateScreen from '../screens/bar/EmptyStateScreen';
 import PendingOrdersScreen from '../screens/bar/PendingOrdersScreen';
 import QrCode from '../screens/bar/QrCode';
+import EmptyStateScreenPedidosPorLevantar from '../screens/bar/EmptyStateScreenPedidosPorLevantar';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,9 @@ const BarNavigation = () => {
         name="PendingOrdersScreen"
         component={PendingOrdersScreen}
       />
+      <Stack.Screen
+        name="EmptyStateScreenPedidosPorLevantar"
+        component={EmptyStateScreenPedidosPorLevantar} />
       <Stack.Screen name="QrCode" component={QrCode} />
 
     </Stack.Navigator>
