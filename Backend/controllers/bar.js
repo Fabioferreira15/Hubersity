@@ -11,6 +11,7 @@ const DetalhesPagamento =
   require("../models/detalhesPagamento.model").DetalhesPagamento;
 const utilities = require("../utilities/utilities");
 const QrCode = require("qrcode");
+const Op = require("sequelize").Op;
 
 exports.adicionarProduto = async function (req, res) {
   try {
@@ -704,22 +705,7 @@ exports.obterPedidosBarHistorico = async function (req, res) {
         UserId: userId,
         ...filtroData,
       },
-      attributes: ["IdPedido", "Data", "Status"],
-      include: [
-        {
-          model: PedidosBarProdutos,
-          attributes: ["IdProduto", "Quantidade"],
-          include: [
-            {
-              model: ProdutosBar,
-              attributes: ["IdProduto", "Nome", "Descricao", "Preco", "Stock"],
-              raw: true,
-            },
-          ],
-          raw: true,
-        },
-      ],
-      limit: Number(numeroRegistos),
+      attributes: ["IdPedido", "Data", "Status", "QRCode"],
     });
 
     if (pedidos.length === 0) {
@@ -728,7 +714,32 @@ exports.obterPedidosBarHistorico = async function (req, res) {
       });
     }
 
-    return res.status(200).send(pedidos);
+    const pedidosComProdutos = await Promise.all(
+      pedidos.map(async (pedido) => {
+        const produtosPedido = await PedidosBarProdutos.findAll({
+          where: {
+            IdPedido: pedido.IdPedido,
+          },
+          include: [
+            {
+              model: ProdutosBar,
+              attributes: ["IdProduto", "Nome", "Descricao", "Preco", "Stock"],
+              raw: true,
+            },
+          ],
+          raw: true,
+        });
+        return {
+          ...pedido,
+          produtos: produtosPedido,
+        };
+      })
+    );
+
+    return res.status(200).send({
+      mensgaem: "Pedidos encontrados",
+      pedidos: pedidosComProdutos,
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).send({

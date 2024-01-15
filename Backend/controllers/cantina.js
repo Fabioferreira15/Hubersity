@@ -81,6 +81,7 @@ exports.obterRefeicoesCantina = (req, res, next) => {
         "Data",
         "Preco",
         "Periodo",
+        "Descricao",
       ],
     };
 
@@ -433,7 +434,7 @@ exports.obterMarcacoesCantinaHistorico = async (req, res) => {
       include: [
         {
           model: RefeicaoCantina,
-          attributes: ["IdRefeicao", "Nome", "TipoPrato", "Data", "Periodo"],
+          attributes: ["IdRefeicao", "Nome", "TipoPrato", "Data", "Periodo", "Preco"],
         },
         {
           model: Utilizadores,
