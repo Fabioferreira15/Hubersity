@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect} from 'react';
 import {
-  View, 
-  Text, 
+  View,
+  Text,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  } from 'react-native'
+} from 'react-native';
 import Voltar from '../../assets/icons/Voltar.svg';
 import Header from '../../components/Header.jsx';
 import {PendingOrders} from '../../api';
@@ -14,7 +14,7 @@ const PendingOrdersScreen = ({navigation}) => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [empty, setEmpty] = useState(true);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -35,24 +35,38 @@ const PendingOrdersScreen = ({navigation}) => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-  }, [orders])
+  useEffect(() => {}, [orders]);
+
+  function formatData(data) {
+    const dataObj = new Date(data);
+
+    const day = ('0' + dataObj.getDate()).slice(-2);
+    const month = ('0' + (dataObj.getMonth() + 1)).slice(-2);
+    const year = ('' + dataObj.getFullYear()).slice(-2);
+
+    return `${day}/${month}/${year}`;
+  }
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
-        <Header title='Os seus pedidos' iconPosition='left' onPress={()=> navigation.navigate('HomeBar')} customIcon={<Voltar />}/>
+        <Header
+          title="Os seus pedidos"
+          iconPosition="left"
+          onPress={() => navigation.navigate('HomeBar')}
+          customIcon={<Voltar />}
+        />
 
         <View style={styles.main}>
-          {orders.map((order,index) =>(
+          {orders.map((order, index) => (
             <View key={index} style={styles.pedidosContainer}>
-              <Text style={styles.numPedido}>
-                Pedido Nº{order.IdPedido}
-              </Text>
+              <Text style={styles.numPedido}>Pedido Nº{order.IdPedido}</Text>
               <View style={styles.card}>
                 <View style={styles.cardBody}>
-                  <Text style={styles.cardTitle}>Data{/* {order.id}{order.Data} */}</Text>
-                  <Text style={styles.text}>{order.Data}</Text>
+                  <Text style={styles.cardTitle}>
+                    Data
+                  </Text>
+                  <Text style={styles.text}>{formatData(order.Data)}</Text>
                 </View>
                 <View style={styles.cardBody}>
                   <Text style={styles.cardTitle}>Estado</Text>
@@ -62,17 +76,16 @@ const PendingOrdersScreen = ({navigation}) => {
               <TouchableOpacity
                 style={styles.button}
                 onPress={() => navigation.navigate('QrCode', {order})}>
-                  <View style={styles.btnQR}>
-                    <Text style={styles.textBtn}>Mostrar QR Code</Text>
-                  </View>
-                </TouchableOpacity>
-
+                <View style={styles.btnQR}>
+                  <Text style={styles.textBtn}>Mostrar QR Code</Text>
+                </View>
+              </TouchableOpacity>
             </View>
           ))}
+        </View>
       </View>
-    </View>
     </ScrollView>
-  )
+  );
 };
 
 const styles = StyleSheet.create({
@@ -89,14 +102,14 @@ const styles = StyleSheet.create({
     marginLeft: '5%',
   },
   pedidosContainer: {
-    marginBottom:20,
+    marginBottom: 20,
   },
   numPedido: {
     color: '#212529',
     fontSize: 23,
     fontFamily: 'BaiJamjuree-Bold',
   },
-  card:{
+  card: {
     backgroundColor: '#DFE2FC',
     width: '95%',
     height: 110,
@@ -106,16 +119,16 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: 'space-between',
   },
-  cardBody:{
+  cardBody: {
     flexDirection: 'row',
   },
-  cardTitle:{
+  cardTitle: {
     color: '#212529',
     fontSize: 17,
     fontFamily: 'BaiJamjuree-Bold',
-    width:'50%',
+    width: '50%',
   },
-  text:{
+  text: {
     color: '#212529',
     fontSize: 18,
     fontFamily: 'Tajawal-Regular',
@@ -130,11 +143,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  textBtn:{
+  textBtn: {
     color: '#F8F9FA',
     fontFamily: 'BaiJamjuree-Bold',
     fontSize: 17,
-  }
+  },
 });
 
-export default PendingOrdersScreen
+export default PendingOrdersScreen;

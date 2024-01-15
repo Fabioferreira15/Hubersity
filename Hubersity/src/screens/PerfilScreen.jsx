@@ -199,6 +199,16 @@ const PerfilScreen = ({navigation}) => {
     }
   };
 
+  function formatData(data){
+    const dataObj = new Date(data);
+
+    const day = ('0' + dataObj.getDate()).slice(-2);
+    const month = ('0' + (dataObj.getMonth() + 1)).slice(-2);
+    const year = ('' + dataObj.getFullYear()).slice(-2);
+
+    return `${day}/${month}/${year}`;
+  }
+
   function addSpacesToCardNumber(number) {
     const numberLength = number.length;
     let newNumber = '';
@@ -284,7 +294,6 @@ const PerfilScreen = ({navigation}) => {
             </>
           ) : (
             <>
-              <View>
                 <Text
                   style={[
                     styles.title,
@@ -296,7 +305,6 @@ const PerfilScreen = ({navigation}) => {
                   ]}>
                   Parque de Estacionamento
                 </Text>
-              </View>
 
               <View style={styles.qrContainer}>
                 <Image
@@ -308,7 +316,7 @@ const PerfilScreen = ({navigation}) => {
               </View>
 
               <Text style={styles.validadeQR}>
-                Válido até: {estacionamentoInfo.ProximoPagamento}
+                Válido até: {formatData(estacionamentoInfo.ProximoPagamento)}
               </Text>
             </>
           )}
