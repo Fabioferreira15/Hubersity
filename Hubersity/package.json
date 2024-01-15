@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@popmotion/popcorn": "^0.4.4",
     "@react-native-async-storage/async-storage": "^1.21.0",
     "@react-native-community/blur": "^4.3.2",
     "@react-native-community/datetimepicker": "^7.6.2",
@@ -21,11 +22,12 @@
     "dotenv": "^16.3.1",
     "jwt-decode": "^4.0.0",
     "lottie-react-native": "^6.4.1",
+    "randomcolor": "^0.6.2",
     "react": "18.2.0",
     "react-native": "0.73.1",
     "react-native-dropdown-picker": "^5.4.6",
     "react-native-element-dropdown": "^2.10.1",
-    "react-native-gesture-handler": "^2.14.0",
+    "react-native-gesture-handler": "^2.14.1",
     "react-native-loading-modal": "^1.1.0",
     "react-native-notifier": "^1.9.0",
     "react-native-qrcode-svg": "^6.2.0",
