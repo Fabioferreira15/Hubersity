@@ -80,11 +80,8 @@ const Historico = ({navigation}) => {
       );
 
       const json = await response.json();
-      if (
-        json.message === 'Marcações encontradas!' &&
-        json.marcacoes.length > 0
-      ) {
-        setHistoricoBar(json.marcacoes);
+      if (json.pedidos) {
+        setHistoricoBar(json.pedidos);
       } else {
         setHistoricoBar([]);
       }
@@ -124,10 +121,7 @@ const Historico = ({navigation}) => {
   };
 
   return (
-    <ScrollView
-      contentContainerStyle={styles.scrollContainer}
-      /* style={{flex: 1, flexGrow: 1}} */
-    >
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
         <Background style={styles.Background} />
         <Header title="Histórico" />
@@ -252,8 +246,8 @@ const Historico = ({navigation}) => {
                             uri: item.QRCode,
                           }}
                           style={{
-                            width: '70%',
-                            height: '70%',
+                            width: '50%',
+                            aspectRatio: 1,
                             resizeMode: 'contain',
                           }}
                         />
@@ -261,9 +255,11 @@ const Historico = ({navigation}) => {
                           style={{
                             color: 'black',
                             fontSize: 12,
-                            marginEnd: '15%',
+                            marginEnd: '5%',
                           }}>
-                          {item.RefeicaoCantina.Data}
+                          {new Date(
+                            item.RefeicaoCantina.Data,
+                          ).toLocaleDateString()}
                         </Text>
                       </View>
                     </View>
@@ -280,45 +276,42 @@ const Historico = ({navigation}) => {
             <View>
               {historicoBar.length > 0 ? (
                 historicoBar.map(item => (
-                  <View key={item.IdMarcacao} style={styles.marcacaoContainer}>
-                    <Text style={{color: 'white', fontSize: 19}}>Marcação</Text>
+                  <View
+                    key={item.dataValues.IdPedido}
+                    style={styles.marcacaoContainer}>
+                    <Text style={{color: 'white', fontSize: 19}}>Pedido</Text>
                     <View style={styles.marcacaoContainer2}>
-                      <View style={{width: '50%'}}>
-                        <Text
-                          style={{
-                            color: 'black',
-                            fontSize: 17,
-                            fontWeight: 'bold',
-                          }}>
-                          {item.Bebida.Nome}
-                        </Text>
-                        <Text style={{color: 'black', fontSize: 12}}>
-                          {item.Bebida.Tipo}
-                        </Text>
+                      <View style={styles.produtosContainer}>
+                        {item.produtos.map(produto => (
+                          <View
+                            key={produto.IdPedidoProduto}
+                            style={styles.produtoContainer}>
+                            <Text style={{color: 'black', fontSize: 17}}>
+                              -{produto['ProdutosBar.Nome']}
+                            </Text>
+                          </View>
+                        ))}
                       </View>
                       <View
                         style={{
-                          width: '50%',
+                          flex: 1,
                           justifyContent: 'center',
                           alignItems: 'flex-end',
                         }}>
                         <Image
-                          source={{
-                            uri: item.QRCode,
-                          }}
                           style={{
                             width: '70%',
-                            height: '70%',
-                            resizeMode: 'contain',
+                            aspectRatio: 1,
                           }}
+                          source={{uri: item.dataValues.QRCode}}
                         />
                         <Text
                           style={{
                             color: 'black',
                             fontSize: 12,
-                            marginEnd: '15%',
+                            marginEnd: '10%',
                           }}>
-                          {item.Data}
+                          {new Date(item.dataValues.Data).toLocaleDateString()}
                         </Text>
                       </View>
                     </View>
@@ -332,6 +325,7 @@ const Historico = ({navigation}) => {
               )}
             </View>
           )}
+
           <Text></Text>
         </View>
       </View>
@@ -342,7 +336,7 @@ const Historico = ({navigation}) => {
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
-    paddingBottom: '35%',
+    paddingBottom: '15%',
   },
   container: {
     flex: 1,
@@ -435,7 +429,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
     alignSelf: 'center',
-    maxHeight: '20%',
+    maxHeight: '25%',
   },
   marcacaoContainer2: {
     backgroundColor: 'white',
