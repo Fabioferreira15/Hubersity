@@ -51,7 +51,7 @@ const Home = ({navigation}) => {
         </View>
         <View style={styles.user}>
           <View style={styles.left}>
-            <Image source={{uri: image}} style={styles.imgPerfil} />
+            {image && <Image source={{uri: image}} style={styles.imgPerfil} />}
             <Text style={styles.txt}>Olá, {nome}</Text>
           </View>
           <View style={styles.right}>
@@ -114,7 +114,6 @@ const Home = ({navigation}) => {
             justifyContent: 'center',
           }}
         />
-
       </View>
     </View>
   );

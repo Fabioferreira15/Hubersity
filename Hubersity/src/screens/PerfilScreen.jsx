@@ -199,7 +199,7 @@ const PerfilScreen = ({navigation}) => {
     }
   };
 
-  function formatData(data){
+  function formatData(data) {
     const dataObj = new Date(data);
 
     const day = ('0' + dataObj.getDate()).slice(-2);
@@ -234,7 +234,7 @@ const PerfilScreen = ({navigation}) => {
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" />
+        <ActivityIndicator size="large" animating={true} color="#5F6EF0" />
       </View>
     );
   }
@@ -294,17 +294,17 @@ const PerfilScreen = ({navigation}) => {
             </>
           ) : (
             <>
-                <Text
-                  style={[
-                    styles.title,
-                    {
-                      borderBottomColor: 'black',
-                      borderBottomWidth: 1,
-                      width: '90%',
-                    },
-                  ]}>
-                  Parque de Estacionamento
-                </Text>
+              <Text
+                style={[
+                  styles.title,
+                  {
+                    borderBottomColor: 'black',
+                    borderBottomWidth: 1,
+                    width: '90%',
+                  },
+                ]}>
+                Parque de Estacionamento
+              </Text>
 
               <View style={styles.qrContainer}>
                 <Image

@@ -138,7 +138,7 @@ const HomeBar = ({navigation}) => {
         <View style={styles.main}>
           {loading ? (
             <>
-              <ActivityIndicator animating={true} color="red" size="large" />
+              <ActivityIndicator animating={true} color="#5F6EF0" size="large" />
               <Text style={styles.loadingTxt}>Loading...</Text>
             </>
           ) : (

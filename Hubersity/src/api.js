@@ -129,7 +129,9 @@ export const PendingOrders = async () => {
       },
     });
 
-    if (response.ok) {
+    if (response.status === 204) {
+      return { pedidos: [] };
+    } else if (response.ok) {
       const responseData = await response.json();
       return responseData.pedidos;
     } else {
@@ -569,7 +571,7 @@ export const PayCanteenReservation = async (idUser, detalhes) => {
   }
 };
 
-export const payBarOrder = async (userId) => {
+export const payBarOrder = async userId => {
   const storedToken = await AsyncStorage.getItem('token');
   try {
     if (!storedToken) {
@@ -599,32 +601,76 @@ export const payBarOrder = async (userId) => {
   }
 };
 
-export const payBarOrderPoints = async (userId) => {
+export const payBarOrderPoints = async userId => {
   const storedToken = await AsyncStorage.getItem('token');
   try {
     if (!storedToken) {
       console.error('Sem token');
     }
 
-    const response = await fetch(`${URL}/bar/carrinho/pagar/${userId}?tipoPagamento=pontos`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${storedToken}`,
+    const response = await fetch(
+      `${URL}/bar/carrinho/pagar/${userId}?tipoPagamento=pontos`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+        },
       },
-    });
+    );
 
     if (response.ok) {
       const responseData = await response.json();
-      return {success: true, message: responseData.message, id: responseData.id};
+      return {
+        success: true,
+        message: responseData.message,
+        id: responseData.id,
+      };
     } else {
       const responseData = await response.json();
-      return {success: false, message: responseData.message, id: responseData.id};
+      return {
+        success: false,
+        message: responseData.message,
+        id: responseData.id,
+      };
     }
   } catch (error) {
     console.error(error);
     return {
       success: false,
       message: 'Ocorreu um erro a pagar o pedido.',
+    };
+  }
+};
+
+export const manageStock = async (idProduto, operacao) => {
+  const storedToken = await AsyncStorage.getItem('token');
+  try {
+    if (!storedToken) {
+      console.error('Sem token');
+    }
+
+    const response = await fetch(
+      `${URL}/bar/produtos/${idProduto}?operacao=${operacao}`,
+      {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+        },
+      },
+    );
+
+    if (response.ok) {
+      const responseData = await response.json();
+      return {success: true, message: responseData.message};
+    } else {
+      const responseData = await response.json();
+      return {success: false, message: responseData.message};
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: 'Ocorreu um erro a aumentar o stcke.',
     };
   }
 };

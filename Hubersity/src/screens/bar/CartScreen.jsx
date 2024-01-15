@@ -147,7 +147,7 @@ const CartScreen = ({navigation}) => {
             <View style={styles.total}>
               <Text style={styles.totalTitle}>Total: </Text>
               <Text style={styles.totaltxt}>
-                {total.toFixed(2)}€ - {totalPontos} pontos
+                {total.toFixed(2)}€ - {totalPontos.toFixed(1)} pontos
               </Text>
             </View>
 
