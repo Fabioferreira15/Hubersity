@@ -5,10 +5,12 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import Voltar from '../../assets/icons/Voltar.svg';
 import Header from '../../components/Header.jsx';
 import {PendingOrders} from '../../api';
+import EmptyStateScreenPedidosPorLevantar from './EmptyStateScreenPedidosPorLevantar.jsx';
 
 const PendingOrdersScreen = ({navigation}) => {
   const [orders, setOrders] = useState([]);
@@ -17,10 +19,11 @@ const PendingOrdersScreen = ({navigation}) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const ordersToTake = await PendingOrders();
         setOrders(ordersToTake.pedidos || []);
-        
+        setLoading(false);
       } catch (err) {
         console.log(err);
       }
@@ -41,45 +44,59 @@ const PendingOrdersScreen = ({navigation}) => {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <View style={styles.container}>
-        <Header
-          title="Os seus pedidos"
-          iconPosition="left"
-          onPress={() => navigation.navigate('HomeBar')}
-          customIcon={<Voltar />}
+    <>
+      {loading ? (
+        <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}>
+        <ActivityIndicator 
+          animating = {true}
+          color = '#5F6EF0'
+          size = "large"
         />
-
-        <View style={styles.main}>
-          {orders.length === 0 ? (
-            <Text style={styles.text}>Não tem pedidos pendentes</Text>
-          ) : (
-            orders.map((order, index) => (
-              <View key={index} style={styles.pedidosContainer}>
-                <Text style={styles.numPedido}>Pedido Nº{order.IdPedido}</Text>
-                <View style={styles.card}>
-                  <View style={styles.cardBody}>
-                    <Text style={styles.cardTitle}>Data</Text>
-                    <Text style={styles.text}>{formatData(order.Data)}</Text>
-                  </View>
-                  <View style={styles.cardBody}>
-                    <Text style={styles.cardTitle}>Estado</Text>
-                    <Text style={styles.text}>{order.Status}</Text>
-                  </View>
-                </View>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => navigation.navigate('QrCode', {order})}>
-                  <View style={styles.btnQR}>
-                    <Text style={styles.textBtn}>Mostrar QR Code</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            ))
-          )}
         </View>
-      </View>
-    </ScrollView>
+      ) : orders.length === 0 ? (
+        <EmptyStateScreenPedidosPorLevantar navigation={navigation} />
+      ) : (
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <View style={styles.container}>
+            <Header
+              title="Os seus pedidos"
+              iconPosition="left"
+              onPress={() => navigation.navigate('HomeBar')}
+              customIcon={<Voltar />}
+            />
+
+            <View style={styles.main}>
+              {orders.length === 0 ? (
+                <Text style={styles.text}>Não tem pedidos pendentes</Text>
+              ) : (
+                orders.map((order, index) => (
+                  <View key={index} style={styles.pedidosContainer}>
+                    <Text style={styles.numPedido}>Pedido Nº{order.IdPedido}</Text>
+                    <View style={styles.card}>
+                      <View style={styles.cardBody}>
+                        <Text style={styles.cardTitle}>Data</Text>
+                        <Text style={styles.text}>{formatData(order.Data)}</Text>
+                      </View>
+                      <View style={styles.cardBody}>
+                        <Text style={styles.cardTitle}>Estado</Text>
+                        <Text style={styles.text}>{order.Status}</Text>
+                      </View>
+                    </View>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => navigation.navigate('QrCode', {order})}>
+                      <View style={styles.btnQR}>
+                        <Text style={styles.textBtn}>Mostrar QR Code</Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                ))
+              )}
+            </View>
+          </View>
+        </ScrollView>
+      )}
+    </>
   );
 };
 
