@@ -209,7 +209,7 @@ export const fetchUsers = async () => {
   }
 };
 
-export const deleteUser = async (id) => {
+export const deleteUser = async id => {
   try {
     const storedToken = await AsyncStorage.getItem('token');
     if (!storedToken) {
@@ -309,8 +309,13 @@ export const fetchEstacionamento = async id => {
   }
 };
 
-
-export const AddProdutosBar = async (nome, preco, categoria, descricao,Stock) => {
+export const AddProdutosBar = async (
+  nome,
+  preco,
+  categoria,
+  descricao,
+  Stock,
+) => {
   const storedToken = await AsyncStorage.getItem('token');
   try {
     if (!storedToken) {
@@ -330,7 +335,6 @@ export const AddProdutosBar = async (nome, preco, categoria, descricao,Stock) =>
         Categoria: categoria,
         Descricao: descricao,
         Stock: Stock,
-
       }),
     });
 
@@ -351,7 +355,7 @@ export const AddProdutosBar = async (nome, preco, categoria, descricao,Stock) =>
   }
 };
 
-export const AddCategoriaBar = async (nome) => {
+export const AddCategoriaBar = async nome => {
   const storedToken = await AsyncStorage.getItem('token');
   try {
     if (!storedToken) {
@@ -387,7 +391,7 @@ export const AddCategoriaBar = async (nome) => {
   }
 };
 
-export const fetcPaymentDetails =async (id) =>{
+export const fetcPaymentDetails = async id => {
   const storedToken = await AsyncStorage.getItem('token');
 
   try {
@@ -395,12 +399,15 @@ export const fetcPaymentDetails =async (id) =>{
       console.error('Sem token');
     }
 
-    const response = await fetch(`${URL}/utilizadores/detalhesPagamento/${id}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${storedToken}`,
+    const response = await fetch(
+      `${URL}/utilizadores/detalhesPagamento/${id}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+        },
       },
-    });
+    );
 
     if (response.ok) {
       const responseData = await response.json();
@@ -417,11 +424,9 @@ export const fetcPaymentDetails =async (id) =>{
       message: 'Ocorreu um erro a obter os detalhes de pagamento.',
     };
   }
+};
 
-}
-
-
-export const deletePaymentDetails =async (id) =>{
+export const deletePaymentDetails = async id => {
   const storedToken = await AsyncStorage.getItem('token');
 
   try {
@@ -429,12 +434,15 @@ export const deletePaymentDetails =async (id) =>{
       console.error('Sem token');
     }
 
-    const response = await fetch(`${URL}/utilizadores/detalhesPagamento/${id}`, {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${storedToken}`,
+    const response = await fetch(
+      `${URL}/utilizadores/detalhesPagamento/${id}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+        },
       },
-    });
+    );
 
     if (response.ok) {
       const responseData = await response.json();
@@ -451,7 +459,7 @@ export const deletePaymentDetails =async (id) =>{
       message: 'Ocorreu um erro a apagar os detalhes de pagamento.',
     };
   }
-}  
+};
 
 export const AddPaymentDetails = async (userId, detalhesPagamento) => {
   const storedToken = await AsyncStorage.getItem('token');
@@ -461,14 +469,17 @@ export const AddPaymentDetails = async (userId, detalhesPagamento) => {
       return {success: false, message: 'Sem token'};
     }
 
-    const response = await fetch(`${URL}/utilizadores/detalhesPagamento/${userId}`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${storedToken}`,
-        'Content-Type': 'application/json',
+    const response = await fetch(
+      `${URL}/utilizadores/detalhesPagamento/${userId}`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(detalhesPagamento),
       },
-      body: JSON.stringify(detalhesPagamento),
-    });
+    );
 
     if (response.ok) {
       const responseData = await response.json();
@@ -487,9 +498,8 @@ export const AddPaymentDetails = async (userId, detalhesPagamento) => {
   }
 };
 
-
 //Pagar estacionamento
-export const PagarEstacionamento = async (id) => {
+export const PagarEstacionamento = async id => {
   const storedToken = await AsyncStorage.getItem('token');
   try {
     if (!storedToken) {
@@ -497,13 +507,16 @@ export const PagarEstacionamento = async (id) => {
       return {success: false, message: 'Sem token'};
     }
 
-    const response = await fetch(`${URL}/utilizadores/pagamentoestacionamento/${id}`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${storedToken}`,
-        'Content-Type': 'application/json',
+    const response = await fetch(
+      `${URL}/utilizadores/pagamentoestacionamento/${id}`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+          'Content-Type': 'application/json',
+        },
       },
-    });
+    );
 
     if (response.ok) {
       const responseData = await response.json();
@@ -522,8 +535,7 @@ export const PagarEstacionamento = async (id) => {
   }
 };
 
-
-export const PayCanteenReservation = async (idUser,detalhes) => {
+export const PayCanteenReservation = async (idUser, detalhes) => {
   const storedToken = await AsyncStorage.getItem('token');
   try {
     if (!storedToken) {
@@ -536,9 +548,8 @@ export const PayCanteenReservation = async (idUser,detalhes) => {
       headers: {
         Authorization: `Bearer ${storedToken}`,
         'Content-Type': 'application/json',
-
       },
-      body: JSON.stringify(detalhes)
+      body: JSON.stringify(detalhes),
     });
 
     if (response.ok) {
@@ -555,6 +566,35 @@ export const PayCanteenReservation = async (idUser,detalhes) => {
       success: false,
       message: 'Ocorreu um erro a fazer a marcacao.',
     };
-    
+  }
+};
+
+export const payBarOrder = async (userId) => {
+  const storedToken = await AsyncStorage.getItem('token');
+  try {
+    if (!storedToken) {
+      console.error('Sem token');
+    }
+
+    const response = await fetch(`${URL}/bar/carrinho/pagar/${userId}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${storedToken}`,
+      },
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      return {success: true, message: responseData.message};
+    } else {
+      const responseData = await response.json();
+      return {success: false, message: responseData.message};
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: 'Ocorreu um erro a pagar o pedido.',
+    };
   }
 };
