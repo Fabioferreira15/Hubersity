@@ -34,8 +34,7 @@ const generateQrToken = (qrData, callback) => {
     {
       qrData: qrData,
     },
-    secret,
-    { expiresIn: "24h" }
+    secret
   );
   return callback(qrToken);
 };
@@ -52,8 +51,6 @@ const verifyQrToken = (qrToken) => {
     return null;
   }
 };
-
-
 
 exports.generateToken = generateToken;
 exports.verifyToken = verifyToken;
