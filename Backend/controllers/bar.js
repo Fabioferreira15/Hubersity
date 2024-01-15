@@ -829,3 +829,68 @@ exports.alterarQuantidadeProdutoCarrinho = async function (req, res) {
     });
   }
 };
+
+
+//gerir stock produto
+exports.gerirStockProduto = async function (req, res) {
+  try {
+    let auth = utilities.verifyToken(req.headers.authorization);
+
+    if (!auth) {
+      return res.status(401).send({
+        message: "Token inválido.",
+      });
+    }
+
+    if (auth.tipo !== "admin") {
+      return res.status(401).send({
+        message: "Não tem permissões de administrador.",
+      });
+    }
+
+    const idProduto = parseInt(req.params.IdProduto);
+    const operacao = req.query.operacao;
+
+    const quantidade =
+      operacao === "aumentar" ? 1 : operacao === "diminuir" ? -1 : 0;
+
+    if (quantidade === 0) {
+      return res.status(400).send({
+        message: "Operação inválida.",
+      });
+    }
+
+    const produto = await ProdutosBar.findOne({
+      where: { IdProduto: idProduto },
+      raw: true,
+    });
+
+    if (!produto) {
+      return res.status(400).send({
+        message: "Produto não existe.",
+      });
+    }
+
+    if (quantidade < 0 && quantidade + produto.Stock < 0) {
+      return res.status(400).send({
+        message: "Quantidade inferior ao stock.",
+      });
+    }
+
+    const novoStock = produto.Stock + quantidade;
+
+    await ProdutosBar.update(
+      { Stock: novoStock },
+      { where: { IdProduto: idProduto } }
+    );
+
+    return res.status(200).send({
+      message: "Stock alterado com sucesso.",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Ocorreu um erro ao alterar o stock do produto.",
+    });
+  }
+};

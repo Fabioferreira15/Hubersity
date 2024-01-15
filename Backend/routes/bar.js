@@ -448,4 +448,9 @@ router.patch("/carrinho/quantidade/:IdProduto", function (req, res) {
   barController.alterarQuantidadeProdutoCarrinho(req, res);
 });
 
+
+router.patch("/produtos/:IdProduto", function (req, res) {
+  barController.gerirStockProduto(req, res);
+});
+
 module.exports = router;
