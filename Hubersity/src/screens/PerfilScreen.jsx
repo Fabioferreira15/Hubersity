@@ -31,6 +31,8 @@ import TrashSvg from '../assets/icons/trash.svg';
 import Voltar from '../assets/icons/Voltar.svg';
 import Toast from 'react-native-toast-message';
 import UnderlineBtn from '../components/UnderlineBtn';
+import CalendarioSvg from '../assets/icons/calendário.svg';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const PerfilScreen = ({navigation}) => {
   const {logout, getPerfilInfo, userInfo} = useContext(AuthContext);
@@ -44,6 +46,8 @@ const PerfilScreen = ({navigation}) => {
   const [numeroCartao, setNumeroCartao] = useState('');
   const [CVV, setCVV] = useState('');
   const [dataValidade, setDataValidade] = useState('');
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [nomeTitular, setNomeTitular] = useState('');
 
   const fetchAllData = async () => {
@@ -75,6 +79,17 @@ const PerfilScreen = ({navigation}) => {
   useEffect(() => {
     fetchAllData();
   }, []);
+
+  const handleDateChange = (event, date) => {
+    if (date !== undefined && event.type === 'set') {
+      setSelectedDate(date);
+    }
+    setShowDatePicker(false);
+  };
+
+  const showDatePickerComponent = () => {
+    setShowDatePicker(true);
+  };
 
   const handlePagarEstacionamento = async () => {
     try {
@@ -381,13 +396,23 @@ const PerfilScreen = ({navigation}) => {
                       value={CVV}
                       keyboardType="numeric"
                     />
-                    <TextInput
-                      style={styles.input}
-                      placeholder="Data de Validade"
-                      placeholderTextColor="#6c757d"
-                      onChangeText={setDataValidade}
-                      value={dataValidade}
-                    />
+                    <TouchableOpacity
+                      style={styles.inputButton}
+                      onPress={showDatePickerComponent}>
+                      <Text style={styles.inputButtonText}>
+                        {selectedDate.toLocaleDateString('pt-PT')}
+                      </Text>
+                      <CalendarioSvg style={styles.icon} />
+                    </TouchableOpacity>
+                    {showDatePicker && (
+                      <DateTimePicker
+                        value={selectedDate}
+                        mode="date"
+                        display="default"
+                        onChange={handleDateChange}
+                        displayFormat={'DD MMM YYYY'}
+                      />
+                    )}
                     <TextInput
                       style={styles.input}
                       placeholder="Nome do Titular"
@@ -728,16 +753,38 @@ const styles = StyleSheet.create({
     marginTop: '5%',
     marginBottom: '5%',
   },
-  txtCVV:{
+  txtCVV: {
     fontSize: 16,
     fontFamily: 'Tajawal-Regular',
     color: '#212529',
   },
-  txtData:{
+  txtData: {
     fontSize: 16,
     fontFamily: 'Tajawal-Regular',
     color: '#212529',
-  },  
+  },
+  inputButton: {
+    borderWidth: 1,
+    borderColor: '#212529',
+    padding: 10,
+    borderRadius: 5,
+    width: '90%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#DFE2FC',
+    marginTop: '5%',
+  },
+  inputButtonText: {
+    fontFamily: 'Tajawal-Regular',
+    color: '#212529',
+    fontSize: 17,
+  },
+  icon: {
+    width: 20,
+    height: 20,
+    marginLeft: 10,
+  },
 });
 
 export default PerfilScreen;
