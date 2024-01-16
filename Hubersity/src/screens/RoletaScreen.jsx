@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import Voltar from '../assets/icons/Voltar.svg';
 import Header from '../components/Header.jsx';
-import Roleta from '../assets/Roleta.svg';
+import Roleta from '../assets/Wheel.svg';
 
 export default function App({ navigation }) {
   const [rotationValue] = useState(new Animated.Value(0));
@@ -76,8 +76,12 @@ export default function App({ navigation }) {
 
 const styles = StyleSheet.create({
   roletaContainer: {
+    flex:1,
     alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 20,
+    borderWidth:1,
   },
   scrollContainer: {
     flexGrow: 1,
