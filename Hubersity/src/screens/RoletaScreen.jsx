@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -12,16 +12,15 @@ import Header from '../components/Header.jsx';
 import Roleta from '../assets/Wheel.svg';
 import Pointer from '../assets/Pointer.svg';
 
-export default function App({ navigation }) {
+export default function App({navigation}) {
   const [rotationValue] = useState(new Animated.Value(0));
 
   const rotateRoleta = () => {
-    // Reset para 0 antes de cada nova rotação
     rotationValue.setValue(0);
 
     Animated.timing(rotationValue, {
       toValue: 1,
-      duration: 1000, // Ajuste a duração conforme necessário
+      duration: 1000,
       useNativeDriver: true,
     }).start();
   };
@@ -44,9 +43,7 @@ export default function App({ navigation }) {
           <Text style={styles.txtTitulo}>
             Aqui tens hipótese de ganhares um brinde todos os dias!
           </Text>
-          <Text style={styles.txtInfo}>
-            Gira a roleta e testa a tua sorte.
-          </Text>
+          <Text style={styles.txtInfo}>Gira a roleta e testa a tua sorte.</Text>
         </View>
         <View style={styles.pointer}>
           <Pointer />
@@ -55,22 +52,16 @@ export default function App({ navigation }) {
           style={[
             styles.roletaContainer,
             {
-              transform: [
-                { translateY: -50 },
-                { rotate: spin },
-              ],
+              transform: [{translateY: -50}, {rotate: spin}],
             },
-          ]}
-        >
+          ]}>
           <Roleta style={styles.roleta} />
         </Animated.View>
         <TouchableOpacity
           style={styles.btnGirar}
           onPress={() => {
             rotateRoleta();
-            // Adicione aqui qualquer lógica adicional que você queira executar ao girar a roleta
-          }}
-        >
+          }}>
           <Text style={styles.textBtnGirar}>Spin</Text>
         </TouchableOpacity>
       </View>
@@ -80,11 +71,14 @@ export default function App({ navigation }) {
 
 const styles = StyleSheet.create({
   roletaContainer: {
-    flex:1,
+    flex: 1,
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,
+  },
+  roleta: {
+    resizeMode: 'contain',
   },
   scrollContainer: {
     flexGrow: 1,
@@ -125,7 +119,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   pointer: {
-    marginTop:356,
+    marginTop: 356,
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
