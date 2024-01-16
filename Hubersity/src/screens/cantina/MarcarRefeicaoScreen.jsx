@@ -182,7 +182,7 @@ const Ementas = ({navigation}) => {
                   <View style={styles.celula}>
                     <Text>{refeicao.Preco}€</Text>
                   </View>
-                  <View style={[styles.celula, styles.selectContainer]}>
+                  <View style={[styles.celula2, styles.selectContainer]}>
                     <TouchableOpacity
                       onPress={() => {
                         Alert.alert(refeicao.Descricao);
@@ -343,6 +343,14 @@ const styles = StyleSheet.create({
     marginRight: 5,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  celula2: {
+    flex: 1,
+    height: 50,
+    marginRight: '13%',
+    justifyContent: 'left',
+    alignItems: 'center',
+    flexDirection: 'row',
   },
   tituloTabela: {
     fontSize: 18,
