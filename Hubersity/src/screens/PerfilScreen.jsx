@@ -83,11 +83,12 @@ const PerfilScreen = ({navigation}) => {
   const handleDateChange = (event, date) => {
     if (date !== undefined && event.type === 'set') {
       const year = date.getFullYear();
-      const month = date.getMonth() + 1;
-      const day = date.getDate();
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const day = date.getDate().toString().padStart(2, '0');
       const formattedDate = `${year}/${month}/${day}`;
       console.log(formattedDate);
       setSelectedDate(date);
+      setDataValidade(formattedDate);
     }
     setShowDatePicker(false);
   };
@@ -487,7 +488,7 @@ const PerfilScreen = ({navigation}) => {
                           Validade
                         </Text>
                         <Text style={styles.txtData}>
-                          {cartao.DataValidade}
+                          {formatData(cartao.DataValidade)}
                         </Text>
                       </View>
                       <View style={styles.CVV}>
