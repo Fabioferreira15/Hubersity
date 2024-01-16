@@ -10,6 +10,7 @@ import {
 import Voltar from '../assets/icons/Voltar.svg';
 import Header from '../components/Header.jsx';
 import Roleta from '../assets/Wheel.svg';
+import Pointer from '../assets/Pointer.svg';
 
 export default function App({ navigation }) {
   const [rotationValue] = useState(new Animated.Value(0));
@@ -47,6 +48,9 @@ export default function App({ navigation }) {
             Gira a roleta e testa a tua sorte.
           </Text>
         </View>
+        <View style={styles.pointer}>
+          <Pointer />
+        </View>
         <Animated.View
           style={[
             styles.roletaContainer,
@@ -81,7 +85,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,
-    borderWidth:1,
   },
   scrollContainer: {
     flexGrow: 1,
@@ -120,5 +123,13 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: 'BaiJamjuree-Bold',
     textAlign: 'center',
+  },
+  pointer: {
+    marginTop:356,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    zIndex: 1,
   },
 });
