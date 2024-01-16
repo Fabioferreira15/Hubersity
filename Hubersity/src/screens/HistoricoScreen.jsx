@@ -266,7 +266,7 @@ const Historico = ({navigation}) => {
                   </View>
                 ))
               ) : (
-                <Text style={{fontSize: 17, marginLeft: '5%'}}>
+                <Text style={{fontSize: 17, marginLeft: '5%',color:'#212529'}}>
                   Não existem registos de marcações durante o período de tempo
                   selecionado.
                 </Text>
