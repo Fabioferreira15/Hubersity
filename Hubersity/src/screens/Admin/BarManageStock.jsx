@@ -1,9 +1,19 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, ScrollView, StyleSheet, RefreshControl,ActivityIndicator,TouchableOpacity,Image} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  RefreshControl,
+  ActivityIndicator,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import StockCard from '../../components/StockCard';
-import {fetchBarProducts,changeCartQuantity} from '../../api';
+import {fetchBarProducts, manageStock} from '../../api';
 import CarrinhoSvg from '../../assets/icons/carrinho.svg';
 import PlusSvg from '../../assets/icons/plus.svg';
+import Toast from 'react-native-toast-message';
 
 const BarManageStock = () => {
   const [categorias, setCategorias] = useState([]);
@@ -33,8 +43,8 @@ const BarManageStock = () => {
     fetchData();
   }, []);
 
-  const changeCartQuantity = async (id, operacao) => {
-    const response = await changeCartQuantity(id, operacao);
+  const handleChangeStock = async (idProduto, operacao) => {
+    const response = await manageStock(idProduto, operacao);
     if (response.success) {
       Toast.show({
         type: 'success',
@@ -53,6 +63,10 @@ const BarManageStock = () => {
           color: '#212529',
         },
       });
+      setLoading(true);
+      const data = await fetchBarProducts();
+      setCategorias(data);
+      setLoading(false);
     } else {
       Toast.show({
         type: 'error',
@@ -62,7 +76,7 @@ const BarManageStock = () => {
         visibilityTime: 3000,
       });
     }
-  }
+  };
 
   return (
     <View>
@@ -74,7 +88,11 @@ const BarManageStock = () => {
         <View style={styles.main}>
           {loading ? (
             <>
-              <ActivityIndicator animating={true} color="red" size="large" />
+              <ActivityIndicator
+                animating={true}
+                color="#5F6EF0"
+                size="large"
+              />
               <Text style={styles.loadingTxt}>Loading...</Text>
             </>
           ) : (
@@ -98,7 +116,9 @@ const BarManageStock = () => {
                         </View>
                         <View style={styles.btn}>
                           <TouchableOpacity
-                            onPress={() => changeCartQuantity(item.IdProduto,'aumentar')}>
+                            onPress={() =>
+                              handleChangeStock(item.IdProduto, 'aumentar')
+                            }>
                             <PlusSvg />
                           </TouchableOpacity>
                         </View>
