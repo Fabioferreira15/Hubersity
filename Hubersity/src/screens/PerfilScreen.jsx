@@ -728,6 +728,16 @@ const styles = StyleSheet.create({
     marginTop: '5%',
     marginBottom: '5%',
   },
+  txtCVV:{
+    fontSize: 16,
+    fontFamily: 'Tajawal-Regular',
+    color: '#212529',
+  },
+  txtData:{
+    fontSize: 16,
+    fontFamily: 'Tajawal-Regular',
+    color: '#212529',
+  },  
 });
 
 export default PerfilScreen;
