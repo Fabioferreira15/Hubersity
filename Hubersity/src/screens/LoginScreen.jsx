@@ -14,13 +14,12 @@ const Login = ({navigation}) => {
   const {emailError, passwordError} = useContext(AuthContext);
 
   return (
-    <ScrollView style={{flex: 1}}>
       <View style={styles.container}>
         <View>
           <Blob style={styles.blob} />
           <Logo width={407} height={212} style={styles.logo} />
         </View>
-        <View>
+        <View style={styles.formContainer}>
           <Text style={styles.txt}>Login</Text>
           <View style={styles.form}>
             <TextInput
@@ -55,7 +54,7 @@ const Login = ({navigation}) => {
               }}
               text="Login"
               paddingHorizontal={'40%'}
-              paddingVertical={10}
+              paddingVertical={5}
               borderRadius={5}
             />
             <View style={styles.registo}>
@@ -72,7 +71,6 @@ const Login = ({navigation}) => {
           </View>
         </View>
       </View>
-    </ScrollView>
   );
 };
 
@@ -89,7 +87,8 @@ const styles = StyleSheet.create({
   },
   txt: {
     color: '#F8F9FA',
-    fontSize: 16,
+    fontSize: 23,
+    fontFamily: 'BaiJamjuree-Bold',
     marginTop: '40%',
     marginLeft: '5%',
   },
@@ -97,7 +96,9 @@ const styles = StyleSheet.create({
     marginTop: '5%',
     marginLeft: '-7%',
   },
-
+  formContainer: {
+    flex: 1,
+  },
   input: {
     backgroundColor: '#DFE2FC',
     width: '90%',
@@ -108,9 +109,11 @@ const styles = StyleSheet.create({
     color: '#212529',
   },
   btn: {
-    marginTop: '40%',
     width: '95%',
     alignSelf: 'center',
+    justifyContent: 'flex-end',
+    marginBottom: '5%',
+    flex: 1,
   },
   registo: {
     marginTop: '2%',
