@@ -90,7 +90,7 @@ const Home = ({navigation}) => {
             height: 35,
             width: 35,
             position: 'absolute',
-            left: 7,
+            left: 3,
             top: 11,
             alignItems: 'center',
             justifyContent: 'center',
@@ -108,7 +108,7 @@ const Home = ({navigation}) => {
             height: 35,
             width: 35,
             position: 'absolute',
-            right: 7,
+            right: 0,
             top: 11,
             alignItems: 'center',
             justifyContent: 'center',
@@ -164,7 +164,10 @@ const styles = StyleSheet.create({
   },
   main: {
     marginTop: '50%',
+    marginLeft: '5%',
     alignItems: 'center',
+    justifyContent: 'center',
+    width: '90%',
   },
 
   btn: {
