@@ -65,7 +65,7 @@ const Home = ({navigation}) => {
         <CustomButton
           onPress={() => navigation.navigate('Cantina')}
           text="Cantina"
-          backgroundSvg={<BtnSvg width={300} height={131} />}
+          backgroundSvg={<BtnSvg width={"100%"} height={"100%"} />}
           svgComponent={<CantinaWhiteSvg />}
           svgContainerStyle={{
             borderRadius: 50,
@@ -73,7 +73,7 @@ const Home = ({navigation}) => {
             height: 35,
             width: 35,
             position: 'absolute',
-            right: 0,
+            right: "0.5%",
             top: 11,
             alignItems: 'center',
             justifyContent: 'center',
@@ -82,7 +82,7 @@ const Home = ({navigation}) => {
         <CustomButton
           onPress={() => navigation.navigate('Bar')}
           text="Bar"
-          backgroundSvg={<BtnInvertedSvg width={300} height={131} />}
+          backgroundSvg={<BtnInvertedSvg width={"100%"} height={"100%"} />}
           svgComponent={<BarWhiteSvg />}
           svgContainerStyle={{
             borderRadius: 50,
@@ -100,7 +100,7 @@ const Home = ({navigation}) => {
         <CustomButton
           onPress={() => navigation.navigate('Roleta')}
           text="Roleta"
-          backgroundSvg={<BtnSvg width={300} height={131} />}
+          backgroundSvg={<BtnSvg width={"100%"} height={"100%"} />}
           svgComponent={<RoletaWhiteSvg />}
           svgContainerStyle={{
             borderRadius: 50,
@@ -168,6 +168,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '90%',
+    borderWidth: 1,
   },
 
   btn: {
