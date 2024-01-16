@@ -68,6 +68,7 @@ const AuthProvider = ({children}) => {
       AsyncStorage.removeItem('nome');
       AsyncStorage.removeItem('image');
       AsyncStorage.removeItem('tipo');
+      AsyncStorage.removeItem('SplashSeen');
     } catch (error) {
       console.error(error);
     }

@@ -26,6 +26,13 @@ const SplashScreen = ({navigation}) => {
     checkOnboardingSeen();
   }, []);
 
+  (async function saveOnboardingSeen() {
+    try {
+      await AsyncStorage.setItem('SplashSeen', 'true');
+    } catch (error) {
+      console.log(error);
+    }
+  })();
 
   return (
     <View style={{flex: 1}}>

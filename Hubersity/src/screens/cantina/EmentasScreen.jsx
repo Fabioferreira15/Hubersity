@@ -121,8 +121,9 @@ const Ementas = ({navigation}) => {
                       {refeicao.TipoPrato}
                     </Text>
                   </View>
-                  <View style={styles.celula}>
+                  <View style={styles.celula2}>
                     <TouchableOpacity
+                    style={styles.btnInfo}
                       onPress={() => {
                         Alert.alert(refeicao.Descricao);
                       }}>
@@ -159,8 +160,9 @@ const Ementas = ({navigation}) => {
                       {refeicao.TipoPrato}
                     </Text>
                   </View>
-                  <View style={styles.celula}>
+                  <View style={styles.celula2}>
                     <TouchableOpacity
+                    style={styles.btnInfo}
                       onPress={() => {
                         Alert.alert(refeicao.Descricao);
                       }}>
@@ -255,6 +257,14 @@ const styles = StyleSheet.create({
     height: 50,
     marginRight: 5,
     justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  celula2: {
+    flex: 1,
+    height: 50,
+    marginRight: '8%',
+    justifyContent: 'left',
     alignItems: 'center',
     flexDirection: 'row',
   },
