@@ -150,7 +150,7 @@ const HomeBar = ({navigation}) => {
                     <View key={item.IdProduto} style={styles.card}>
                       <View style={styles.imagem}>
                         <Image
-                          source={require('../../assets/Rectangle164.png')}
+                          source={{uri: item.Imagem}}
                           resizeMode="contain"
                           style={styles.capaImage}
                         />

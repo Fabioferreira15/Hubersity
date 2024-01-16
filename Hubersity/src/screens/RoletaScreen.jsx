@@ -37,7 +37,7 @@ export default function App({ navigation }) {
         <Header
           title="Roleta"
           iconPosition="left"
-          onPress={() => navigation.navigate('HomeBar')}
+          onPress={() => navigation.navigate('Home')}
           customIcon={<Voltar />}
         />
         <View style={styles.main}>
