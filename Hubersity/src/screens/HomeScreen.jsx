@@ -168,7 +168,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '90%',
-    borderWidth: 1,
   },
 
   btn: {
