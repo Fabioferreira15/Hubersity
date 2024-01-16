@@ -1,5 +1,5 @@
-import React, {useState, useContext, useEffect} from 'react';
-import {View, Text, StyleSheet, TextInput} from 'react-native';
+import React, {useState, useContext} from 'react';
+import {View, Text, StyleSheet, TextInput, ScrollView} from 'react-native';
 import Blob from '../assets/Login/Background-blob.svg';
 import Logo from '../assets/Login/logo.svg';
 import PrimaryBtn from '../components/PrimaryBtn.jsx';
@@ -13,71 +13,66 @@ const Login = ({navigation}) => {
   const {login} = useContext(AuthContext);
   const {emailError, passwordError} = useContext(AuthContext);
 
-  useEffect(() => {
-    console.log(emailError);
-  }, [emailError]);
-
   return (
-    <View style={styles.container}>
-      <View>
-        <Blob style={styles.blob} />
-        <Logo width={407} height={212} style={styles.logo} />
-      </View>
-      <View>
-        <Text style={styles.txt}>Login</Text>
-        <View style={styles.form}>
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            placeholderTextColor="#6C757D"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoCorrect={false}
-            value={email}
-            onChangeText={text => setEmail(text)}
-          />
-          {/* {emailError &&
-            emailError.map((error, index) => (
-              <Text key={index} style={styles.errorText}>
-                {error}
-              </Text>
-            ))} */}
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            placeholderTextColor="#6C757D"
-            secureTextEntry={true}
-            value={password}
-            onChangeText={text => setPassword(text)}
-          />
-          {passwordError ? (
-            <Text style={styles.errorText}>{passwordError}</Text>
-          ) : null}
+    <ScrollView style={{flex: 1}}>
+      <View style={styles.container}>
+        <View>
+          <Blob style={styles.blob} />
+          <Logo width={407} height={212} style={styles.logo} />
         </View>
-        <View style={styles.btn}>
-          <PrimaryBtn
-            onPress={() => {
-              login(email, password);
-            }}
-            text="Login"
-            paddingHorizontal={'40%'}
-            paddingVertical={10}
-            borderRadius={5}
-          />
-          <View style={styles.registo}>
-            <Text style={styles.registoTxt}>Ainda não tens conta?</Text>
-            <UnderlineBtn
-              onPress={() => {
-                navigation.navigate('Registo');
-              }}
-              text="Regista-te"
-              color="#F0D060"
-              size={16}
+        <View>
+          <Text style={styles.txt}>Login</Text>
+          <View style={styles.form}>
+            <TextInput
+              style={styles.input}
+              placeholder="Email"
+              placeholderTextColor="#6C757D"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoCorrect={false}
+              value={email}
+              onChangeText={text => setEmail(text)}
             />
+            {emailError ? (
+              <Text style={styles.errorText}>{emailError}</Text>
+            ) : null}
+            <TextInput
+              style={styles.input}
+              placeholder="Password"
+              placeholderTextColor="#6C757D"
+              secureTextEntry={true}
+              value={password}
+              onChangeText={text => setPassword(text)}
+            />
+            {passwordError ? (
+              <Text style={styles.errorText}>{passwordError}</Text>
+            ) : null}
+          </View>
+          <View style={styles.btn}>
+            <PrimaryBtn
+              onPress={() => {
+                login(email, password);
+              }}
+              text="Login"
+              paddingHorizontal={'40%'}
+              paddingVertical={10}
+              borderRadius={5}
+            />
+            <View style={styles.registo}>
+              <Text style={styles.registoTxt}>Ainda não tens conta?</Text>
+              <UnderlineBtn
+                onPress={() => {
+                  navigation.navigate('Registo');
+                }}
+                text="Regista-te"
+                color="#F0D060"
+                size={16}
+              />
+            </View>
           </View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -117,15 +112,21 @@ const styles = StyleSheet.create({
     width: '95%',
     alignSelf: 'center',
   },
-  registo:{
+  registo: {
     marginTop: '2%',
     flexDirection: 'row',
     alignItems: 'center',
   },
-  registoTxt:{
+  registoTxt: {
     color: '#F8F9FA',
     fontSize: 16,
     marginRight: '2%',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 16,
+    marginTop: '1%',
+    marginLeft: '5%',
   },
 });
 
