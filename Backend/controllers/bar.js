@@ -139,7 +139,7 @@ exports.obterProdutos = async function (req, res) {
       categorias.map(async (categoria) => {
         const produtos = await ProdutosBar.findAll({
           where: { IdCategoria: categoria.idCategoriaBar },
-          attributes: ["IdProduto", "Nome", "Descricao", "Preco", "Stock"],
+          attributes: ["IdProduto", "Nome", "Descricao", "Preco", "Stock","Imagem"],
           raw: true,
         });
 

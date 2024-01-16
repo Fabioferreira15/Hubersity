@@ -35,6 +35,10 @@ ProdutosBar.init(
                 key: "idCategoriaBar",
             },
         },
+        Imagem: {
+            type: DataTypes.STRING(255),
+            allowNull: true,
+          },
     },
     {
         sequelize: mysqlDB,
