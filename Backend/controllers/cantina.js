@@ -136,7 +136,7 @@ exports.verificarMarcacoes = async () => {
       return;
     }
 
-    const updatePromises = marcacoes.map(marcacao => {
+    const updatePromises = marcacoes.map((marcacao) => {
       if (marcacao && marcacao.status) {
         // Adicionando verificação para evitar erro
         return MarcacaoCantina.update(
@@ -166,7 +166,7 @@ exports.verificarMarcacoes = async () => {
 cron.schedule("0 0 * * *", async () => {
   try {
     // Call your function here
-    await exports.verificarMarcacoes(); 
+    await exports.verificarMarcacoes();
     console.log("Cron job executed: verificarMarcacoes");
   } catch (error) {
     console.error("Error in cron job: verificarMarcacoes", error);
@@ -230,9 +230,10 @@ exports.pagamentoMarcacao = async (req, res) => {
     const refeicaoDate = new Date(refeicaoExistente.Data);
     refeicaoDate.setHours(0, 0, 0, 0);
 
-    if (refeicaoDate < currentDate) {
+    if (refeicaoDate <= currentDate) {
       return res.status(400).send({
-        message: "Não pode marcar uma refeição passada!",
+        message:
+          "Não pode marcar uma refeição para o mesmo dia ou uma data passada!",
       });
     }
 
@@ -434,7 +435,14 @@ exports.obterMarcacoesCantinaHistorico = async (req, res) => {
       include: [
         {
           model: RefeicaoCantina,
-          attributes: ["IdRefeicao", "Nome", "TipoPrato", "Data", "Periodo", "Preco"],
+          attributes: [
+            "IdRefeicao",
+            "Nome",
+            "TipoPrato",
+            "Data",
+            "Periodo",
+            "Preco",
+          ],
         },
         {
           model: Utilizadores,
