@@ -264,7 +264,7 @@ exports.obterCarrinho = async function (req, res) {
       include: [
         {
           model: ProdutosBar,
-          attributes: ["IdProduto", "Nome", "Descricao", "Preco", "Stock"],
+          attributes: ["IdProduto", "Nome", "Descricao", "Preco", "Stock","Imagem"],
           raw: true,
         },
       ],
