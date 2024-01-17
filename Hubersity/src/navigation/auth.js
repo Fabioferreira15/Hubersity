@@ -23,7 +23,7 @@ const AuthStack = () => {
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName={splashSeen ? 'Login' : 'SplashScreen'}>
+      initialRouteName={'SplasScreen'}>
       <Stack.Screen name="SplashScreen" component={SplashScreen} />
       <Stack.Screen name="Onboarding" component={Onboarding} />
       <Stack.Screen name="Login" component={Login} />
