@@ -62,36 +62,30 @@ const PendingOrdersScreen = ({navigation}) => {
             />
 
             <View style={styles.main}>
-              {orders.length === 0 ? (
-                <Text style={styles.text}>Não tem pedidos pendentes</Text>
-              ) : (
-                orders.map((order, index) => (
-                  <View key={index} style={styles.pedidosContainer}>
-                    <Text style={styles.numPedido}>
-                      Pedido Nº{order.IdPedido}
-                    </Text>
-                    <View style={styles.card}>
-                      <View style={styles.cardBody}>
-                        <Text style={styles.cardTitle}>Data</Text>
-                        <Text style={styles.text}>
-                          {formatData(order.Data)}
-                        </Text>
-                      </View>
-                      <View style={styles.cardBody}>
-                        <Text style={styles.cardTitle}>Estado</Text>
-                        <Text style={styles.text}>{order.Status}</Text>
-                      </View>
+              {orders.map((order, index) => (
+                <View key={index} style={styles.pedidosContainer}>
+                  <Text style={styles.numPedido}>
+                    Pedido Nº{order.IdPedido}
+                  </Text>
+                  <View style={styles.card}>
+                    <View style={styles.cardBody}>
+                      <Text style={styles.cardTitle}>Data</Text>
+                      <Text style={styles.text}>{formatData(order.Data)}</Text>
                     </View>
-                    <TouchableOpacity
-                      style={styles.button}
-                      onPress={() => navigation.navigate('QrCode', {order})}>
-                      <View style={styles.btnQR}>
-                        <Text style={styles.textBtn}>Mostrar QR Code</Text>
-                      </View>
-                    </TouchableOpacity>
+                    <View style={styles.cardBody}>
+                      <Text style={styles.cardTitle}>Estado</Text>
+                      <Text style={styles.text}>{order.Status}</Text>
+                    </View>
                   </View>
-                ))
-              )}
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => navigation.navigate('QrCode', {order})}>
+                    <View style={styles.btnQR}>
+                      <Text style={styles.textBtn}>Mostrar QR Code</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              ))}
             </View>
           </View>
         </ScrollView>

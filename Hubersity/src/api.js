@@ -133,7 +133,7 @@ export const PendingOrders = async () => {
       return { pedidos: [] };
     } else if (response.ok) {
       const responseData = await response.json();
-      return responseData.pedidos;
+      return { pedidos: responseData.pedidos }; // Alterado aqui
     } else {
       const responseData = await response.json();
       console.error(responseData);
