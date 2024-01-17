@@ -48,6 +48,7 @@ const CartScreen = ({navigation}) => {
     fetchData();
   }, [cart]);
 
+  
   const handlePay = async () => {
     try {
       const id = await AsyncStorage.getItem('id');
@@ -138,6 +139,7 @@ const CartScreen = ({navigation}) => {
                     descricao={item['ProdutosBar.Descricao']}
                     preco={item['ProdutosBar.Preco']}
                     quantidade={item['Quantidade']}
+                    imagem={item['ProdutosBar.Imagem']}
                   />
                 ))}
               </View>

@@ -6,7 +6,7 @@ import PlusSvg from '../assets/icons/plus.svg';
 import {removeFromCart, changeCartQuantity} from '../api';
 import Toast from 'react-native-toast-message';
 
-const CarrinhoCard = ({id, nome, preco, quantidade}) => {
+const CarrinhoCard = ({id, nome, preco, quantidade,imagem}) => {
   const handleRemoveFromCart = async id => {
     const response = await removeFromCart(id);
     if (response.success) {
@@ -85,7 +85,7 @@ const CarrinhoCard = ({id, nome, preco, quantidade}) => {
     <View style={styles.card}>
       <View style={styles.Image}>
         <Image
-          source={require('../assets/Rectangle164.png')}
+          source={{uri:imagem}}
           resizeMode="contain"
           style={styles.capaImage}
         />
