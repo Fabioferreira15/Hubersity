@@ -227,6 +227,7 @@ exports.pagamentoMarcacao = async (req, res) => {
       });
     }
     const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
     const refeicaoDate = new Date(refeicaoExistente.Data);
     refeicaoDate.setHours(0, 0, 0, 0);
 
