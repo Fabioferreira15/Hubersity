@@ -230,10 +230,9 @@ exports.pagamentoMarcacao = async (req, res) => {
     const refeicaoDate = new Date(refeicaoExistente.Data);
     refeicaoDate.setHours(0, 0, 0, 0);
 
-    if (refeicaoDate <= currentDate) {
+    if (refeicaoDate < currentDate) {
       return res.status(400).send({
-        message:
-          "Não pode marcar uma refeição para o mesmo dia ou uma data passada!",
+        message: "Não pode marcar uma refeição para uma data passada!",
       });
     }
 
